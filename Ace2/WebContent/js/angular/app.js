@@ -1,76 +1,108 @@
-  var app = angular.module('Admin', ['ngRoute']);
+  var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
   
-  app.run(function($rootScope, $location) {
-	    $rootScope.location = $location;
-	});
  
     app.config(function($routeProvider) {
-	  $routeProvider.when('/list',
+	  $routeProvider.when('/login',
+	  {
+		controller: 'LoginController',
+		templateUrl: '/view/adminInfo/loginForm.html'
+	  }).when('/list',
 	  {
 	    controller: 'ListController',
 	    templateUrl: '/view/adminInfo/adminInfoList.html'
 	  }).when('/add',
-	    {
-		    controller: 'AddController',
-		    templateUrl: '/view/adminInfo/adminInfoReg.html'
-		  }).when('/edit/:id',
-				    {
-			    controller: 'AddController',
-			    templateUrl: '/view/adminInfo/adminInfoReg.html'
-			  }).otherwise(
-	    {
-	      redirectTo: '/list'
-	    });
+	  {
+	    controller: 'AddController',
+		templateUrl: '/view/adminInfo/adminInfoReg.html'
+	  }).when('/edit/:id',
+	  {
+		controller: 'AddController',
+		templateUrl: '/view/adminInfo/adminInfoReg.html'
+	  }).when('/logout/:id',
+	  {
+		controller: 'LoginController',
+		templateUrl: '/view/adminInfo/loginForm.html'
+	  }).otherwise(
+	  {
+	      redirectTo: '/login'
+	  });
 	});
     
-    app.factory('PaginatonService', function($rootScope) {
-	     return {
-	  	       Pagination: function(maxCount, $rootScope) {
-	  	         return new Pagination(maxCount);
-	  	       }
-	  	     };
-	  	});  
-  	
-  	var Pagination = function(totalRecord, maxPageCount, $rootScope) {
-	    this.maxPageCount = maxPageCount;
-	    this.totalRecord = totalRecord;
-	    this.counter = 1;
-	     
-	    this.max = function() {
-	        return this.maxPageCount;
-	    };
-	    this.setCurrent = function(counter) {
-	        this.counter = counter;
-	    };
-	    this.current = function() {
-	        return this.counter;
-	    };
-	    this.next = function() {
-	        if (this.hasNext()) {
-	            this.counter++;
-	            //$rootScope.broadcast("pagination:next");
-	        }
-	    };
-	    this.previous = function() {
-	        if (this.hasPrevious()) {
-	            this.counter--;
-	            //$rootScope.broadcast("pagination:previous");
-	        }
-	    };
-	    this.hasPrevious = function() {
-	        return this.counter > 1;
-	    };
-	    this.hasNext = function() {
-	        return (this.counter < this.maxPageCount)
-	        	&& (this.counter * 10) > total;
-	    };
-	};  	
+    app.run(['$rootScope', '$location', 'Auth', function ($rootScope, $location, Auth) {
+    	$rootScope.location = $location;
+    	$rootScope.Auth = Auth;
+    	
+        $rootScope.$on('$routeChangeStart', function (event) {
+        	var path = $location.path();
+            if (path != "/add" && !Auth.isLoggedIn()) {
+                console.log('DENY');
+                event.preventDefault();
+                $location.path('/login');
+            }
+            else {
+                //console.log('ALLOW');
+                //$location.path('/list');
+            }
+        });
+    }]);
+    
+    app.factory('Auth', ['$cookieStore',  function($cookieStore){
+
+    	return{
+    	    setUser : function(aUser){
+    	    	$cookieStore.put('userInfo', aUser);
+    	    },
+    	    getUser : function(){
+    	    	return $cookieStore.get("userInfo");
+    	    },
+    	    isLoggedIn : function(){
+    	        return ($cookieStore.get("userInfo"))? true : false;
+    	    }    	    
+    	  }
+    	}]);
+    
+    app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore', '$routeParams', 'Auth', 
+                                       function($scope, $http, $location, $cookieStore, $routeParams, Auth) {
+    	
+    	// Logout - Delete Cookie
+  	    if($routeParams.id) {
+  	    	//console.log("---" + Auth.getUser());
+  	    	$cookieStore.put('userInfo', null);
+  	    }
+  	    
+  	  $scope.login = function() {
+  			//		
+  			var dataObj = {
+  					email : $scope.email,
+  					password : $scope.password
+  			};	
+
+  			var res = $http.post('/adminInfo/loginForm', dataObj);			
+  			res.success(function(data, status, headers, config) {
+  				
+  				if(data) {
+  					Auth.setUser(data); //Update the state of the user in the app
+  					//window.location.replace("/view/index.html");
+  					$location.path("/list");
+  				}				
+  			});
+  			res.error(function(data, status, headers, config) {
+  				console.log( "failure message: " + JSON.stringify({data: data}));
+  			});		
+  			// Making the fields empty
+  			//
+  			$scope.email='';
+  			$scope.password='';
+  	    };  	    
+
+  	  }]);    
+    
 	
 	app.controller('ListController', ['$scope', '$http', '$location', 'PaginatonService', function($scope, $http, $location, PaginatonService) {
 	    $scope.lists = [];
 	    
 	    $scope.getList = function(pageIndex) {//
-	    	console.log($scope.pagination.current() + "pageIndex : " + pageIndex);		    	
+	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);		    	
 	    	
 			var dataObj = {
 				pageIndex : pageIndex
@@ -79,7 +111,6 @@
 			// get Member List
 			var res = $http.post('/adminInfo/adminInfoList', dataObj);			
 			res.success(function(data, status, headers, config) {
-				console.log(data);
 				$scope.lists = data;
 			});
 			res.error(function(data, status, headers, config) {
@@ -89,7 +120,7 @@
 			// get Total Count
 			res = $http.post('/adminInfo/adminInfoTotal', dataObj);
 			res.success(function(data, status, headers, config) {
-				console.log("Total : " + data);
+				//console.log("Total : " + data);
 				$scope.lists = data;				
 			});
 			res.error(function(data, status, headers, config) {
@@ -97,7 +128,7 @@
 			});
 			
 			$scope.pagination.setCurrent(pageIndex);
-			console.log($scope.pagination.current() + "current : ");		    	
+			//console.log($scope.pagination.current() + "current : ");		    	
 	    	
 	    };
 	    
@@ -135,7 +166,7 @@
 			var res = $http.post('/adminInfo/add/' + $scope.title + '/' + $routeParams.id, dataObj);			
 			res.success(function(data, status, headers, config) {
 				console.log(data);
-				$location.path('/list');
+				$location.path('/login');
 			});
 			res.error(function(data, status, headers, config) {
 				console.log( "failure message: " + JSON.stringify({data: data}));
@@ -144,10 +175,9 @@
 	    
 	    // Call User Data
 	  if($routeParams.id) {
-		  
 			var res = $http.get('/adminInfo/adminInfoView/' + $routeParams.id);	
 			res.success(function(data, status, headers, config) {
-				console.log(data);
+				//console.log(data);
 				$scope.email = data.email;
 				$scope.name = data.name;
 				$scope.mobileNumber = data.mobileNumber;

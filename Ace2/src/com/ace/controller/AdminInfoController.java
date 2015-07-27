@@ -46,7 +46,7 @@ public class AdminInfoController {
 	 *  Login Info Check
 	 */	
     @RequestMapping(value="/loginForm", method = RequestMethod.POST)    
-	public @ResponseBody boolean loginForm(@RequestBody AdminInfo adminInfo, Model model, HttpServletRequest request) throws Exception
+	public @ResponseBody AdminInfo loginForm(@RequestBody AdminInfo adminInfo, Model model, HttpServletRequest request) throws Exception
 	{   //
     	String strPassword = adminInfo.getPassword();//EncryptUtils.toSHA256(    	
     	adminInfo = adminInfoService.selectAdminInfoByEmail(adminInfo);
@@ -71,7 +71,7 @@ public class AdminInfoController {
 	    			model.addAttribute("result", "Fail");
 	    			model.addAttribute("failCount", loginFailCount);
 	    			
-	        		return false;
+	        		return null;
 	        	}
 	        	else {
 	        		adminInfoService.updateLoginSuccess(adminInfo);
@@ -86,7 +86,7 @@ public class AdminInfoController {
 	        			adminInfo.setLastPassYN("N");
 	        		}*/
 	        		model.addAttribute("id", adminInfo.getId());
-	        		return true;
+	        		return adminInfo;
 	        	}
     		//}
     	}
@@ -94,7 +94,7 @@ public class AdminInfoController {
     		model.addAttribute("result", "noneUser");
     	}
     	
-    	return false;
+    	return null;
 	}
     
     /**

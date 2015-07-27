@@ -1,6 +1,10 @@
 @charset "utf-8";
 
 /********** admin **********/ 
+body {
+	background-color:whitesmoke;
+}
+
 .neighborhood-guides {
     background-color: #efefef;
     border-bottom : 1px solid #dbdbdb;
@@ -16,9 +20,13 @@
  	margin-bottom : 10px;
 }
 
-.container label {
+form[name="userForm"] label {
 	 margin-left:5px; 
 	 color:#fff; 
 	 background-color:#428BCA;
 	 margin-right:5px;	
+}
+
+.content {
+	background-color:white;
 }

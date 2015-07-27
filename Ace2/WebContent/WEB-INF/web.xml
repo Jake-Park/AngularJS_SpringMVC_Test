@@ -34,6 +34,6 @@
   </servlet-mapping>
 
   <welcome-file-list>
-    <welcome-file>/view/adminInfo/loginForm.html</welcome-file>
+    <welcome-file>/view/index.html</welcome-file>
   </welcome-file-list>  
 </web-app>
