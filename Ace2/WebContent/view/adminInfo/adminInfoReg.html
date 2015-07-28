@@ -1,33 +1,42 @@
  
 
-<div class="container col-md-10 col-md-offset-2">
+<div class="container col-md-offset-2 col-sm-4 col-sm-5 col-md-offset-2">
 	<h1 class="text-muted">{{title}} User</h1>
-			<form name="userForm" ng-controller="AddController" ng-submit="userForm.$valid && add()" novalidate>
-			<table><!--  style="box-shadow: -1px 1px 0px lightgray; border-radius: 1px; border: 0px; border-color:grey; border-style:solid; " -->
-				<tr ng-class="{ 'has-error': userForm.email.$invalid && !userForm.email.$pristine }">
-			  		<td style="border-top-left-radius: 4px;border-top-right-radius: 4px;"><label for="email">Email</label></td>
-					<td><input type="email" class="form-control" name="email" title="Email" ng-model="email" required></td>
-			  	</tr>
-			  <tr ng-class="{ 'has-error': userForm.password.$invalid && !userForm.password.$pristine }" ng-minlength="4" required>
-			  	<td><label for="password">Password</label></td>
-			    <td><input type="password" class="form-control" name="password" ng-model="password" required></td>
-			  </tr>
-			  <tr ng-class="{ 'has-error': (userForm.confirmPassword.$invalid && userForm.confirmPassword.$error.pattern) && !userForm.confirmPassword.$pristine  }">
-			  	<td><label for="confirmPassword">Confirm password</label></td>
-			    <td><input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword" ng-pattern="password" required></td>
-			  </tr>
-			  <tr ng-class="{ 'has-error': userForm.name.$invalid && !userForm.name.$pristine }">
-			  	<td><label for="name">Name</label></td>
-			    <td><input type="text" class="form-control" name="name" ng-model="name" required></td>
-			  </tr>
-			  <tr ng-class="{ 'has-error': userForm.mobileNumber.$invalid && !userForm.mobileNumber.$pristine }">
-			  	<td style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;"><label for="mobileNumber">Phone Number</label></td>
-			    <td><input type="text" class="form-control" name="mobileNumber" ng-model="mobileNumber" required></td>
-			  </tr>
-			  <tr>
-			  	<td colspan="2"><input type="submit" class="btn btn-primary pull-middle" value="{{title}}" style="float:right; margin-bottom:3px; margin-top:5px;" /></td>
-			  </tr>
-			</table>
+			<form name="userForm" class="form-horizontal" ng-class="{'loginBody' : !Auth.isMobile()}" ng-controller="AddController" ng-submit="userForm.$valid && add()" novalidate>
+			<!-- <table> style="box-shadow: -1px 1px 0px lightgray; border-radius: 1px; border: 0px; border-color:grey; border-style:solid; " -->
+				<fieldset class="form-group form-inline has-success has-feedback" ng-class="{ 'has-error': userForm.email.$invalid && !userForm.email.$pristine }">
+				<legend class="scheduler-border"></legend>
+			  		<!-- <td style="border-top-left-radius: 4px;border-top-right-radius: 4px;"> --><label class="control-label col-sm-2 text-muted" for="email">Email</label>
+					<div class="col-sm-5"><input type="email" class="form-control" name="email" title="Email" ng-model="email" required></div>
+			  	</fieldset>
+			  <fieldset class="form-group form-inline has-success has-feedback" ng-class="{ 'has-error': userForm.password.$invalid && !userForm.password.$pristine }" ng-minlength="4" required>
+			  	<label class="control-label col-sm-2" for="password">Password</label>
+			    <div class="col-sm-5"><input type="password" class="form-control" name="password" ng-model="password" required></div>
+			  </fieldset>
+			  <fieldset class="form-group form-inline has-success has-feedback" ng-class="{ 'has-error': (userForm.confirmPassword.$invalid && userForm.confirmPassword.$error.pattern) && !userForm.confirmPassword.$pristine  }">
+			  	<label class="control-label col-sm-2" for="confirmPassword">Confirm password</label>
+			    <div class="col-sm-5">
+			    <input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword" ng-pattern="password" required>
+			    </div>
+			  </fieldset>
+			  <fieldset class="form-group form-inline has-success has-feedback" ng-class="{ 'has-error': userForm.name.$invalid && !userForm.name.$pristine }">
+			  	<label class="control-label col-sm-2" for="name">Name</label>
+			    <div class="col-sm-5">
+			    <input type="text" class="form-control" name="name" ng-model="name" required>
+			    </div>
+			  </fieldset>
+			  <fieldset class="form-group form-inline has-success has-feedback" ng-class="{ 'has-error': userForm.mobileNumber.$invalid && !userForm.mobileNumber.$pristine }">
+			  	<!-- <td style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">--><label class="control-label col-sm-2" for="mobileNumber">Phone Number</label>
+			    <div class="col-sm-5">
+			    <input type="text" class="form-control" name="mobileNumber" ng-model="mobileNumber" required>
+			    </div>
+			  </fieldset>
+			  <fieldset>
+			  	<div class="col-sm-11">
+			  	<input type="submit" class="btn btn-primary pull-right" value="{{title}}" style="float:right; margin-bottom:3px; margin-top:5px;" />
+			  	</div>
+			  </fieldset>
+			<!-- </table> -->
 			</form>
 </div>
 <script>
