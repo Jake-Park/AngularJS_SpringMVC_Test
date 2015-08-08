@@ -2,7 +2,7 @@
 
 /********** admin **********/ 
 body {
-	background-color:whitesmoke;
+	/*background-color:whitesmoke;*/
 }
 
 .neighborhood-guides {
@@ -16,13 +16,13 @@ body {
 
 .form-group .form-control {
  	margin-left : 10px;
- 	width : 300px;
+ 	width : 100%;
  	margin-bottom : 10px;
 }
 
 form[name="userForm"] label {
 	 margin-left:10px;
-	 width:150px; 
+	 width: 100%;
 	 /*color:#fff; 
 	 background-color:#428BCA;
 	 margin-right:5px;	*/
@@ -33,10 +33,48 @@ form[name="userForm"] label {
 }
 
 .loginBody {
-	margin-top:40px; 
-	border-radius: 3px; 
-	border: 3px; 
-	border-color:grey; 
+	margin-top:30px; 
+	border-radius: 2px; 
+	border: 1px; 
+	border-color:#dbdbdb; 
 	border-style:solid;
 	background-color:white;
+}
+
+.quote {
+  background-color: #444;
+  color: #e1e1e1;
+  margin: 2em 0;
+}
+.quote blockquote {
+  border: none;
+  margin: 0;
+}
+.quote footer {
+  color: #c1c1c1;
+}
+
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */  
+  color: #efefef;
+  background-color: #333;  
+}
+
+html.touch footer {
+    height: auto;
+}
+
+html.no-touch footer {
+    height: 200px;
+}
+
+.footer a {
+  color: #9af7fe;
+}
+
+.footer .glyphicon {
+  font-size: 14px;
 }

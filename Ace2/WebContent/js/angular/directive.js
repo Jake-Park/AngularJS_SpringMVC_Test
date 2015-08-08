@@ -10,4 +10,11 @@
           restrict: 'E',
           templateUrl: "/view/include/left-menu.html"
         };
+      });    
+
+    app.directive("footer", function() {
+        return {
+          restrict: 'E',
+          templateUrl: "/view/include/footer.html"
+        };
       });

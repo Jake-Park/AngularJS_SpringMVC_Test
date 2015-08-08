@@ -5,8 +5,7 @@ window.mobilecheck = function() {
   return check;
 }
 
-var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
-  
+var app = angular.module('Admin', ['ngRoute', 'ngCookies']);  
  
     app.config(function($routeProvider) {
 	  $routeProvider.when('/login',
@@ -80,6 +79,7 @@ var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
   	    if($routeParams.id) {
   	    	//console.log("---" + Auth.getUser());
   	    	$cookieStore.put('userInfo', null);
+  	    	$location.path("/login");
   	    }
   	    
   	  $scope.login = function() {
