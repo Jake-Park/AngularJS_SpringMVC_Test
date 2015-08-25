@@ -16,11 +16,15 @@ var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
 	  {
 	    controller: 'ListController',
 	    templateUrl: '/view/adminInfo/adminInfoList.html'
+	  }).when('/book',
+	  {
+	    controller: 'BookController',
+	    templateUrl: '/view/book/book.html'
 	  }).when('/add',
 	  {
 	    controller: 'AddController',
 		templateUrl: '/view/adminInfo/adminInfoReg.html'
-	  }).when('/edit/:id',
+	  }).when('/edit/:id/:path',
 	  {
 		controller: 'AddController',
 		templateUrl: '/view/adminInfo/adminInfoReg.html'
@@ -72,133 +76,89 @@ var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
     	  }
     	}]);
     
-    app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore', '$routeParams', 'Auth', 
-                                       function($scope, $http, $location, $cookieStore, $routeParams, Auth) {
-    	
-    	// Logout - Delete Cookie
-  	    if($routeParams.id) {
-  	    	//console.log("---" + Auth.getUser());
-  	    	$cookieStore.put('userInfo', null);
-  	    	$location.path("/login");
-  	    }
-  	    
-  	  $scope.login = function() {
-  			//		
-  			var dataObj = {
-  					email : $scope.email,
-  					password : $scope.password
-  			};	
-
-  			var res = $http.post('/adminInfo/loginForm', dataObj);			
-  			res.success(function(data, status, headers, config) {
-  				
-  				if(data) {
-  					Auth.setUser(data); //Update the state of the user in the app
-  					//window.location.replace("/view/index.html");
-  					$location.path("/list");
-  				}				
-  			});
-  			res.error(function(data, status, headers, config) {
-  				console.log( "failure message: " + JSON.stringify({data: data}));
-  			});		
-  			// Making the fields empty
-  			//
-  			$scope.email='';
-  			$scope.password='';
-  	    };  	    
-
-  	  }]);    
-    
-	
-	app.controller('ListController', ['$scope', '$http', '$location', 'PaginatonService', function($scope, $http, $location, PaginatonService) {
+	app.controller('BookController', ['$scope', '$http', '$location', '$filter', 'Auth', 
+	    function($scope, $http, $location, $filter, Auth) {
 	    $scope.lists = [];
+	    $scope.bookList = [];
+	    $scope.dates = [];
 	    
-	    $scope.getList = function(pageIndex) {//
-	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);		    	
+	    $scope.getDate = function() {//
+	    	var today = new Date();
+	    	$scope.dates = [
+	    			$filter('date')(today, 'yyyy-MM-dd EEE'),
+	    			$filter('date')(today.setDate(today.getDate() + 1), 'yyyy-MM-dd EEE'),
+	    			$filter('date')(today.setDate(today.getDate() + 1), 'yyyy-MM-dd EEE'),
+	    			$filter('date')(today.setDate(today.getDate() + 1), 'yyyy-MM-dd EEE'),
+	    	];
 	    	
-			var dataObj = {
-				pageIndex : pageIndex
-			};	
-			
-			// get Member List
-			var res = $http.post('/adminInfo/adminInfoList', dataObj);			
-			res.success(function(data, status, headers, config) {
-				$scope.lists = data;
-			});
-			res.error(function(data, status, headers, config) {
-				console.log( "failure message: " + JSON.stringify({data: data}));
-			});
-			
-			// get Total Count
-			res = $http.post('/adminInfo/adminInfoTotal', dataObj);
-			res.success(function(data, status, headers, config) {
-				//console.log("Total : " + data);
-				$scope.lists = data;				
-			});
-			res.error(function(data, status, headers, config) {
-				console.log( "failure message: " + JSON.stringify({data: data}));
-			});
-			
-			$scope.pagination.setCurrent(pageIndex);
-			//console.log($scope.pagination.current() + "current : ");		    	
-	    	
-	    };
-	    
-		$scope.pagination = PaginatonService.Pagination(10);
-		
-		$scope.deleteRecord = function(id) {//
-			if(confirm('Will you delete this?')) {
-				console.log(id);
-				var res = $http.get('/adminInfo/deleteAdminInfo/' + id);
-				res.success(function(data, status, headers, config) {
-					console.log(data);	
-					$scope.lists = [];
-					$scope.getList($scope.pagination.current());
-				});
-				res.error(function(data, status, headers, config) {
-					console.log( "failure message: " + JSON.stringify({data: data}));
-				});
-			}
-		};
-  }]);	
-	
-	app.controller('AddController', ['$scope', '$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams) {
-		$scope.title = "Add";
-		
-	  $scope.add = function() {
- 			var dataObj = {
-					email : $scope.email,
-					password : $scope.password,
-					name : $scope.name,
-					mobileNumber : $scope.mobileNumber,					
-			};	
- 			console.log(dataObj);
- 			
- 			
-			var res = $http.post('/adminInfo/add/' + $scope.title + '/' + $routeParams.id, dataObj);			
+	    	var dataObj = {
+	    		userId : Auth.getUser().email
+	    	};
+	    		    	
+			var res = $http.post('/book/all', dataObj);
 			res.success(function(data, status, headers, config) {
 				console.log(data);
-				$location.path('/login');
+				$scope.bookList = data;
+				
+		    	var index = 0;
+		    	for(var i=0; i < 24; i++) {
+		    		for(var j=0; j < 60; j+=30) {
+		    			var time = pad(i.toString(), 2, '0', 1) + ":" + pad(j.toString(), 2, '0', 1);
+		    			
+		    			$scope.lists[index++] = {
+		    					'time' : time,
+		    					'first' : getCount($scope.dates[0], $scope.bookList, time),
+		    					'firstDate' : $scope.dates[0] + "_" + time,
+		    					'second' : getCount($scope.dates[1], $scope.bookList, time),
+		    					'secondDate' : $scope.dates[1] + "_" + time,
+		    					'third' : getCount($scope.dates[2], $scope.bookList, time),
+		    					'thirdDate' : $scope.dates[2] + "_" + time,
+		    					'fourth' : getCount($scope.dates[3], $scope.bookList, time),
+		    					'fourthDate' : $scope.dates[3] + "_" + time
+		    			};
+		    		}
+		    	}
 			});
+
 			res.error(function(data, status, headers, config) {
 				console.log( "failure message: " + JSON.stringify({data: data}));
-			});		 
+			});
+	    	
+
+	    	//console.log($scope.lists);
 	    };
 	    
-	    // Call User Data
-	  if($routeParams.id) {
-			var res = $http.get('/adminInfo/adminInfoView/' + $routeParams.id);	
-			res.success(function(data, status, headers, config) {
-				//console.log(data);
-				$scope.email = data.email;
-				$scope.name = data.name;
-				$scope.mobileNumber = data.mobileNumber;
-				$scope.title = "Edit";
-			});
-			res.error(function(data, status, headers, config) {
-				console.log( "failure message: " + JSON.stringify({data: data}));
-			});			  
-	  }
-	}]);
+	    var getCount = function(t_date, lists, time) {
+	    	var count = 0;
+	    	var today = new Date();
+	    	var c_date = $filter('date')(today, 'yyyy-MM-dd');
+	    	var c_time = $filter('date')(today, 'HHmm');
+	    	t_date = t_date.substring(0, 10);
 
-	
+	    	c_time = parseInt(c_time);	// current time
+	    	var p_time = parseInt(time.replace(":", ""));	// parameter time
+	    	
+/*	    	console.log(c_date + ":" + t_date);
+	    	console.log(c_time + ":" + time.replace(":", "") + ":" +
+	    			(p_time - c_time));*/
+	    	
+	    	if(c_date == t_date && (c_time >= p_time
+	    			|| (p_time - c_time) < 70)) {
+	    		return "-";
+	    	}
+	    	
+			for(var i = 0; i < lists.length; i++) {
+				
+				var bookTime = (lists[i].bookTime + "").substring(0, 5);
+				
+				//console.log(t_date + "--" + lists[i].bookDate + "--" + time + "--" + bookTime);
+				
+				if(t_date == lists[i].bookDate
+						&& time == bookTime) {
+					count++;					
+				}
+			}
+			
+			return count;
+		};
+  }]);	    

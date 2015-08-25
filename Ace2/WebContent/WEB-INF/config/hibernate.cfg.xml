@@ -8,7 +8,7 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost/test</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.password">sd1377</property>
         <!-- Connection Pool Size -->
         <property name="hibernate.connection.pool_size">5</property>
          
@@ -41,7 +41,8 @@
 <!--         <mapping resource="cart.hbm.xml" />
         <mapping resource="item.hbm.xml" />	 -->
         <mapping class="com.ace.model.AdminInfoVO"/>
-        <mapping class="com.ace.model.PageVO"/>    
+        <mapping class="com.ace.model.PageVO"/>
+        <mapping class="com.ace.model.BookInfo"/> 
 <!--         <mapping resource="named-queries.hbm.xml" />    --> 
     </session-factory>
 </hibernate-configuration>

@@ -43,7 +43,7 @@
         <property name="url"
             value="jdbc:mysql://localhost/ace" />
         <property name="username" value="root" />
-        <property name="password" value="" />
+        <property name="password" value="sd1377" />
     </bean>
     
     <!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
@@ -61,6 +61,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.ace.model.AdminInfo</value>
+                <value>com.ace.model.BookInfo</value>
             </list>
         </property> 
         <property name="hibernateProperties">
@@ -118,6 +119,14 @@
         <property name="prefixJson" value="false"/>
         <property name="supportedMediaTypes" value="application/json"/>
     </bean>
+    
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="messageConverters">
+	        <list>
+	            <ref bean="jsonConverter"/>
+	        </list>
+	    </property>
+	</bean>    
 	
 
      <!-- import configFile  -->     

@@ -18,10 +18,11 @@
 	   	</ul> -->
 	      <ul class='nav navbar-nav navbar-right collapse navbar-collapse'>
 	      	<li ng-class="{ 'active': location.path() === '/list' || location.path().indexOf('edit') > 0 }"><a href="#list">List</a></li>        
+	      	<li ng-class="{ 'active': location.path() === '/book' }"><a href="#book">Book</a></li>
 	        <li>	        
 	          <a href="about.html" data-target='#' data-toggle="dropdown">{{Auth.getUser().name}} <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <li><a href="#edit/{{Auth.getUser().id}}">Edit Profile</a></li>
+	            <li><a href="#edit/{{Auth.getUser().id}}/login">Edit Profile</a></li>
 	            <li class="divider"></li>
 	            <li><a href="#logout/{{Auth.getUser().email}}">LogOut</a></li>
 	          </ul>
