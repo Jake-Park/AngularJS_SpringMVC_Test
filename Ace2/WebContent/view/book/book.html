@@ -1,0 +1,49 @@
+
+
+
+   <div ng-controller="BookController" ng-init="getDate()" class="content col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+     <h1 class="page-header">Book List</h1>
+
+     <div class="table-responsive">
+       <table class="table table-striped">
+         <thead>
+           <tr>
+             <th class="col-sm-2 text-center">#</th>
+             <th class="col-sm-2 text-center">{{dates[0]}}</th>
+             <th class="col-sm-2 text-center">{{dates[1]}}</th>
+             <th class="col-sm-2 text-center">{{dates[2]}}</th>
+             <th class="col-sm-2 text-center">{{dates[3]}}</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr ng-repeat="list in lists">
+             <td class="text-center">{{list.time}}</td>
+             <td class="text-center">
+             	<div ng-if="list.first != '0' && list.first != '-'">
+             		<a href="#bookDetail/{{list.firstDate}}" >{{list.first}}</a>
+             	</div>
+             	<div ng-if="list.first == '0' || list.first == '-'">{{list.first}}</div>
+             </td>
+             <td class="text-center">
+             	<div ng-if="list.second != '0' && list.second != '-'">
+             		<a href="#bookDetail/{{list.secondDate}}" >{{list.second}}</a>
+             	</div>
+             	<div ng-if="list.second == '0' || list.second == '-'">{{list.second}}</div>             	
+             </td>
+             <td class="text-center">
+             	<div ng-if="list.third != '0' && list.third != '-'">
+             		<a href="#bookDetail/{{list.thirdDate}}" >{{list.third}}</a>
+             	</div>
+             	<div ng-if="list.third == '0' || list.third == '-'">{{list.third}}</div>                	
+             </td>
+             <td class="text-center">
+             	<div ng-if="list.fourth != '0' && list.fourth != '-'">
+             		<a href="#bookDetail/{{list.fourthDate}}" >{{list.fourth}}</a>
+             	</div>
+             	<div ng-if="list.fourth == '0' || list.fourth == '-'">{{list.fourth}}</div>                 	
+             </td>
+           </tr>
+         </tbody>
+       </table>
+     </div>
+   </div>
