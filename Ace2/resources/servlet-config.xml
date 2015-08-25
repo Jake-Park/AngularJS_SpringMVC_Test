@@ -14,11 +14,11 @@
         <property name="adminInfoDao" ref="adminInfoDao"></property>
     </bean>
     
-<!--     <bean id="memberAdminDao" class="com.ace.dao.impl.MemberAdminDaoImpl">
+    <bean id="bookDao" class="com.ace.dao.impl.BookDaoImpl">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>	
-    <bean id="memberAdminService" class="com.ace.service.impl.MemberAdminServiceImpl">
-        <property name="memberAdminDao" ref="memberAdminDao"></property>
-    </bean>     -->
+    <bean id="bookService" class="com.ace.service.impl.BookServiceImpl">
+        <property name="bookDao" ref="bookDao"></property>
+    </bean>
 	
 </beans>
