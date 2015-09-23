@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ace.model.BookInfo;
+import com.ace.model.TeacherInfo;
 import com.ace.service.BookService;
 
 @Lazy(value=true)
@@ -30,4 +31,9 @@ public class BookController {
 		
 		return bookService.selectBookInfoAll(param);
 	}
+	
+	@RequestMapping(value="/getAvailTeacherList", method=RequestMethod.POST) 
+	public @ResponseBody List<TeacherInfo> getAvailTeacherList(@RequestBody BookInfo bookInfo) throws Exception {		
+		return bookService.getAvailTeacherList(bookInfo);
+	}	
 }

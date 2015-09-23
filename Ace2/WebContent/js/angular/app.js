@@ -6,6 +6,10 @@ window.mobilecheck = function() {
 }
 
 var app = angular.module('Admin', ['ngRoute', 'ngCookies']);  
+
+app.config(function($compileProvider){
+	  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|javascript):/);
+	});
  
     app.config(function($routeProvider) {
 	  $routeProvider.when('/login',
@@ -76,6 +80,22 @@ var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
     	  }
     	}]);
     
+    app.factory('Layer', ['$http',  function($http) {
+    	return{
+    		getDataList : function(datetime) {
+    			var dataObj = {
+					bookDate : datetime.split("_")[0],
+					bookTime : datetime.split("_")[1]
+				};
+    			
+				var res = $http.post('/book/getAvailTeacherList', dataObj);
+
+				
+				return res;
+    	    }
+    	  }
+    }]);    
+    
 	app.controller('BookController', ['$scope', '$http', '$location', '$filter', 'Auth', 
 	    function($scope, $http, $location, $filter, Auth) {
 	    $scope.lists = [];
@@ -108,13 +128,13 @@ var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
 		    			$scope.lists[index++] = {
 		    					'time' : time,
 		    					'first' : getCount($scope.dates[0], $scope.bookList, time),
-		    					'firstDate' : $scope.dates[0] + "_" + time,
+		    					'firstDate' : ($scope.dates[0]).split(" ")[0] + "_" + time,
 		    					'second' : getCount($scope.dates[1], $scope.bookList, time),
-		    					'secondDate' : $scope.dates[1] + "_" + time,
+		    					'secondDate' : ($scope.dates[1]).split(" ")[0] + "_" + time,
 		    					'third' : getCount($scope.dates[2], $scope.bookList, time),
-		    					'thirdDate' : $scope.dates[2] + "_" + time,
+		    					'thirdDate' : ($scope.dates[2]).split(" ")[0] + "_" + time,
 		    					'fourth' : getCount($scope.dates[3], $scope.bookList, time),
-		    					'fourthDate' : $scope.dates[3] + "_" + time
+		    					'fourthDate' : ($scope.dates[3]).split(" ")[0] + "_" + time
 		    			};
 		    		}
 		    	}
@@ -159,6 +179,6 @@ var app = angular.module('Admin', ['ngRoute', 'ngCookies']);
 				}
 			}
 			
-			return count;
+			return count > 0 ? (count == 1 ? count + " opening" : count + " openings") : count;
 		};
   }]);	    

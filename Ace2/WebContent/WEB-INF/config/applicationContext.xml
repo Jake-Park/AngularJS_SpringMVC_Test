@@ -62,6 +62,7 @@
             <list>
                 <value>com.ace.model.AdminInfo</value>
                 <value>com.ace.model.BookInfo</value>
+                <value>com.ace.model.TeacherInfo</value>
             </list>
         </property> 
         <property name="hibernateProperties">

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ace.dao.BookDao;
 import com.ace.model.BookInfo;
+import com.ace.model.TeacherInfo;
 import com.ace.service.BookService;
 
 public class BookServiceImpl implements BookService {
@@ -20,4 +21,9 @@ public class BookServiceImpl implements BookService {
 	public List<BookInfo> selectBookInfoAll(Map<String, Object> vo) throws Exception {
 		return bookDao.selectBookInfoAll(vo);
 	}
+	
+	@Transactional
+	public List<TeacherInfo> getAvailTeacherList(BookInfo vo) throws Exception {
+		return bookDao.getAvailTeacherList(vo);
+	}	
 }

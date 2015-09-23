@@ -42,7 +42,8 @@
         <mapping resource="item.hbm.xml" />	 -->
         <mapping class="com.ace.model.AdminInfoVO"/>
         <mapping class="com.ace.model.PageVO"/>
-        <mapping class="com.ace.model.BookInfo"/> 
+        <mapping class="com.ace.model.BookInfo"/>
+        <mapping class="com.ace.model.TeacherInfo"/>        
 <!--         <mapping resource="named-queries.hbm.xml" />    --> 
     </session-factory>
 </hibernate-configuration>

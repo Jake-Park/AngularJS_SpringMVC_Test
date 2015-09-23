@@ -3,7 +3,6 @@ var STR_PAD_RIGHT = 2;
 var STR_PAD_BOTH = 3;
 
 function pad(str, len, pad, dir) {
-
     if (typeof(len) == "undefined") { var len = 0; }
     if (typeof(pad) == "undefined") { var pad = ' '; }
     if (typeof(dir) == "undefined") { var dir = STR_PAD_RIGHT; }
@@ -31,5 +30,5 @@ function pad(str, len, pad, dir) {
     }
 
     return str;
-
 }
+

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ace.dao.BookDao;
 import com.ace.model.BookInfo;
+import com.ace.model.TeacherInfo;
 
 @Repository("bookDao")
 public class BookDaoImpl implements BookDao {
@@ -36,4 +37,21 @@ public class BookDaoImpl implements BookDao {
 		return results;
 	}
 
+	@Override
+	public List<TeacherInfo> getAvailTeacherList(BookInfo vo) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		//List<AdminInfo> AdminInfoList = session.createQuery("from AdminInfo").list();
+		
+		String hql = "SELECT a FROM TeacherInfo a inner join a.bookInfos b with b.bookDate = :bookDate AND b.bookTime = :bookTime ";
+        Query query = session.createQuery(hql);
+        query.setString("bookDate", vo.getBookDate());
+        query.setString("bookTime", vo.getBookTime());
+        List<TeacherInfo> results = query.list();
+		
+		for(TeacherInfo p : results) {
+			System.out.println("BookInfo List : " + p);
+		}
+        
+		return results;
+	}
 }
