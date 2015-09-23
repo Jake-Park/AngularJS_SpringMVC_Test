@@ -20,5 +20,9 @@
     <bean id="bookService" class="com.ace.service.impl.BookServiceImpl">
         <property name="bookDao" ref="bookDao"></property>
     </bean>
+    
+    <bean id="adminCommon" class="com.ace.utils.AdminCommon">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	    
 	
 </beans>

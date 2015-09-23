@@ -31,7 +31,7 @@ public class BookDaoImpl implements BookDao {
         List<BookInfo> results = query.list();
 		
 		for(BookInfo p : results) {
-			System.out.println("BookInfo List : " + p);
+			System.out.println("BookInfo List : " + p.getId());
 		}
         
 		return results;
@@ -49,7 +49,7 @@ public class BookDaoImpl implements BookDao {
         List<TeacherInfo> results = query.list();
 		
 		for(TeacherInfo p : results) {
-			System.out.println("BookInfo List : " + p);
+			System.out.println("BookInfo List : " + p.getName());
 		}
         
 		return results;

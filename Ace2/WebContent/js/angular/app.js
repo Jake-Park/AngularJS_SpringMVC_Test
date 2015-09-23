@@ -89,7 +89,6 @@ app.config(function($compileProvider){
 				};
     			
 				var res = $http.post('/book/getAvailTeacherList', dataObj);
-
 				
 				return res;
     	    }
@@ -117,7 +116,7 @@ app.config(function($compileProvider){
 	    		    	
 			var res = $http.post('/book/all', dataObj);
 			res.success(function(data, status, headers, config) {
-				console.log(data);
+				//console.log(data);
 				$scope.bookList = data;
 				
 		    	var index = 0;

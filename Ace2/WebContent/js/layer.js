@@ -1,13 +1,13 @@
-var openLayer = function (datetime) {
-    getData(datetime);    
-   
+var openLayer = function (datetime) {	
+    getData(datetime);  
 }
 
 var getData = function (datetime) {
 	var res = angular.element($("[ng-controller='BookController']")).injector().get('Layer').getDataList(datetime);
 	
 	res.success(function(data) {
-		writeLayer(data[0], datetime);
+		console.log(data);
+		writeLayer(data, datetime);
 	});
 	
 	res.error(function(data) {
@@ -17,36 +17,36 @@ var getData = function (datetime) {
 
 var writeLayer = function(helpObj, datetime) {
     var contentLength = 0;
+    
 
     var layerHtml = '<div id="floatdiv" class="container-fluid" style=" ' +
     'position:absolute;  ' +
-    'width:400px; height:auto; overflow-y: auto; ' +
+    'width:600px; height:auto; overflow-y: auto; ' +
     'padding:16px;background: #F1F1F1;  ' +
     'border: 4px solid #dbdbdb; border-radius: 4px; padding-top: 0;  ' +
     'z-index:999; display: none;">  ' +
     '';//<div style="background-color: #2c3c4d;">
 
-    //helpObj.help[0].content += "The PACF gives the partial correlation of a time series with its own lagged values, controlling for the values of the time series at all shorter lags. It contrasts with the autocorrelation function, which does not control for other lags.";
-
-    //for (var i = 0; i < indexArr.length; i++) {
-        layerHtml += '<div class="row" style="border-bottom: 1px solid !important;background-color: #F1F1F1;">' +
-        	'<div class="col-sm-10" style="display:inline;"><h2>Available Teacher</h2></div>' + 
-        	'<div class="col-sm-2"><span style=\'cursor: pointer;margin-top:20px; border-\' class=\'pull-right\' onclick="javascript:hideHelp();">X</span></div>' +
-        '</div>' +
-        '<div class="row"><div class="col-sm-4"><img src="' + helpObj.imageUrl + '" style="margin-top: 10px;"/><br/><br>' + 
-        	'<input type="button" class="btn btn-info pull-center" value="Book" ng-click="location.path(\'/addBook\')" /></div>' + 
+    layerHtml += '<div class="row" style="background-color: #F1F1F1;">' +
+	'<div class="col-sm-10" style="display:inline;"><h2>Available Teacher</h2></div>' + 
+	'<div class="col-sm-2"><span style=\'cursor: pointer;margin-top:20px; border-\' class=\'pull-right\' onclick="javascript:hideHelp();">X</span></div>' +
+	'</div>';
+    
+    for (var i = 0; i < helpObj.length; i++) {
+        layerHtml += '<div class="row" style="border-top: 1px solid !important;"><div class="col-sm-4"><img src="' + helpObj[i].imageUrl + '" style="margin-top: 10px;"/><br>' + 
+        	'<input type="button" class="btn btn-info pull-center" value="Book" style="margin:5px;" /></div>' +// ng-click="location.path(\'/addBook\')" 
         	'<div class="col-sm-8"><h3>';
-        layerHtml += helpObj.name;
+        layerHtml += helpObj[i].name;
         //if (i == 0) {
             layerHtml += ''
         //}
         layerHtml += '        </h3><p class="center">';
-        layerHtml += helpObj.aboutme;
-        contentLength += (helpObj.aboutme).length;
+        layerHtml += helpObj[i].aboutme;
+        contentLength += (helpObj[i].aboutme).length;
         layerHtml += '        </p>' +
         '        </div>' +
         '    </div>';
-    //}
+    }
 
     layerHtml += '</div>' +
     '';//</div> 
@@ -86,6 +86,7 @@ var writeLayer = function(helpObj, datetime) {
 };
 
 var hideHelp = function () {
+	$('#layer').text("");
     $('#floatdiv').toggle(400);
 };
 
