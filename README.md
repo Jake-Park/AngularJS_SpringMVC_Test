@@ -1,5 +1,5 @@
 # Jake's Personal Project for portfolio
-- Simple CRUD Web Application
+- Simple CRUD and an online education Web Application 
 - Fucntions : User (Login, Logout, Register, Edit, Delete)
 	Book(Add book, Dashboard)
 - Responsive web application
