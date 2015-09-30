@@ -24,5 +24,11 @@
     <bean id="adminCommon" class="com.ace.utils.AdminCommon">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>	    
-	
+
+    <bean id="dashboardDao" class="com.ace.dao.impl.DashboardDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="dashboardService" class="com.ace.service.impl.DashboardServiceImpl">
+        <property name="dashboardDao" ref="dashboardDao"></property>
+    </bean>	
 </beans>

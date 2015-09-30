@@ -19,9 +19,9 @@ var writeLayer = function(helpObj, datetime) {
     var contentLength = 0;
     
 
-    var layerHtml = '<div id="floatdiv" class="container-fluid" style=" ' +
+    var layerHtml = '<div id="floatdiv" class="container-fluid layer_width" style=" ' +
     'position:absolute;  ' +
-    'width:600px; height:auto; overflow-y: auto; ' +
+    'height:auto; overflow-y: auto; ' +
     'padding:16px;background: #F1F1F1;  ' +
     'border: 4px solid #dbdbdb; border-radius: 4px; padding-top: 0;  ' +
     'z-index:999; display: none;">  ' +
@@ -68,10 +68,10 @@ var writeLayer = function(helpObj, datetime) {
     }
 
     var thisObj = $("a[href*='" + datetime + "']");
-    $('#floatdiv').css('width', (500 + addWidth));
+    //$('#floatdiv').css('width', (500 + addWidth));
 
     var layerWidth = parseFloat(($('#floatdiv').css('width')).replace('px', ''));
-    //console.log(thisObj.offset().top + ":" + thisObj.offset().left);
+    console.log(layerWidth + ":");
 
 
 /*    if (cate == "login") {

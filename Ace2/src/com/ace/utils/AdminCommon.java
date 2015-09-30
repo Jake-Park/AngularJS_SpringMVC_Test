@@ -1,12 +1,15 @@
 package com.ace.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,12 +19,13 @@ import com.ace.model.AdminInfo;
 import com.ace.model.BookInfo;
 import com.ace.model.PageVO;
 
-
 @Component
 public class AdminCommon {
 	public final static String ADMIN_KEY = "adminInfo";	
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");    	
 	private SessionFactory sessionFactory;
+	private int lastTeacherId = 1;
+	private String lastMinute = "";
 	
 	public void setSessionFactory(SessionFactory sf) {
 		this.sessionFactory = sf;
@@ -62,24 +66,38 @@ public class AdminCommon {
     	
     	SimpleDateFormat hourFormat = new SimpleDateFormat("HH");
     	SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
-    	int minInt = StringUtil.zeroConvert(minuteFormat.format(date));
+    	int minInt = StringUtil.zeroConvert(minuteFormat.format(date));    	
     	String bookTime = minInt < 30 ? "00" : "30";
+    	if(this.lastTeacherId == 1 && (this.lastMinute).equals(bookTime)) {
+    		return;
+    	}
+    	this.lastMinute = bookTime;
     	bookTime = hourFormat.format(date) + ":" + bookTime + ":00";
     	
     	BookInfo bookInfo = new BookInfo();
     	bookInfo.setBookDate(dateFormat.format(date));
     	bookInfo.setBookTime(bookTime);
-    	bookInfo.setTeacherId(String.valueOf(randInt));
+    	bookInfo.setTeacherId(String.valueOf(this.lastTeacherId));
     	
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		session.save(bookInfo);
-		session.getTransaction().commit();
+		String hql = "FROM BookInfo a WHERE a.bookDate = :bookDate AND a.bookTime = :bookTime AND a.teacherId = :teacherId ";
+        Query query = session.createQuery(hql);
+        query.setString("bookDate", bookInfo.getBookDate());
+        query.setString("bookTime", bookInfo.getBookTime());
+        query.setString("teacherId", bookInfo.getTeacherId());
+        
+        List<BookInfo> result = query.list();
+        
+        if(result.size() == 0) {
+        	session.beginTransaction();
+        	session.save(bookInfo);
+        	session.getTransaction().commit();
+        }
 		session.close();
-		
     	
         System.out.println("Insert Info : date > " + dateFormat.format(date));
         System.out.println("Insert Info : time > " + bookTime);
-        System.out.println("Insert Info : teacher id > " + randInt);
+        System.out.println("Insert Info : teacher id > " + lastTeacherId);
+        this.lastTeacherId = this.lastTeacherId >= 3 ? 1 : this.lastTeacherId + 1;
     }
 }

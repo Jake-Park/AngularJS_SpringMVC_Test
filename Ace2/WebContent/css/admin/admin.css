@@ -78,3 +78,22 @@ html.no-touch footer {
 .footer .glyphicon {
   font-size: 14px;
 }
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .layer_width {width: 95%;}
+}
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    .layer_width {width: 40%;}
+}
+
+.fieldset {
+	border: 0px solid #C0C0C0;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle !important;
+    float: none;
+}

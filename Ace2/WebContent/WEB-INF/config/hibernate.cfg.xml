@@ -29,21 +29,14 @@
          -->        
         
          <!-- enable second level cache and query cache -->
-<!--          <property name="hibernate.cache.use_second_level_cache">true</property>
-         <property name="hibernate.cache.use_query_cache">true</property>
+         <!-- <property name="hibernate.cache.use_second_level_cache">true</property> -->
+<!--         <property name="hibernate.cache.use_query_cache">true</property>
          <property name="net.sf.ehcache.configurationResourceName">/myehcache.xml</property> -->
  
  
         <!-- mapping file, we can use Bean annotations too -->
-        <!-- <mapping resource="employee.hbm.xml" /> -->
-<!--         <mapping resource="txn.hbm.xml"/> 
-		<mapping resource="customer.hbm.xml"/> -->
-<!--         <mapping resource="cart.hbm.xml" />
-        <mapping resource="item.hbm.xml" />	 -->
-        <mapping class="com.ace.model.AdminInfoVO"/>
-        <mapping class="com.ace.model.PageVO"/>
+        <mapping class="com.ace.model.AdminInfo"/>
         <mapping class="com.ace.model.BookInfo"/>
         <mapping class="com.ace.model.TeacherInfo"/>        
-<!--         <mapping resource="named-queries.hbm.xml" />    --> 
     </session-factory>
 </hibernate-configuration>

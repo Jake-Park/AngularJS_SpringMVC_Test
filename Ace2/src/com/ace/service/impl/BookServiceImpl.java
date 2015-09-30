@@ -26,4 +26,10 @@ public class BookServiceImpl implements BookService {
 	public List<TeacherInfo> getAvailTeacherList(BookInfo vo) throws Exception {
 		return bookDao.getAvailTeacherList(vo);
 	}	
+	
+	@Transactional
+	public BookInfo addBook(BookInfo vo) throws Exception {
+		return bookDao.addBook(vo);
+	}
+
 }

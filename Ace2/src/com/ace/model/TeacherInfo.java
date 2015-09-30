@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 @Entity
 @Table(name="TEACHERINFO")
@@ -123,11 +124,13 @@ public class TeacherInfo {
 	public String toString() {
 		return "TeacherInfo [id=" + id + ", name=" + name + ", university="
 				+ university + ", major=" + major + ", experienceYears="
-				+ experienceYears + ", aboutme=" + aboutme + ", videoUrl="
-				+ videoUrl + ", experience=" + experience + ", interest="
-				+ interest + ", createdDate=" + createdDate + ", modifiedDate="
-				+ modifiedDate + "]";
+				+ experienceYears + ", aboutme=" + aboutme + ", imageUrl="
+				+ imageUrl + ", videoUrl=" + videoUrl + ", experience="
+				+ experience + ", interest=" + interest + ", createdDate="
+				+ createdDate + ", modifiedDate=" + modifiedDate
+				+ ", bookInfos=" + bookInfos + "]";
 	}
+
 	
 	
 }
