@@ -1,0 +1,382 @@
+Messages
+1	trnCategory (1 : createJob, 2 : statusUpdate, 3 : exportJobs)
+100 P      <element name="txId" type="xsd:string" />
+B          <element name="success" type="xsd:boolean" />
+DT	createdDate
+DT	lastRetryDate
+
+
+Result
+B          <element name="success" type="xsd:boolean" />
+100 P      <element name="txId" type="xsd:string" />
+50         <element name="errorCode" type="xsd:integer" />
+255        <element name="errorMsg" type="xsd:string" />
+DT	createdDate
+
+50 F    <element name="jobId" type="xsd:string"/>
+I9 F    <element name="phaseId" type="xsd:integer" minOccurs="0" />
+50 F    <element name="techId" type="xsd:string" minOccurs="0" />
+I9 F	Job_index
+
+Job
+I9 P	index
+50 P       <element name="jobId" type="xsd:string"/>
+I9 P         <element name="phaseId" type="xsd:integer" minOccurs="0" />
+60          <element name="employer" type="xsd:string" minOccurs="0" />
+60          <element name="subEmployer" type="xsd:string" minOccurs="0" />
+50 P         <element name="techId" type="xsd:string" minOccurs="0" />
+80          <element name="customerName" type="xsd:string" />
+50          <element name="custId" type="xsd:string" minOccurs="0"/>
+60          <element name="address1" type="xsd:string" />
+60          <element name="address2" type="xsd:string" minOccurs="0" />
+60          <element name="suburb" type="xsd:string" minOccurs="0" />
+10          <element name="postCode" type="xsd:string" minOccurs="0"/>
+30          <element name="serialNo" type="xsd:string" minOccurs="0" />
+60          <element name="contactName" type="xsd:string" minOccurs="0" />
+15          <element name="contactPhone" type="xsd:string" minOccurs="0" />
+1000          <element name="jobDesc" type="xsd:string" />
+dt          <element name="startDate" type="xsd:dateTime" minOccurs="0" />
+10          <element name="duration" type="xsd:string" minOccurs="0" />
+dt		  <element name="plannedStart" type="xsd:dateTime" minOccurs="0" />
+dt		  <element name="plannedEnd" type="xsd:dateTime" minOccurs="0" />
+255          <element name="jobType" type="xsd:string" minOccurs="0" />
+100          <element name="customerEmail" type="xsd:string" minOccurs="0" />
+B          <element name="priority" type="xsd:boolean" minOccurs="0" />
+100?          <element name="slaPriority" type="xsd:string" minOccurs="0" />
+1000          <element name="officeNote" type="xsd:string" minOccurs="0" />
+100          <element name="accountMgrEmail" type="xsd:string" minOccurs="0" />
+100          <element name="serviceMgrEmail" type="xsd:string" minOccurs="0" />
+-- 30 F          <element name="assets" type="tns:JobAsset" minOccurs="0" maxOccurs="unbounded" />
+-- 50 F          <element name="services" type="tns:JobService" minOccurs="0" maxOccurs="unbounded" />
+--100 F	txId
+
+
+JobAsset
+I9 P	index
+--100 F	txId
+50 F    <element name="jobId" type="xsd:string"/>
+I9 F    <element name="phaseId" type="xsd:integer" minOccurs="0" />
+50 F    <element name="techId" type="xsd:string" />
+
+30 P	<element name="serialNo" type="xsd:string" />
+300	<element name="description" type="xsd:string" minOccurs="0" />
+255	<element name="assetType" type="xsd:string" />
+100?	<element name="serviceLevel" type="xsd:string" minOccurs="0" />
+50	<element name="modelNumber" type="xsd:string" minOccurs="0" />
+50	<element name="location" type="xsd:string" minOccurs="0" />
+50	<element name="buildingName" type="xsd:string" minOccurs="0" />
+dt	<element name="installDate" type="xsd:dateTime" minOccurs="0" />
+50	<element name="make" type="xsd:string" minOccurs="0" />
+I9	<element name="orderId" type="xsd:integer" minOccurs="0" />
+1000	<element name="notes" type="xsd:string" minOccurs="0" />
+B	<element name="isMandatory" type="xsd:boolean" minOccurs="0" />
+
+I9 F	Job_index
+
+
+JobService
+I9 P	index
+--100 F	txId
+50 F       <element name="jobId" type="xsd:string"/>
+I9 F        <element name="phaseId" type="xsd:integer" minOccurs="0" />
+50 F         <element name="techId" type="xsd:string" />
+
+50 P	<element name="serviceId" type="xsd:string" />
+50	<element name="serviceName" type="xsd:string" />
+255	<element name="serviceDescription" type="xsd:string" />
+50	<element name="serviceType" type="xsd:string" />
+I9	<element name="serviceOrderId" type="xsd:integer" />
+
+I9 F	Job_index
+
+-----------------------------------------------------------
+
+ResultExportStatusUpdates
+B          <element name="success" type="xsd:boolean" />
+50          <element name="errorCode" type="xsd:integer" />
+255          <element name="errorMsg" type="xsd:string" />
+100 P          <element name="txId" type="xsd:string" />
+-- I9 F          <element name="eStatusUpdate" type="tns:EStatus" minOccurs="0" maxOccurs="unbounded" />
+DT	CreateDate
+
+
+EStatus
+I9 P	index
+100 F	txId
+50 P         <element name="jobId" type="xsd:string" />
+I9 P         <element name="phaseId" type="xsd:integer" />
+50 P         <element name="techId" type="xsd:string" />
+I3 P         <element name="statusId" type="xsd:integer" />
+10          <element name="statusDate" type="xsd:string" />
+5          <element name="statusTime" type="xsd:string" />
+50          <element name="rejectReason" type="xsd:string" />
+255          <element name="statusDesc" type="xsd:string" />
+
+-----------------------------------------------------------
+
+ResultExportJobs
+B          <element name="success" type="xsd:boolean" />
+50          <element name="errorCode" type="xsd:integer" />
+255          <element name="errorMsg" type="xsd:string" />
+100 P          <element name="txId" type="xsd:string" />
+--I9          <element name="eJob" type="tns:EJob" minOccurs="0" maxOccurs="unbounded" />
+DT	CreateDate
+
+
+EJob
+I9 P	index
+100 F	txId
+50 P         <element name="jobId" type="xsd:string" />
+I9 P         <element name="phaseId" type="xsd:integer" />
+50 P         <element name="techId" type="xsd:string" />
+900          <element name="workDone" type="xsd:string" />
+300          <element name="workRecommend" type="xsd:string" />
+1000          <element name="comments" type="xsd:string" />
+1000          <element name="officeNotes" type="xsd:string" />
+DT          <element name="jobDatetime" type="xsd:dateTime" />
+60          <element name="signatureName" type="xsd:string" />
+I9          <element name="jobStatus" type="xsd:integer" minOccurs="0" />
+80          <element name="customerName" type="xsd:string" />
+50          <element name="custId" type="xsd:string" minOccurs="0" />
+60          <element name="address1" type="xsd:string" />
+60          <element name="address2" type="xsd:string" />
+60          <element name="suburb" type="xsd:string" />
+10          <element name="postCode" type="xsd:string" />
+60          <element name="contact" type="xsd:string" />
+15          <element name="phone" type="xsd:string" />
+1000          <element name="jobDesc" type="xsd:string" />
+DT          <element name="createDatetime" type="xsd:dateTime" minOccurs="0" />
+60          <element name="techName" type="xsd:string" />
+D9          <element name="amountOwing" type="xsd:double" minOccurs="0" />
+30          <element name="serialNo" type="xsd:string" />
+255          <element name="jobType" type="xsd:string" />
+100          <element name="email" type="xsd:string" />
+B          <element name="firstOhsCompleted" type="xsd:boolean" />
+100          <element name="accountMgrEmail" type="xsd:string" />
+100          <element name="serviceMgrEmail" type="xsd:string" />
+I9 F          <element name="eOhs" type="tns:EOhs" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eNewAsset" type="tns:ENewAsset" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eService" type="tns:EService" minOccurs="0" maxOccurs="unbounded" />
+          <element name="ePart" type="tns:EPart" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eSignature" type="tns:ESignature" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eChecklist" type="tns:EChecklist" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eTime" type="tns:ETime" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eAllowance" type="tns:EAllowance" minOccurs="0" maxOccurs="unbounded" />
+          <element name="ePurchaseOrder" type="tns:EPurchaseOrder" minOccurs="0" maxOccurs="unbounded" />
+          <element name="eReport" type="tns:EReport" minOccurs="0" maxOccurs="unbounded" />
+50          <element name="paymentOption" type="xsd:string" minOccurs="0" />
+15          <element name="cardType" type="xsd:string" minOccurs="0" />
+20          <element name="cardNo" type="xsd:string" minOccurs="0" />
+15          <element name="cardExpiry" type="xsd:string" minOccurs="0" />
+50          <element name="referenceNo" type="xsd:string" minOccurs="0" />
+          <element name="eAttachment" type="tns:EAttachment" minOccurs="0" maxOccurs="unbounded" />
+
+
+EOhs
+I9 P	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50          <element name="ohsType" type="xsd:string" />
+100          <element name="category" type="xsd:string" />
+10  P        <element name="questionNo" type="xsd:string" />
+I9          <element name="questionOrderNo" type="xsd:integer" minOccurs="0" />
+300          <element name="questionText" type="xsd:string" />
+10          <element name="questionAnswer" type="xsd:string" />
+1000          <element name="questionComment" type="xsd:string" />
+1000          <element name="questionRisks" type="xsd:string" />
+1000          <element name="questionHazards" type="xsd:string" />
+DT          <element name="ohsStartDate" type="xsd:dateTime" minOccurs="0" />
+
+
+EService
+I9 P	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50 P   	<element name="serviceId" type="xsd:string" />
+50     	<element name="serviceName" type="xsd:string" />
+255    	<element name="serviceDescription" type="xsd:string" />
+50     	<element name="serviceType" type="xsd:string" />
+100?   	<element name="clientId" type="xsd:string" />
+
+
+ENewAsset
+I9 P	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+30  P        <element name="serialNo" type="xsd:string" />
+300          <element name="serialDesc" type="xsd:string" />
+100?          <element name="serviceLevel" type="xsd:string" />
+50          <element name="modelNumber" type="xsd:string" />
+50          <element name="assetType" type="xsd:string" />
+50          <element name="location" type="xsd:string" />
+50          <element name="buildingName" type="xsd:string" />
+DT          <element name="installDate" type="xsd:dateTime" minOccurs="0" />
+50          <element name="make" type="xsd:string" />
+50          <element name="assetStatus" type="xsd:string" />
+1000          <element name="notes" type="xsd:string" />
+B          <element name="fieldCreated" type="xsd:boolean" />
+B          <element name="isMandatory" type="xsd:boolean" minOccurs="0" />
+DT		  <element name="finalisedDT" type="xsd:dateTime" minOccurs="0" />
+
+
+EPart
+I9 P	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50 P         <element name="partId" type="xsd:string" />
+60          <element name="partDesc" type="xsd:string" />
+D9          <element name="partQty" type="xsd:double" />
+D9          <element name="unitPrice" type="xsd:string" minOccurs="0" />
+50          <element name="poNumber" type="xsd:string" />
+DT          <element name="createDatetime" type="xsd:dateTime" minOccurs="0" />
+50          <element name="invLocId" type="xsd:string" />
+
+
+EAllowance
+I9 P	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50          <element name="allowanceType" type="xsd:string" />
+255          <element name="allowanceDesc" type="xsd:string" />
+50          <element name="allowanceUom" type="xsd:string" />
+D9          <element name="allowanceValue" type="xsd:double" />
+DT          <element name="createDatetime" type="xsd:dateTime" minOccurs="0" />
+I9 P         <element name="allowanceID" type="xsd:string" />
+
+
+EPurchaseOrder
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50 P         <element name="poNumber" type="xsd:string" />
+50          <element name="poDesc" type="xsd:string" />
+D9          <element name="poValue" type="xsd:double" minOccurs="0" />
+F255          <element name="poPhoto" type="xsd:string" />
+
+
+EAttachment
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+255  P        <element name="attachmentFileName" type="xsd:string" />
+F255          <element name="attachment" type="xsd:string" />
+1000          <element name="attachmentComments" type="xsd:string" minOccurs="0" />
+
+
+EReport
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+255? P         <element name="reportName" type="xsd:string" />
+F255?          <element name="reportData" type="xsd:string" />
+
+
+ESignature
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+32000          <element name="signature" type="xsd:string" />
+100 P         <element name="signatureName" type="xsd:string" />
+50          <element name="signatureType" type="xsd:string" />
+
+
+EChecklist
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50 P         <element name="checklistId" type="xsd:string" />
+100          <element name="checklistText" type="xsd:string" />
+DT          <element name="dateCompleted" type="xsd:dateTime" />
+300          <element name="serialDesc" type="xsd:string" />
+--          <element name="eChecklistCategory" type="tns:EChecklistCategory" minOccurs="0" maxOccurs="unbounded" />
+
+
+EChecklistCategory
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+50 F         <element name="checklistId" type="xsd:string" />
+
+50 P         <element name="categoryId" type="xsd:string" />
+100          <element name="categoryText" type="xsd:string" />
+I9          <element name="orderId" type="xsd:string" />
+--          <element name="eChecklistItem" type="tns:EChecklistItem" minOccurs="0" maxOccurs="unbounded" />
+
+
+EChecklistItem
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+50 F         <element name="checklistId" type="xsd:string" />
+50 F         <element name="categoryId" type="xsd:string" />
+
+B          <element name="checked" type="xsd:string" />
+255          <element name="itemText" type="xsd:string" />
+10          <element name="checklistAnswer" type="xsd:string" />
+1000          <element name="checklistComment" type="xsd:string" />
+
+
+ETime
+I9 P 	index
+100 F	txId
+50 F         <element name="jobId" type="xsd:string" />
+I9 F         <element name="phaseId" type="xsd:integer" />
+50 F         <element name="techId" type="xsd:string" />
+
+50          <element name="labType" type="xsd:string" />
+D8          <element name="labQty" type="xsd:double" />
+D8          <element name="labQtyOt" type="xsd:double" />
+D8          <element name="labQtyDt" type="xsd:double" />
+D8          <element name="travelQty" type="xsd:double" minOccurs="0" />
+8          <element name="statusTime" type="xsd:string" />
+D8          <element name="normalRate" type="xsd:double" minOccurs="0" />
+D8          <element name="otRate" type="xsd:double" minOccurs="0" />
+D8          <element name="dtRate" type="xsd:double" minOccurs="0" />
+D8          <element name="travelRate" type="xsd:double" minOccurs="0" />
+50          <element name="fieldWorker" type="xsd:string" />
+DT          <element name="endDatetime" type="xsd:dateTime" minOccurs="0" />
+DT          <element name="startDatetime" type="xsd:dateTime" minOccurs="0" />
+50          <element name="apprenticeId" type="xsd:string" minOccurs="0" />
+
+
+?? StatusUpdate
+50          <element name="timeout" type="xsd:string" minOccurs="0" />
+50          <element name="updatedSince" type="xsd:string" minOccurs="0" />
+B          <element name="export" type="xsd:boolean" />
+I9          <element name="max" type="xsd:integer" minOccurs="0" />
+100          <element name="transactionId" type="xsd:string" minOccurs="0" />
+I9          <element name="maxProcessingTime" type="xsd:integer" minOccurs="0" />
