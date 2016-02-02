@@ -11,104 +11,125 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
+import javax.xml.bind.annotation.XmlElement;
 
 @Entity
-@Table(name="JobService")
-public class HJobService {
+@Table(name="EService")
+public class HEService {
 	@Id
 	@Column(name="index")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
-	private int index;	
-	
+	private int index;		
+	private String txId;
+    private String jobId;
+    private BigInteger phaseId;
+    private String techId;	
+		
     private String serviceId;
     private String serviceName;
     private String serviceDescription;
     private String serviceType;
-    private BigInteger serviceOrderId;
-    
-    private String jobId;
-    private BigInteger phaseId;
-    private String techId;
-    private int job_index;
+    private String clientId;
     
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="job_index", nullable=false, insertable=false, updatable=false)
-	private HJob hJob;
-	
+	@JoinColumn(name="txId", nullable=false, insertable=false, updatable=false)
+	private HEJob hEJob;
+
 	public int getIndex() {
 		return index;
 	}
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	public String getServiceId() {
-		return serviceId;
+
+	public String getTxId() {
+		return txId;
 	}
-	public void setServiceId(String serviceId) {
-		this.serviceId = serviceId;
+
+	public void setTxId(String txId) {
+		this.txId = txId;
 	}
-	public String getServiceName() {
-		return serviceName;
-	}
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
-	public String getServiceDescription() {
-		return serviceDescription;
-	}
-	public void setServiceDescription(String serviceDescription) {
-		this.serviceDescription = serviceDescription;
-	}
-	public String getServiceType() {
-		return serviceType;
-	}
-	public void setServiceType(String serviceType) {
-		this.serviceType = serviceType;
-	}
-	public BigInteger getServiceOrderId() {
-		return serviceOrderId;
-	}
-	public void setServiceOrderId(BigInteger serviceOrderId) {
-		this.serviceOrderId = serviceOrderId;
-	}
+
 	public String getJobId() {
 		return jobId;
 	}
+
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
+
 	public BigInteger getPhaseId() {
 		return phaseId;
 	}
+
 	public void setPhaseId(BigInteger phaseId) {
 		this.phaseId = phaseId;
 	}
+
 	public String getTechId() {
 		return techId;
 	}
+
 	public void setTechId(String techId) {
 		this.techId = techId;
 	}
-	public int getJob_index() {
-		return job_index;
+
+	public String getServiceId() {
+		return serviceId;
 	}
-	public void setJob_index(int job_index) {
-		this.job_index = job_index;
+
+	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
 	}
-	public HJob gethJob() {
-		return hJob;
+
+	public String getServiceName() {
+		return serviceName;
 	}
-	public void sethJob(HJob hJob) {
-		this.hJob = hJob;
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
+
+	public String getServiceDescription() {
+		return serviceDescription;
+	}
+
+	public void setServiceDescription(String serviceDescription) {
+		this.serviceDescription = serviceDescription;
+	}
+
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public HEJob gethEJob() {
+		return hEJob;
+	}
+
+	public void sethEJob(HEJob hEJob) {
+		this.hEJob = hEJob;
+	}
+
 	@Override
 	public String toString() {
-		return "HJobService [index=" + index + ", serviceId=" + serviceId + ", serviceName=" + serviceName
-				+ ", serviceDescription=" + serviceDescription + ", serviceType=" + serviceType + ", serviceOrderId="
-				+ serviceOrderId + "]";
+		return "HEService [index=" + index + ", txId=" + txId + ", jobId=" + jobId + ", phaseId=" + phaseId
+				+ ", techId=" + techId + ", serviceId=" + serviceId + ", serviceName=" + serviceName
+				+ ", serviceDescription=" + serviceDescription + ", serviceType=" + serviceType + ", clientId="
+				+ clientId + ", hEJob=" + hEJob + "]";
 	}
-    
-    
+
+	
 }

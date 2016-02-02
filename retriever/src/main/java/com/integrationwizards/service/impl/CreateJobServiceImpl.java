@@ -1,5 +1,8 @@
 package com.integrationwizards.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -46,11 +49,20 @@ public class CreateJobServiceImpl implements CreateJobService {
 		hResult.setJobId(hJob.getJobId());
 		hResult.setPhaseId(hJob.getPhaseId());
 		hResult.setTechId(hJob.getTechId());
-		hResult.setJob_index(hJob.getIndex());
+		hResult.setJob_index(hJob.getIndex());		
 		
 		createJobDao.insertResult(hResult);
 	    
 	    return hResult;
 	}
 	
+	@Transactional
+	public HJob updateCreatJob(HJob hJob, HResult hResult) throws Exception {		
+		hJob.setSucceededToSend(hResult.getSuccess());
+		hJob.setCurrReqDate(new Date());
+		
+		createJobDao.updateCreatJob(hJob);
+		
+		return hJob;
+	}
 }

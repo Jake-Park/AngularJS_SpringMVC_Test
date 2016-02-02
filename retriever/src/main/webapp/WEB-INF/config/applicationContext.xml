@@ -52,6 +52,9 @@
                 <value>com.integrationwizards.model.HJobAsset</value>
                 <value>com.integrationwizards.model.HJobService</value>
                 <value>com.integrationwizards.model.HResult</value>
+                <value>com.integrationwizards.model.MessagesIndex</value>
+                <value>com.integrationwizards.model.HResultStatusUpdates</value>
+                <value>com.integrationwizards.model.HEStatus</value>
             </list>
         </property> 
         <property name="hibernateProperties">

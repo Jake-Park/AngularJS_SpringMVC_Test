@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.integrationwizards.common.Header;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResult;
+import com.integrationwizards.model.MessagesIndex;
 import com.integrationwizards.service.CreateJobService;
 
 import au.com.retriever.test.barking.Job;
@@ -73,5 +74,6 @@ public class CreateJobController {
 	    System.out.println("Error Msg: " + result.getErrorMsg());
 	    
 	    HResult hResult = createJobService.insertResult(result, hJob);
+	    hJob = createJobService.updateCreatJob(hJob, hResult);
 	}	
 }

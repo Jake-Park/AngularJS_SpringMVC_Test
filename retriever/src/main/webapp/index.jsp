@@ -37,7 +37,7 @@ function fn_submit() {
 	<table>
 		<tr>
 			<td>Job Id</td>
-			<td><input type="text" id="jobId" value="123"/></td>
+			<td><input type="text" id="jobId" value="1239"/></td>
 		</tr>
 		<tr>
 			<td>Tech Id</td>
@@ -57,7 +57,7 @@ function fn_submit() {
 		</tr>
 		<tr>
 			<td>Start DateTime</td>
-			<td><input type="text" id="startDate" value="2016-01-27 15:02:05"/></td>
+			<td><input type="text" id="startDate" value="2016-02-01 15:02:05"/></td>
 		</tr>		
 		<tr>
 			<td colspan="2"><a href="#" onClick="fn_submit()">submit</a></td>

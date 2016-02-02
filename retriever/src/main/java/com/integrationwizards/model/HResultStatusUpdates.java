@@ -3,16 +3,22 @@ package com.integrationwizards.model;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
-@Table(name="Result")
-public class HResult {
+@Table(name="ResultExportStatusUpdates")
+public class HResultStatusUpdates {
 	@Id
 	@Column(name="txId")
 	private String txId;
@@ -21,11 +27,9 @@ public class HResult {
 	private String errorMsg;
 	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createdDate;
-    
-    private String jobId;
-    private BigInteger phaseId;
-    private String techId;
-    private int job_index;
+	
+	@OneToMany(mappedBy = "hResultStatusUpdates", cascade = CascadeType.ALL)
+    private Set<HEStatus> eStatusUpdate = new HashSet<HEStatus>();	
     
 	public String getSuccess() {
 		return success;
@@ -57,37 +61,16 @@ public class HResult {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	public String getJobId() {
-		return jobId;
+	public Set<HEStatus> geteStatusUpdate() {
+		return eStatusUpdate;
 	}
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
+	public void seteStatusUpdate(Set<HEStatus> eStatusUpdate) {
+		this.eStatusUpdate = eStatusUpdate;
 	}
-	public BigInteger getPhaseId() {
-		return phaseId;
-	}
-	public void setPhaseId(BigInteger phaseId) {
-		this.phaseId = phaseId;
-	}
-	public String getTechId() {
-		return techId;
-	}
-	public void setTechId(String techId) {
-		this.techId = techId;
-	}
-	public int getJob_index() {
-		return job_index;
-	}
-	public void setJob_index(int job_index) {
-		this.job_index = job_index;
-	}
-
 	@Override
 	public String toString() {
-		return "HResult [txId=" + txId + ", success=" + success + ", errorCode=" + errorCode + ", errorMsg=" + errorMsg
-				+ ", createdDate=" + createdDate + ", jobId=" + jobId + ", phaseId=" + phaseId + ", techId=" + techId
-				+ ", job_index=" + job_index + "]";
+		return "HResultStatusUpdates [txId=" + txId + ", success=" + success + ", errorCode=" + errorCode
+				+ ", errorMsg=" + errorMsg + ", createdDate=" + createdDate + ", eStatusUpdate=" + eStatusUpdate + "]";
 	}
-	
 	
 }

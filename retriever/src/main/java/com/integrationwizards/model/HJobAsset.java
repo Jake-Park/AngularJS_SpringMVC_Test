@@ -44,7 +44,6 @@ public class HJobAsset {
     
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="job_index", nullable=false, insertable=false, updatable=false)
-	@JsonIgnore
 	private HJob hJob;	
     
 	public int getIndex() {

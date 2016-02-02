@@ -58,12 +58,13 @@ public class HJob {
     private String officeNote;
     private String accountMgrEmail;
     private String serviceMgrEmail;
+    private String succeededToSend;
+    private Date currReqDate;
+    
 	@OneToMany(mappedBy = "hJob", cascade = CascadeType.ALL)
-	@JsonIgnore
     private Set<HJobAsset> assets = new HashSet<HJobAsset>();
 	
 	@OneToMany(mappedBy = "hJob", cascade = CascadeType.ALL)
-	@JsonIgnore
     private Set<HJobService> services = new HashSet<HJobService>();
 
 
@@ -236,6 +237,19 @@ public class HJob {
 		this.services = services;
 	}
 	
+	
+	public String getSucceededToSend() {
+		return succeededToSend;
+	}
+	public void setSucceededToSend(String succeededToSend) {
+		this.succeededToSend = succeededToSend;
+	}
+	public Date getCurrReqDate() {
+		return currReqDate;
+	}
+	public void setCurrReqDate(Date currReqDate) {
+		this.currReqDate = currReqDate;
+	}
 	@Override
 	public String toString() {
 		return "HJob [index=" + index + ", jobId=" + jobId + ", phaseId=" + phaseId + ", employer=" + employer

@@ -13,4 +13,11 @@
     <bean id="createJobService" class="com.integrationwizards.service.impl.CreateJobServiceImpl">
     	<property name="createJobDao" ref="createJobDao"></property>
     </bean>
+    
+    <bean id="statusUpdatesDao" class="com.integrationwizards.dao.impl.StatusUpdatesDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="statusUpdatesService" class="com.integrationwizards.service.impl.StatusUpdatesServiceImpl">
+    	<property name="statusUpdatesDao" ref="statusUpdatesDao"></property>
+    </bean>    
 </beans>
