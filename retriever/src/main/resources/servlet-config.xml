@@ -20,4 +20,11 @@
     <bean id="statusUpdatesService" class="com.integrationwizards.service.impl.StatusUpdatesServiceImpl">
     	<property name="statusUpdatesDao" ref="statusUpdatesDao"></property>
     </bean>    
+    
+    <bean id="exportJobsDao" class="com.integrationwizards.dao.impl.ExportJobsDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="exportJobsService" class="com.integrationwizards.service.impl.ExportJobsServiceImpl">
+    	<property name="exportJobsDao" ref="exportJobsDao"></property>
+    </bean>    
 </beans>

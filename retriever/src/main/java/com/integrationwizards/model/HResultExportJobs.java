@@ -80,8 +80,9 @@ public class HResultExportJobs {
 	@Override
 	public String toString() {
 		return "HResultExportJobs [txId=" + txId + ", success=" + success + ", errorCode=" + errorCode + ", errorMsg="
-				+ errorMsg + ", createdDate=" + createdDate + "]";
+				+ errorMsg + ", createdDate=" + createdDate + ", eJob=" + eJob + "]";
 	}
-	
+
+
 	
 }

@@ -55,6 +55,22 @@
                 <value>com.integrationwizards.model.MessagesIndex</value>
                 <value>com.integrationwizards.model.HResultStatusUpdates</value>
                 <value>com.integrationwizards.model.HEStatus</value>
+                
+                <value>com.integrationwizards.model.HResultExportJobs</value>
+                <value>com.integrationwizards.model.HEJob</value>
+                <value>com.integrationwizards.model.HEOhs</value>
+                <value>com.integrationwizards.model.HEService</value>
+                <value>com.integrationwizards.model.HENewAsset</value>
+                <value>com.integrationwizards.model.HEPart</value>
+                <value>com.integrationwizards.model.HEAllowance</value>
+                <value>com.integrationwizards.model.HEPurchaseOrder</value>
+                <value>com.integrationwizards.model.HEAttachment</value>
+                <value>com.integrationwizards.model.HEReport</value>
+                <value>com.integrationwizards.model.HESignature</value>
+                <value>com.integrationwizards.model.HEChecklist</value>
+                <value>com.integrationwizards.model.HEChecklistCategory</value>
+                <value>com.integrationwizards.model.HEChecklistItem</value>
+                <value>com.integrationwizards.model.HETime</value>                    
             </list>
         </property> 
         <property name="hibernateProperties">

@@ -7,32 +7,34 @@ import org.springframework.stereotype.Controller;
 import com.integrationwizards.common.Header;
 import com.integrationwizards.common.LogManager;
 import com.integrationwizards.common.LogUtil;
-import com.integrationwizards.model.HResultStatusUpdates;
-import com.integrationwizards.service.StatusUpdatesService;
+import com.integrationwizards.model.HResultExportJobs;
+import com.integrationwizards.service.ExportJobsService;
 
-import au.com.retriever.test.barking.ResultExportStatusUpdates;
+import au.com.retriever.test.barking.ResultExportJobs;
 
 @Controller
-public class StatusUpdatesController {
+public class ExportJobsController {
 	@Autowired
-	private StatusUpdatesService statusUpdatesService;
+	private ExportJobsService exportJobsService;
 	@Autowired
-	private Header header;	
-	private final String category = "statusUpdates";
+	private Header header;
+	private final String category = "exportJobs";
 	
 	@Scheduled(fixedDelay = 50000)
-	public void statusUpdates() throws Exception {
+	public void exportJobs() throws Exception {
 		LogUtil lu = null;
 		
 		try {
 			lu = LogManager.getInstance().getLogObj(category);
-			lu.writeLog("Start StatusUpdates");
-			ResultExportStatusUpdates result = statusUpdatesService.sendStatusUpdates(header.getRetrieverBarking());
 			
-			lu.writeLog("Receiving data from statusUpdates");
+			lu.writeLog("Start ExportJobs");
+			ResultExportJobs result = exportJobsService.sendExportJobs(header.getRetrieverBarking());
+			
+			lu.writeLog("Receiving data from exportJobs");
 			lu.writeLog(LogUtil.objToMap(result));
 			
-			HResultStatusUpdates hResult = statusUpdatesService.insertResultStatusUpdates(result);
+			HResultExportJobs hResult = exportJobsService.insertResultExportJobs(result);
+			lu.closeFile();
 		}
 		catch(Exception e) {
 			lu.writeLog(e.getMessage());
@@ -41,5 +43,5 @@ public class StatusUpdatesController {
 			lu.closeFile();
 			LogManager.getInstance().closeLogObj(category);
 		}
-	}
+	}	
 }
