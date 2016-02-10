@@ -20,7 +20,7 @@ public class ExportJobsController {
 	private Header header;
 	private final String category = "exportJobs";
 	
-	@Scheduled(fixedDelay = 50000)
+	//@Scheduled(fixedDelay = 50000)
 	public void exportJobs() throws Exception {
 		LogUtil lu = null;
 		

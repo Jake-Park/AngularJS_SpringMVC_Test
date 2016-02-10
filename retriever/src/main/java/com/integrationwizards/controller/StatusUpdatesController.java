@@ -20,7 +20,7 @@ public class StatusUpdatesController {
 	private Header header;	
 	private final String category = "statusUpdates";
 	
-	@Scheduled(fixedDelay = 50000)
+	//@Scheduled(fixedDelay = 50000)
 	public void statusUpdates() throws Exception {
 		LogUtil lu = null;
 		
