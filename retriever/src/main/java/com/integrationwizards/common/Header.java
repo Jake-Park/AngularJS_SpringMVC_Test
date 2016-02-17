@@ -1,7 +1,11 @@
 package com.integrationwizards.common;
 
+import java.io.IOException;
+import java.net.Socket;
+
 import javax.xml.ws.BindingProvider;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import au.com.retriever.test.barking.RetrieverBarking;
@@ -14,18 +18,23 @@ import au.com.tmha.mos100mi.MOS100MI;
 import au.com.tmha.mos100mi.MOS100MIService;
 import au.com.tmha.mos104mi.MOS104MI;
 import au.com.tmha.mos104mi.MOS104MIService;
+import au.com.tmha.mos195mi.MOS195MI;
+import au.com.tmha.mos195mi.MOS195MIService;
 
 @Component
 public class Header {
+	private boolean accessToRetriever = false;
+	private boolean accessToM3 = false;
+	
 	public RetrieverBarking getRetrieverBarking() {
 		RetrieverBarkingService service = new RetrieverBarkingService();
 		RetrieverBarking changeStudentDetailsImplPort = service.getRetrieverBarkingPort();
 		
 		// Set Http Basic Authentication
 		((BindingProvider)changeStudentDetailsImplPort).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, "m3sandpitwsuser");
+		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.retrieverWsAccessId);
 		((BindingProvider)changeStudentDetailsImplPort).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, "0jntN3dB1zaTRh5cUfZk");	
+		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.retrieverWsAccessPass);	
 		
 		return changeStudentDetailsImplPort;
 	}
@@ -36,9 +45,9 @@ public class Header {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)mos104MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
+		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
 		((BindingProvider)mos104MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
+		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
 		
 		return mos104MI;
 	}
@@ -49,9 +58,9 @@ public class Header {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)mos100MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
+		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
 		((BindingProvider)mos100MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
+		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
 		
 		return mos100MI;
 	}
@@ -62,9 +71,9 @@ public class Header {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)crs610MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
+		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
 		((BindingProvider)crs610MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
+		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
 		
 		return crs610MI;
 	}
@@ -75,11 +84,64 @@ public class Header {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)cos100MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
+		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
 		((BindingProvider)cos100MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
+		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
 		
 		return cos100MI;
 	}
 	
+	public MOS195MI getMOS195MIPort() {
+		MOS195MIService mos195MIService = new MOS195MIService();
+		MOS195MI mos195MI = mos195MIService.getMOS195MIPort();
+		
+		// Set Http Basic Authentication
+		((BindingProvider)mos195MI).getRequestContext().put(
+		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
+		((BindingProvider)mos195MI).getRequestContext().put(
+		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
+		
+		return mos195MI;
+	}
+	
+	@Scheduled(fixedDelay = 10000)
+	private void sendPing() {
+		// check Retriever server
+		setAccessToRetriever(sendPing(ConstantUtil.retrieverServerURL, 80));
+		// check M3 server
+		setAccessToM3(sendPing(ConstantUtil.m3ServerURL, ConstantUtil.m3ServerPort));
+	}	
+	
+	public boolean sendPing(String URL, int port) {
+		Socket socket = null;
+		boolean reachable = false;
+		try {
+		    socket = new Socket(URL, port);
+		    reachable = true;
+		}
+		catch(IOException e) {
+			System.out.println(e.getMessage() + " => " + URL + ":" + port);
+		}
+		finally {            
+		    if (socket != null) try { socket.close(); } catch(IOException e) {}
+		}
+		
+		return reachable;
+	}
+
+	public boolean isAccessToRetriever() {
+		return accessToRetriever;
+	}
+	
+	public void setAccessToRetriever(boolean accessToRetriever) {
+		this.accessToRetriever = accessToRetriever;
+	}
+
+	public boolean isAccessToM3() {
+		return accessToM3;
+	}
+
+	public void setAccessToM3(boolean accessToM3) {
+		this.accessToM3 = accessToM3;
+	}
 }

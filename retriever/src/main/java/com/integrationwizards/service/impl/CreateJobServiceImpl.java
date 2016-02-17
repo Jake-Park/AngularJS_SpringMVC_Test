@@ -2,12 +2,18 @@ package com.integrationwizards.service.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.BindingProvider;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -19,7 +25,10 @@ import com.integrationwizards.common.LogUtil;
 import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.dao.CreateJobDao;
 import com.integrationwizards.model.HJob;
+import com.integrationwizards.model.HJobAsset;
+import com.integrationwizards.model.HJobService;
 import com.integrationwizards.model.HResult;
+import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.service.CreateJobService;
 
 import au.com.retriever.test.barking.Job;
@@ -53,6 +62,11 @@ import au.com.tmha.mos104mi.lstoperelement.LstOperElementCollection;
 import au.com.tmha.mos104mi.lstoperelement.LstOperElementItem;
 import au.com.tmha.mos104mi.lstoperelement.LstOperElementResponseCollection;
 import au.com.tmha.mos104mi.lstoperelement.LstOperElementResponseItem;
+import au.com.tmha.mos195mi.MOS195MI;
+import au.com.tmha.mos195mi.MOS195MIService;
+import au.com.tmha.mos195mi.selwoelem.SelWoElemCollection;
+import au.com.tmha.mos195mi.selwoelem.SelWoElemItem;
+import au.com.tmha.mos195mi.selwoelem.SelWoElemResponseCollection;
 
 @Service
 public class CreateJobServiceImpl implements CreateJobService {
@@ -63,6 +77,58 @@ public class CreateJobServiceImpl implements CreateJobService {
 		this.createJobDao = createJobDao;
 	}	
 	
+	/**
+	 * Insert SmartLink as a log
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional
+	public HSmartLink insertSmartLink(Map<String, String> param) throws Exception {
+		HSmartLink hSmartLink = new HSmartLink();
+		hSmartLink.setMWNO(param.get("MWNO"));
+		hSmartLink.setPRNO(param.get("PRNO"));
+		hSmartLink.setWHLO(param.get("WHLO"));
+		hSmartLink.setUSID(param.get("USID"));
+		hSmartLink.setCONO(param.get("CONO"));
+		hSmartLink.setLogId(param.get("logId"));
+		
+		// When SmartLink is already stored, skip this insert
+		if(param.get("success") == null) {
+			return createJobDao.insertSmartLink(hSmartLink);
+		}
+		else {
+			return null;
+		}		
+	}
+	
+	/**
+	 * Update the result of calling M3 API with SmartLink data
+	 * @param hSmartLink
+	 * @param success
+	 * @throws Exception
+	 */
+	@Transactional
+	public void updateSmartLink(HSmartLink hSmartLink, String success) throws Exception {		
+		hSmartLink.setSuccess(success);
+		hSmartLink.setCurrReqDate(new Date());
+		
+		createJobDao.updateSmartLink(hSmartLink);
+	}
+	
+	/**
+	 * Select SmartLink records which failed to receive the result from M3 API
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional
+	public List<HSmartLink> selectSmartLink() throws Exception {
+		return createJobDao.selectSmartLink();
+	}
+	
+	/**
+	 * Call MOS100MI:Get API 
+	 */
 	public GetResponseCollection sendMOS100MIGet(MOS100MI mos100MI, Map<String, String> param) throws Exception {
 		GetCollection getCollection = new GetCollection();
 		List<GetItem> getItemList = getCollection.getGetItem();		
@@ -86,31 +152,51 @@ public class CreateJobServiceImpl implements CreateJobService {
 		return getResponseCollection;
 	}
 	
+	/**
+	 * Set the result from MOS100MI:Get to Map 
+	 */
 	public void setMOS100MIDataGet(GetResponseItem getResponseItem, Map<String, Map<String, Object>> rParam) throws Exception {
 		// Job
 		Map<String, Object> jobMap = rParam.get("job");
-		//jobMap.put("serialNo", StringUtil.getString(getResponseItem.getLotnumber()));
 		jobMap.put("jobType", StringUtil.getString(getResponseItem.getService()));
 		int priority = Integer.parseInt(StringUtil.getBigDecimal(getResponseItem.getPriority()).toString());
 		jobMap.put("priority", (priority == 0 ? "false" : "true"));
 		
-		//jobMap.put("jobDesc", StringUtil.getString(getResponseItem.getTextLine()));
-		jobMap.put("plannedEnd", StringUtil.getCalendar(getResponseItem.getPlannedFinishDate()));	
-		jobMap.put("plannedStart", StringUtil.getCalendar(getResponseItem.getPlannedStartDate()));
+		jobMap.put("jobDesc", StringUtil.getString(getResponseItem.getService()));
+		jobMap.put("plannedStartDate", StringUtil.getStringCalendar(getResponseItem.getRequestedStartDate()));
+		jobMap.put("plannedStartTime", StringUtil.getBigDecimal(getResponseItem.getRequestedStartTime()));
+		jobMap.put("plannedEndDate", StringUtil.getStringCalendar(getResponseItem.getRequestedFinishDate()));
+		jobMap.put("plannedEndTime", StringUtil.getBigDecimal(getResponseItem.getRequestedFinishTime()));
 		
+		String plannedStartStr = StringUtil.nullToVoid(jobMap.get("plannedStartDate")) 
+				+ " " + StringUtil.insertLeftChar(StringUtil.nullToVoid(jobMap.get("plannedStartTime")), 4, '0');
+		String plannedEndStr = StringUtil.nullToVoid(jobMap.get("plannedEndDate")) 
+				+ " " + StringUtil.insertLeftChar(StringUtil.nullToVoid(jobMap.get("plannedEndTime")), 4, '0');
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HHmm");
+		format.setLenient(false); // to prevent things like February 30th
+		Date plannedStart = format.parse(plannedStartStr);
+		Date plannedEnd = format.parse(plannedEndStr);
+		
+		jobMap.put("plannedStart", StringUtil.getXMLGregorianCalendar(plannedStart));
+		jobMap.put("plannedEnd", StringUtil.getXMLGregorianCalendar(plannedEnd));
 
 		// Asset
 		Map<String, Object> assetMap = rParam.get("asset");
+		assetMap.put("serialNo", StringUtil.getString(getResponseItem.getLotnumber()));
 		assetMap.put("assetType", StringUtil.getString(getResponseItem.getStructureType()));		
-		assetMap.put("location", StringUtil.getString(getResponseItem.getLotnumber()));
+		//assetMap.put("location", StringUtil.getString(getResponseItem.getLotnumber()));
 		assetMap.put("make", StringUtil.getString(getResponseItem.getProductDescription()));
 		
 		// Service
 		Map<String, Object> serviceMap = rParam.get("service");
 		serviceMap.put("serviceId", StringUtil.getString(getResponseItem.getService()));
-		serviceMap.put("serviceType", StringUtil.getString(getResponseItem.getStructureType()));
+		serviceMap.put("serviceName", StringUtil.getString(getResponseItem.getService()));
+		serviceMap.put("serviceType", StringUtil.nullToVoid(StringUtil.getString(getResponseItem.getStructureType()), "FLD"));
 	}
 	
+	/**
+	 * Call MOS100MI:GetMtrl API 
+	 */
 	public GetMtrlResponseCollection sendMOS100MIGetMtrl(MOS100MI port, Map<String, String> param) throws Exception {
 		GetMtrlCollection getMtrlCollection = new GetMtrlCollection();
 		List<GetMtrlItem> getMtrlItemList = getMtrlCollection.getGetMtrlItem();		
@@ -129,6 +215,36 @@ public class CreateJobServiceImpl implements CreateJobService {
 		return getResponseMtrlCollection;
 	}
 	
+	/**
+	 * Call MOS195MI:SelWoElem API 
+	 */
+	public SelWoElemResponseCollection sendMOS195MISelWoElem(MOS195MI port, 
+			Map<String, String> param) throws Exception {
+		
+		SelWoElemCollection selWoElemCollection = new SelWoElemCollection();
+		List<SelWoElemItem> selWoElemItemList = selWoElemCollection.getSelWoElemItem();
+		
+		SelWoElemItem selWoElemItem = new SelWoElemItem();
+		
+		au.com.tmha.mos195mi.selwoelem.ObjectFactory factory = new au.com.tmha.mos195mi.selwoelem.ObjectFactory();
+		JAXBElement<BigDecimal> createCompany = factory.createSelWoElemItemCompany(BigDecimal.valueOf(1));		
+		
+		selWoElemItem.setCompany(createCompany);		
+		selWoElemItem.setFacility(param.get("WHLO"));
+		
+		JAXBElement<String> createWorkOrderNumber = factory.createSelWoElemItemWorkOrderNumber(param.get("MWNO"));
+		selWoElemItem.setWorkOrderNumber(createWorkOrderNumber);
+
+		selWoElemItemList.add(selWoElemItem);
+		
+		SelWoElemResponseCollection selWoElemResponseCollection = port.selWoElem(selWoElemCollection);
+		
+		return selWoElemResponseCollection;
+	}
+	
+	/**
+	 * Call CRS610MI:GetAddress API 
+	 */
 	public GetAddressResponseCollection sendCRS610MIGetAddress(CRS610MI crs610MI, Map<String, String> param) throws Exception {
 		GetAddressCollection getAddressCollection = new GetAddressCollection();
 		List<GetAddressItem> getAddressItemList = getAddressCollection.getGetAddressItem();		
@@ -150,21 +266,25 @@ public class CreateJobServiceImpl implements CreateJobService {
 		return getAddressResponseCollection;
 	}
 	
+	/**
+	 * Set the result from CRS610MI:GetAddress to Map 
+	 */
 	public void setCRS610MIGetAddressData(GetAddressResponseItem getAddressResponseItem, 
 			Map<String, Map<String, Object>> rParam) throws Exception {
 		// Job
 		Map<String, Object> jobMap = rParam.get("job");
 		jobMap.put("customerName", StringUtil.getString(getAddressResponseItem.getCustomerName()));		    		
-		jobMap.put("address1", StringUtil.getString(getAddressResponseItem.getCustomerAddress1()));
-		jobMap.put("address2", StringUtil.getString(getAddressResponseItem.getCustomerAddress2()));
-		jobMap.put("suburb", StringUtil.getString(getAddressResponseItem.getCity()));
-		
+		jobMap.put("address1", StringUtil.getString(getAddressResponseItem.getCustomerAddress1()));		
+		jobMap.put("address2", StringUtil.getString(getAddressResponseItem.getCustomerAddress2()));		
+		jobMap.put("suburb", StringUtil.getString(getAddressResponseItem.getCity()));		
 		jobMap.put("contactName", StringUtil.getString(getAddressResponseItem.getYourReference()));
-		jobMap.put("contactPhone", StringUtil.getString(getAddressResponseItem.getTelephoneNumber1()));
-		
+		jobMap.put("contactPhone", StringUtil.getString(getAddressResponseItem.getTelephoneNumber1()));		
 		jobMap.put("postCode", StringUtil.getString(getAddressResponseItem.getPostalCode()));
 	}
 	
+	/**
+	 * Call MOS100MI:GetOp API 
+	 */
 	public GetOpResponseCollection sendMOS100MIGetOp(MOS100MI port, Map<String, String> param) throws Exception {
 		GetOpCollection getOpCollection = new GetOpCollection();
 		List<GetOpItem> getOpItemList = getOpCollection.getGetOpItem();		
@@ -182,6 +302,9 @@ public class CreateJobServiceImpl implements CreateJobService {
 		return getResponseOpCollection;
 	}
 	
+	/**
+	 * Call MOS104MI:LstOperElement API 
+	 */
 	public LstOperElementResponseCollection sendMOS104MILstOperElement(MOS104MI mos104MI, Map<String, String> param) throws Exception {
 		LstOperElementCollection lstOperElementCollection = new LstOperElementCollection();
 		List<LstOperElementItem> lstOperElementItemList = lstOperElementCollection.getLstOperElementItem();		
@@ -203,19 +326,62 @@ public class CreateJobServiceImpl implements CreateJobService {
 		return lstOperElementResponseCollection;
 	}
 	
+	/**
+	 * Set the result from MOS104MI:LstOperElement to Map 
+	 */
 	public void setMOS104MILstOperElementData(LstOperElementResponseItem lstOperElementResponseItem, 
 			Map<String, Map<String, Object>> rParam) {
 		// Job
 		Map<String, Object> jobMap = rParam.get("job");
-		jobMap.put("techId", StringUtil.getString(lstOperElementResponseItem.getEmployeeNumber()));
+		//TODO:: Removing after enrolling relevant TECH ID			
+		jobMap.put("techId", "M3-02");//StringUtil.getString(lstOperElementResponseItem.getEmployeeNumber())
 		
 		// Asset
-		Map<String, Object> assetMap = rParam.get("asset");
-		assetMap.put("serialNo", StringUtil.getString(lstOperElementResponseItem.getSerialNumber()));
+		Map<String, Object> assetMap = rParam.get("asset");		
 		assetMap.put("description", StringUtil.getString(lstOperElementResponseItem.getDescription()));
 		assetMap.put("modelNumber", StringUtil.getString(lstOperElementResponseItem.getProductNumber()));
 	}
 	
+	/**
+	 * Call COS100MI:GetMCOHead API 
+	 */
+	public GetMCOHeadResponseCollection sendCOS100MIGetMCOHead(COS100MI port, Map<String, String> param) throws Exception {
+		GetMCOHeadCollection getMCOHeadCollection = new GetMCOHeadCollection();
+		List<GetMCOHeadItem> getMCOHeadItemList = getMCOHeadCollection.getGetMCOHeadItem();
+		
+		au.com.tmha.cos100mi.getmcohead.ObjectFactory factory = new au.com.tmha.cos100mi.getmcohead.ObjectFactory();
+		JAXBElement<BigDecimal> createCompany = factory.createGetMCOHeadItemCompany(BigDecimal.valueOf(1));
+		
+		GetMCOHeadItem getMCOHeadItem = new GetMCOHeadItem();
+		getMCOHeadItem.setCompany(createCompany);
+		
+		JAXBElement<String> createCustomerOrderNumber = 
+				factory.createGetMCOHeadItemCustomerOrderNumber(param.get("RORN"));	// Reference Order Number
+		getMCOHeadItem.setCustomerOrderNumber(createCustomerOrderNumber);		
+		
+		getMCOHeadItemList.add(getMCOHeadItem);
+		
+		return port.getMCOHead(getMCOHeadCollection);
+	}
+	
+	/**
+	 * Set the result from COS100MI:GetMCOHead to Map 
+	 */
+	public void setCOS100MIGetMCOHeadData(GetMCOHeadResponseItem getMCOHeadResponseItem, 
+			Map<String, Map<String, Object>> rParam) throws Exception {
+		Map<String, Object> jobMap = rParam.get("job");
+		jobMap.put("custId", StringUtil.getString(getMCOHeadResponseItem.getCustomer()));
+		//jobMap.put("techId", StringUtil.getString(getMCOHeadResponseItem.getResponsible()));
+		
+		// Asset
+		Map<String, Object> assetMap = rParam.get("asset");
+		assetMap.put("orderId", StringUtil.getString(getMCOHeadResponseItem.getCustomerOrderNumber()));
+		
+	}	
+	
+	/**
+	 * Set Job data in order to send a request to Retriever
+	 */
     public Job setJobData(Map<String, Map<String, Object>> rParam) throws Exception
 	{   
     	Job job = new Job();
@@ -225,9 +391,9 @@ public class CreateJobServiceImpl implements CreateJobService {
 			Map<String, Object> jobMap = rParam.get("job");
 			
 			lu = LogManager.getInstance().getLogObj(category);    	
-	    	lu.writeLog("Start CreateJob");	    	
+	    	lu.info("Start setJobData");	    	
 	    	
-	    	// Set Job
+	    	// Set Job Data
 	    	job.setJobId(StringUtil.nullToVoid(jobMap.get("jobId")));
 	    	job.setPhaseId(BigInteger.valueOf(1));
 	    	job.setEmployer(ConstantUtil.employer);
@@ -248,85 +414,107 @@ public class CreateJobServiceImpl implements CreateJobService {
 			job.setPriority(StringUtil.getBoolean(StringUtil.nullToVoid(jobMap.get("priority"))));
 			job.setPostCode(StringUtil.nullToVoid(jobMap.get("postCode")));
 			job.setCustId(StringUtil.nullToVoid(jobMap.get("custId")));
-			
+						
 			job.setPlannedStart((XMLGregorianCalendar)jobMap.get("plannedStart"));
 			job.setPlannedEnd((XMLGregorianCalendar)jobMap.get("plannedEnd"));
 			
 			// Set Asset
 			Map<String, Object> assetMap = rParam.get("asset");
-			JobAsset jobAsset = job.getAssets().get(0);
+			List<JobAsset> jobAssetList = job.getAssets();
+			JobAsset jobAsset = new JobAsset();
+
 			jobAsset.setSerialNo(StringUtil.nullToVoid(assetMap.get("serialNo")));
 			jobAsset.setDescription(StringUtil.nullToVoid(assetMap.get("description")));
 			jobAsset.setAssetType(StringUtil.nullToVoid(assetMap.get("assetType")));
 			jobAsset.setModelNumber(StringUtil.nullToVoid(assetMap.get("modelNumber")));
 			jobAsset.setLocation(StringUtil.nullToVoid(assetMap.get("location")));
 			jobAsset.setMake(StringUtil.nullToVoid(assetMap.get("make")));
+			jobAssetList.add(jobAsset);
 			
 			// Set Service Data
 			Map<String, Object> serviceMap = rParam.get("service");
-			JobService jobService = job.getServices().get(0);
+			List<JobService> jobServiceList = job.getServices();
+			JobService jobService = new JobService();
+
 			jobService.setServiceId(StringUtil.nullToVoid(serviceMap.get("serviceId")));
-			jobService.setServiceType(StringUtil.nullToVoid(serviceMap.get("serialType")));
+			jobService.setServiceName(StringUtil.nullToVoid(serviceMap.get("serviceName")));
+			jobService.setServiceType(StringUtil.nullToVoid(serviceMap.get("serviceType")));
+			jobServiceList.add(jobService);
 			
-			lu.writeLog(LogUtil.objToMap(job));
+			lu.info(StringUtil.objToMap(job));
+			
     	}
 		catch(Exception e) {
-			lu.writeLog(e.getMessage());
-		}
-		finally {
-			lu.closeFile();
-			LogManager.getInstance().closeLogObj(category);
+			e.printStackTrace();
+			lu.severe("Error in setJobData : " + e.getMessage());
+			throw e;
 		}    	
     	
     	return job;
-	}    
-	
-	public GetMCOHeadResponseCollection sendCOS100MIGetMCOHead(COS100MI port, Map<String, String> param) throws Exception {
-		GetMCOHeadCollection getMCOHeadCollection = new GetMCOHeadCollection();
-		List<GetMCOHeadItem> getMCOHeadItemList = getMCOHeadCollection.getGetMCOHeadItem();
-		
-		au.com.tmha.cos100mi.getmcohead.ObjectFactory factory = new au.com.tmha.cos100mi.getmcohead.ObjectFactory();
-		JAXBElement<BigDecimal> createCompany = factory.createGetMCOHeadItemCompany(BigDecimal.valueOf(1));
-		
-		GetMCOHeadItem getMCOHeadItem = new GetMCOHeadItem();
-		getMCOHeadItem.setCompany(createCompany);
-		
-		JAXBElement<String> createCustomerOrderNumber = 
-				factory.createGetMCOHeadItemCustomerOrderNumber(param.get("RORN"));	// Reference Order Number
-		getMCOHeadItem.setCustomerOrderNumber(createCustomerOrderNumber);		
-		
-		getMCOHeadItemList.add(getMCOHeadItem);
-		
-		return port.getMCOHead(getMCOHeadCollection);
 	}
 	
-	public void setCOS100MIGetMCOHeadData(GetMCOHeadResponseItem getMCOHeadResponseItem, 
-			Map<String, Map<String, Object>> rParam) throws Exception {
-		Map<String, Object> jobMap = rParam.get("job");
-		jobMap.put("custId", StringUtil.getString(getMCOHeadResponseItem.getCustomer()));
-		jobMap.put("techId", StringUtil.getString(getMCOHeadResponseItem.getResponsible()));
-		
-		// Asset
-		Map<String, Object> assetMap = rParam.get("asset");
-		assetMap.put("orderId", StringUtil.getString(getMCOHeadResponseItem.getCustomerOrderNumber()));
-		
-	}
-	
+    /**
+     * Insert Job data to DB before sending a request to Retriever
+     */
 	@Transactional
-	public HJob insertCreateJob(Job job) throws Exception {		
+	public HJob insertCreateJob(Job job, String logId) throws Exception {		
 		ObjectMapper m = new ObjectMapper();
 		Map<String,Object> props = m.convertValue(job, Map.class);
-		HJob hJob = m.convertValue(props, HJob.class);
 		
+		// Move JobAsset to HJobAsset to store data
+		List<JobAsset> jobAssetList = job.getAssets();		
+		List<HJobAsset> hJobAssetList = new ArrayList<HJobAsset>();
+		
+		for(JobAsset jobAsset : jobAssetList) {
+			Map<String,Object> p = m.convertValue(jobAsset, Map.class);
+			HJobAsset hJobAsset = m.convertValue(p, HJobAsset.class);	
+			hJobAsset.setJobId(job.getJobId());
+			hJobAsset.setPhaseId(job.getPhaseId());
+			hJobAsset.setTechId(job.getTechId());
+			hJobAssetList.add(hJobAsset);
+		}
+		
+		Set<HJobAsset> hJobAssetSet = new HashSet<HJobAsset>(hJobAssetList);
+		//props.put("assets", hJobAssetSet);		
+		
+		// Move JobAsset to HJobAsset to store data
+		List<JobService> jobServiceList = job.getServices();		
+		List<HJobService> hJobServiceList = new ArrayList<HJobService>();
+		
+		for(JobService jobService : jobServiceList) {
+			Map<String,Object> p = m.convertValue(jobService, Map.class);
+			HJobService hJobService = m.convertValue(p, HJobService.class);
+			hJobService.setJobId(job.getJobId());
+			hJobService.setPhaseId(job.getPhaseId());
+			hJobService.setTechId(job.getTechId());
+			hJobServiceList.add(hJobService);
+		}
+		
+		Set<HJobService> hJobServiceSet = new HashSet<HJobService>(hJobServiceList);
+		//props.put("services", hJobServiceSet);
+		
+		HJob hJob = m.convertValue(props, HJob.class);		
+		hJob.setPlannedStart(job.getPlannedStart().toGregorianCalendar().getTime());
+		hJob.setPlannedEnd(job.getPlannedEnd().toGregorianCalendar().getTime());
+		hJob.setAssets(hJobAssetSet);
+		hJob.setServices(hJobServiceSet);
+		hJob.setLogId(logId);
+				
 		createJobDao.insertCreateJob(hJob);
 		
 		return hJob;
 	}
 	
+	/**
+	 * Send a createJob request to Retriever
+	 */
 	public Result sendCreateJob(RetrieverBarking port, Job job) {
 		return port.createJob(job);
 	}
 	
+	/**
+	 * Insert the result of CreateJob from Retriever to DB
+	 */
 	@Transactional
 	public HResult insertResult(Result result, HJob hJob) throws Exception {
 		ObjectMapper m = new ObjectMapper();
@@ -342,13 +530,111 @@ public class CreateJobServiceImpl implements CreateJobService {
 	    return hResult;
 	}
 	
+	/**
+	 * Update the result of CreateJob from Retriever to DB
+	 */
 	@Transactional
 	public HJob updateCreatJob(HJob hJob, HResult hResult) throws Exception {		
-		hJob.setSucceededToSend(hResult.getSuccess());
+		hJob.setSuccess(hResult.getSuccess());
 		hJob.setCurrReqDate(new Date());
 		
 		createJobDao.updateCreatJob(hJob);
 		
 		return hJob;
+	}
+	
+	/**
+	 * Update Job's index to JobAsset and JobService
+	 * @param hJob
+	 * @return
+	 * @throws Exception
+	 */	
+	@Transactional	
+	public HJob updateCreateJobIndex(HJob hJob) throws Exception {
+		// update JobAsset and JobService's job_index
+		Set<HJobAsset> hJobAssetSet = hJob.getAssets();
+		
+		for(HJobAsset hJobAsset : hJobAssetSet) {
+			hJobAsset.setJob_index(hJob.getIndex());
+		}		
+		
+		Set<HJobService> hJobServiceSet = hJob.getServices();
+		
+		for(HJobService hJobService : hJobServiceSet) {
+			hJobService.setJob_index(hJob.getIndex());
+		}
+		
+		createJobDao.updateCreatJob(hJob);
+		
+		return hJob;
+	}
+	
+	/**
+	 * Select Job records which failed to be sent 
+	 * @return
+	 * @throws Exception
+	 */	
+	@Transactional
+	public List<HJob> selectCreateJob() throws Exception {
+		return createJobDao.selectCreateJob();
+	}
+	
+	/**
+	 * Convert Job, Asset and Service components for sending a request to Retriever
+	 * @param port
+	 * @param job
+	 * @return
+	 * @throws Exception
+	 */
+	public Result reSendCreateJob(RetrieverBarking port, HJob hJob) throws Exception {
+		ObjectMapper m = new ObjectMapper();
+		Map<String,Object> hJobMap = m.convertValue(hJob, Map.class);
+		hJobMap.remove("index");
+		hJobMap.remove("createdDate");
+		hJobMap.remove("success");
+		hJobMap.remove("currReqDate");
+		hJobMap.remove("logId");
+
+		Job job = m.convertValue(hJobMap, Job.class);
+		
+		// Move JobAsset to HJobAsset to store data
+		Set<HJobAsset> hJobAssetSet = hJob.getAssets();		
+		List<JobAsset> jobAssetList = job.getAssets();
+		
+		for(HJobAsset hJobAsset : hJobAssetSet) {
+			Map<String,Object> hJobAssetMap = m.convertValue(hJobAsset, Map.class);
+			hJobAssetMap.remove("index");
+			hJobAssetMap.remove("jobId");
+			hJobAssetMap.remove("phaseId");
+			hJobAssetMap.remove("techId");
+			hJobAssetMap.remove("job_index");
+			hJobAssetMap.remove("hJob");
+			JobAsset jobAsset = m.convertValue(hJobAssetMap, JobAsset.class);
+
+			jobAssetList.add(jobAsset);
+		}		
+		
+		//jobMap.put("assets", jobAssetList);		
+		
+		// Move JobAsset to HJobAsset to store data
+		Set<HJobService> hJobServiceSet = hJob.getServices();		
+		List<JobService> jobServiceList = job.getServices();
+		
+		for(HJobService hJobService : hJobServiceSet) {
+			Map<String,Object> hJobServiceMap = m.convertValue(hJobService, Map.class);
+			hJobServiceMap.remove("index");
+			hJobServiceMap.remove("jobId");
+			hJobServiceMap.remove("phaseId");
+			hJobServiceMap.remove("techId");
+			hJobServiceMap.remove("job_index");
+			hJobServiceMap.remove("hJob");
+			JobService jobService = m.convertValue(hJobServiceMap, JobService.class);
+			
+			//jobServiceList.add(jobService);
+		}
+		
+		//jobMap.put("services", jobServiceList);
+		return port.createJob(job);
+		//return null;
 	}
 }

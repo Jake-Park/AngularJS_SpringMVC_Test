@@ -18,7 +18,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name="JobService")
 public class HJobService {
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;	
 	

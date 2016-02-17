@@ -3,12 +3,12 @@ package com.integrationwizards.model;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +21,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name="Job")
 public class HJob {	
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;	
 	
@@ -58,13 +58,18 @@ public class HJob {
     private String officeNote;
     private String accountMgrEmail;
     private String serviceMgrEmail;
-    private String succeededToSend;
+	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+	private Date createdDate;
+    private String success;
     private Date currReqDate;
+    private String logId;
     
-	@OneToMany(mappedBy = "hJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hJob", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<HJobAsset> assets = new HashSet<HJobAsset>();
 	
-	@OneToMany(mappedBy = "hJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hJob", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<HJobService> services = new HashSet<HJobService>();
 
 
@@ -224,6 +229,12 @@ public class HJob {
 	public void setServiceMgrEmail(String serviceMgrEmail) {
 		this.serviceMgrEmail = serviceMgrEmail;
 	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 	public Set<HJobAsset> getAssets() {
 		return assets;
 	}
@@ -236,19 +247,23 @@ public class HJob {
 	public void setServices(Set<HJobService> services) {
 		this.services = services;
 	}
-	
-	
-	public String getSucceededToSend() {
-		return succeededToSend;
+	public String getSuccess() {
+		return success;
 	}
-	public void setSucceededToSend(String succeededToSend) {
-		this.succeededToSend = succeededToSend;
+	public void setSuccess(String success) {
+		this.success = success;
 	}
 	public Date getCurrReqDate() {
 		return currReqDate;
 	}
 	public void setCurrReqDate(Date currReqDate) {
 		this.currReqDate = currReqDate;
+	}
+	public String getLogId() {
+		return logId;
+	}
+	public void setLogId(String logId) {
+		this.logId = logId;
 	}
 	@Override
 	public String toString() {
@@ -260,7 +275,7 @@ public class HJob {
 				+ ", plannedStart=" + plannedStart + ", plannedEnd=" + plannedEnd + ", jobType=" + jobType
 				+ ", customerEmail=" + customerEmail + ", priority=" + priority + ", slaPriority=" + slaPriority
 				+ ", officeNote=" + officeNote + ", accountMgrEmail=" + accountMgrEmail + ", serviceMgrEmail="
-				+ serviceMgrEmail + ", assets=" + assets + ", services=" + services + "]";
+				+ serviceMgrEmail + "]";
 	}	
 	
 	

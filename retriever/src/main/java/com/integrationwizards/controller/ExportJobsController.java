@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import com.integrationwizards.common.Header;
 import com.integrationwizards.common.LogManager;
 import com.integrationwizards.common.LogUtil;
+import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
 
@@ -27,21 +28,19 @@ public class ExportJobsController {
 		try {
 			lu = LogManager.getInstance().getLogObj(category);
 			
-			lu.writeLog("Start ExportJobs");
+			lu.info("Start ExportJobs");
 			ResultExportJobs result = exportJobsService.sendExportJobs(header.getRetrieverBarking());
 			
-			lu.writeLog("Receiving data from exportJobs");
-			lu.writeLog(LogUtil.objToMap(result));
+			lu.info("Receiving data from exportJobs");
+			lu.info(StringUtil.objToMap(result));
 			
 			HResultExportJobs hResult = exportJobsService.insertResultExportJobs(result);
-			lu.closeFile();
 		}
 		catch(Exception e) {
-			lu.writeLog(e.getMessage());
+			lu.severe(e.getMessage());
+			LogManager.getInstance().closeFile(category);
 		}
-		finally {
-			lu.closeFile();
-			LogManager.getInstance().closeLogObj(category);
-		}
+		LogManager.getInstance().removeFile(category);
+		
 	}	
 }

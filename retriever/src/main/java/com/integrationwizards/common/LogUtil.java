@@ -19,17 +19,33 @@ import java.util.logging.SimpleFormatter;
 /**
  * Every transaction has an own log file and this file is generated when a transaction is occurred
  * and after the end of transaction, this log file is deleted
+ * Log Leverl
+ * 
+    SEVERE (highest value)
+    WARNING
+    INFO
+    CONFIG
+    FINE
+    FINER
+    FINEST (lowest value)
+
  * @author User
  */
 public class LogUtil {
     Logger logger = null;
     FileHandler fh;
-    String fileName;
+    String abbrFilePath;
+    String fullFilePath;
     String category;
 	
 	public LogUtil(String category) {
 		this.category = category;
 		createLogFile();
+	}
+	
+	public LogUtil(String category, String id) {
+		this.category = category;
+		createLogFile(id);
 	}
 	
 	/**
@@ -73,41 +89,49 @@ public class LogUtil {
 		
 		try {
 			int maxFnum = getMaxFileNumber(folder, category);
-			fileName = path + File.separator +  category + "_" + (maxFnum + 1) + "_" + now + ".log";
+			abbrFilePath = dir + File.separator + category + "_" + (maxFnum + 1) + "_" + now + ".log";
+			fullFilePath = path + File.separator + category + "_" + (maxFnum + 1) + "_" + now + ".log";
 	        // This block configure the logger with handler and formatter  
-	        fh = new FileHandler(fileName);  
+	        fh = new FileHandler(fullFilePath);  
 	        logger.addHandler(fh);
-	        SimpleFormatter formatter = new SimpleFormatter();  
-	        fh.setFormatter(formatter); 
+	        fh.setFormatter(new Formatter2()); 
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		// Set format
-		fh.setFormatter(new Formatter() {
-            @Override
-            public String format(LogRecord record) {
-                SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-                Calendar cal = new GregorianCalendar();
-                cal.setTimeInMillis(record.getMillis());
-                return record.getLevel()
-                        + logTime.format(cal.getTime())
-                        + " || "
-                        + record.getSourceClassName().substring(
-                                record.getSourceClassName().lastIndexOf(".")+1,
-                                record.getSourceClassName().length())
-                        + "."
-                        + record.getSourceMethodName()
-                        + "() : "
-                        + record.getMessage() + "\n";
-            }
-        });
 	}
 	
-	public void writeLog(Object message) {
+	/**
+	 * Create log file for every transaction	 * 
+	 * @param category
+	 */
+	public void createLogFile(String path) {
+		logger = Logger.getLogger(category);
+		
+		try {
+			abbrFilePath = path;
+			fullFilePath = ConstantUtil.logFileDirectory + path;
+	        // This block configure the logger with handler and formatter 
+			fh = new FileHandler(fullFilePath, true); 
+			
+	        logger.addHandler(fh);
+	        fh.setFormatter(new Formatter2()); 
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void info(Object message) {
 		if(fh != null && logger != null && message != null) {
 			logger.info(message.toString());			
+		}
+	}
+	
+	public void severe(Object message) {
+		if(fh != null && logger != null && message != null) {
+			logger.severe(message.toString());			
 		}
 	}
 	
@@ -145,13 +169,21 @@ public class LogUtil {
 		return fIdx;
 	}
 	
-	public void closeFile() {		
+	public String getFullFilePath() {
+		return fullFilePath;
+	}
+	
+	public String getAbbrFilePath() {
+		return abbrFilePath;
+	}
+	
+	public void removeFile() {		
 		try {
 			if(fh != null) {
 				fh.close();
 			}
-			if(fileName != null) {
-				File f = new File(fileName);
+			if(fullFilePath != null) {
+				File f = new File(fullFilePath);
 				if(f != null) {
 					f.delete();
 				}
@@ -162,26 +194,34 @@ public class LogUtil {
 		}
 	}
 	
-	/**
-	 * Class Object fields to Map
-	 * @param o
-	 * @return
-	 */
-	public static Map<String, Object> objToMap(Object o){
-	    Field[] fields = o.getClass().getDeclaredFields();
-	    Map<String, Object> m = new HashMap<String, Object>();
-	    
-	    try{
-	        for(Field field : fields){
-	            field.setAccessible(true);
-	            m.put(field.getName(), field.get(o));
-	            Object value = field.get(o);
-	            System.out.println(field.getName() + "=" + value);
-	        }
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
-	    
-	    return m;
-	}	
+	public void closeFile() {		
+		try {
+			if(fh != null) {
+				fh.close();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+class Formatter2 extends Formatter {
+	@Override
+    public String format(LogRecord record) {
+        SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        Calendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(record.getMillis());
+        return record.getLevel()
+                + logTime.format(cal.getTime())
+                + " || "
+                + record.getSourceClassName().substring(
+                        record.getSourceClassName().lastIndexOf(".")+1,
+                        record.getSourceClassName().length())
+                + "."
+                + record.getSourceMethodName()
+                + "() : "
+                + record.getMessage() + "\n";
+    }
 }

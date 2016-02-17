@@ -70,7 +70,9 @@
                 <value>com.integrationwizards.model.HEChecklist</value>
                 <value>com.integrationwizards.model.HEChecklistCategory</value>
                 <value>com.integrationwizards.model.HEChecklistItem</value>
-                <value>com.integrationwizards.model.HETime</value>                    
+                <value>com.integrationwizards.model.HETime</value>
+                
+                <value>com.integrationwizards.model.HSmartLink</value>                      
             </list>
         </property> 
         <property name="hibernateProperties">

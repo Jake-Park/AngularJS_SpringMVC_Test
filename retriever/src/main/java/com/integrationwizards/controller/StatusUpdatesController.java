@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import com.integrationwizards.common.Header;
 import com.integrationwizards.common.LogManager;
 import com.integrationwizards.common.LogUtil;
+import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.model.HResultStatusUpdates;
 import com.integrationwizards.service.StatusUpdatesService;
 
@@ -26,20 +27,18 @@ public class StatusUpdatesController {
 		
 		try {
 			lu = LogManager.getInstance().getLogObj(category);
-			lu.writeLog("Start StatusUpdates");
+			lu.info("Start StatusUpdates");
 			ResultExportStatusUpdates result = statusUpdatesService.sendStatusUpdates(header.getRetrieverBarking());
 			
-			lu.writeLog("Receiving data from statusUpdates");
-			lu.writeLog(LogUtil.objToMap(result));
+			lu.info("Receiving data from statusUpdates");
+			lu.info(StringUtil.objToMap(result));
 			
 			HResultStatusUpdates hResult = statusUpdatesService.insertResultStatusUpdates(result);
 		}
 		catch(Exception e) {
-			lu.writeLog(e.getMessage());
+			lu.severe(e.getMessage());
+			LogManager.getInstance().closeFile(category);
 		}
-		finally {
-			lu.closeFile();
-			LogManager.getInstance().closeLogObj(category);
-		}
+		LogManager.getInstance().removeFile(category);
 	}
 }
