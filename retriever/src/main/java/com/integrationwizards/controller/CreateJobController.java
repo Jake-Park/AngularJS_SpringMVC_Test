@@ -209,25 +209,15 @@ public class CreateJobController {
     		String startTimeStr = StringUtil.insertLeftChar(String.valueOf(startTimeDecimal), 4, '0');
 			
     		jobMap.put("startDate", StringUtil.getXMLGregorianCalendar("yyyy-MM-dd HHmm", startDate + " " + startTimeStr));
-    		System.out.println("----startDateTime2---" + jobMap.get("startDate"));
     		
     		// Set Remain data for creating Job.    		
     		jobMap.put("jobId", mParam.get("MWNO"));	//
-    		jobService.put("serviceOrderId", mParam.get("MWNO"));
-    		
-    		// Caculate Duration
-    		Date start = ((XMLGregorianCalendar)jobMap.get("plannedStart")).toGregorianCalendar().getTime();
-    		Date end = ((XMLGregorianCalendar)jobMap.get("plannedEnd")).toGregorianCalendar().getTime();
-    		
-    		System.out.println("----startDateTime1---" + start.getTime() + " " + end.getTime());
-    		long diff = end.getTime() - start.getTime();
-    		long minutes = diff / (60 * 1000);
-    		System.out.println(minutes + "--minutes--diff---" + diff);
-    		
-    		jobMap.put("duration", String.valueOf(minutes));	//
+    		jobService.put("serviceOrderId", mParam.get("MWNO"));    		
+    		jobMap.put("duration", String.valueOf(mParam.get("OPNO")));	//
     		
     		Job job = createJobService.setJobData(rParam);    
-    		createJob(job, hSmartLink);
+    		createJob(job, hSmartLink);   		
+    		LogManager.getInstance().closeFile(category);
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
@@ -247,7 +237,7 @@ public class CreateJobController {
 			}
 		}
     	
-		LogManager.getInstance().removeFile(category);
+		
     }
 
     /**
@@ -289,6 +279,8 @@ public class CreateJobController {
 		    lu.info("Start updating the result of createJob");	
 		    hJob = createJobService.updateCreatJob(hJob, hResult);
 		    lu.info("Finish updating the result of createJob");
+		    
+		    LogManager.getInstance().removeFile(category);
 		}
 		
 		hJob = createJobService.updateCreateJobIndex(hJob);
@@ -319,7 +311,6 @@ public class CreateJobController {
 			    	createJobService.updateSmartLink(hSmartLink, "True");
 				}
 			}
-		
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
@@ -329,7 +320,7 @@ public class CreateJobController {
 			}
 		}
 		
-		LogManager.getInstance().removeFile(category);
+		
 	}
 	
 	@Scheduled(fixedDelay = 20000)
@@ -337,7 +328,6 @@ public class CreateJobController {
 		LogUtil lu = null;
 		
 		try {
-			lu = LogManager.getInstance().getLogObj(category);
 			
 			if(header.isAccessToRetriever()) {
 				List<HJob> hJobList = createJobService.selectCreateJob();
@@ -377,9 +367,10 @@ public class CreateJobController {
 				    lu.info("Start updating the result of Re createJob");	
 				    hJob = createJobService.updateCreatJob(hJob, hResult);
 				    lu.info("Finish updating the result of Re createJob");
+				    
+				    LogManager.getInstance().removeFile(category);
 				}
 			}
-		
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
@@ -389,9 +380,6 @@ public class CreateJobController {
 				LogManager.getInstance().closeFile(category);
 			}
 		}
-		
-		LogManager.getInstance().removeFile(category);
-		 
 	}
 	
     @RequestMapping(value="/createJob", method = RequestMethod.POST)    

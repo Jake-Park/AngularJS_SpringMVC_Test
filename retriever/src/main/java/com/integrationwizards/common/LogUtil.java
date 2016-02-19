@@ -197,6 +197,7 @@ public class LogUtil {
 	public void closeFile() {		
 		try {
 			if(fh != null) {
+				fh.flush();
 				fh.close();
 			}
 		}
@@ -216,12 +217,6 @@ class Formatter2 extends Formatter {
         return record.getLevel()
                 + logTime.format(cal.getTime())
                 + " || "
-                + record.getSourceClassName().substring(
-                        record.getSourceClassName().lastIndexOf(".")+1,
-                        record.getSourceClassName().length())
-                + "."
-                + record.getSourceMethodName()
-                + "() : "
                 + record.getMessage() + "\n";
     }
 }
