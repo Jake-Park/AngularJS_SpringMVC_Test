@@ -441,12 +441,12 @@ public class CreateJobServiceImpl implements CreateJobService {
 			jobService.setServiceType(StringUtil.nullToVoid(serviceMap.get("serviceType")));
 			jobServiceList.add(jobService);
 			
-			lu.info(StringUtil.objToMap(job));
+			lu.info(String.valueOf(StringUtil.objToMap(job)));
 			
     	}
 		catch(Exception e) {
 			e.printStackTrace();
-			lu.severe("Error in setJobData : " + e.getMessage());
+			lu.error("Error in setJobData : " + e.getMessage());
 			throw e;
 		}    	
     	

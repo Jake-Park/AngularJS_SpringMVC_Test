@@ -14,6 +14,10 @@ import au.com.tmha.cos100mi.COS100MI;
 import au.com.tmha.cos100mi.COS100MIService;
 import au.com.tmha.crs610mi.CRS610MI;
 import au.com.tmha.crs610mi.CRS610MIService;
+import au.com.tmha.mos057mi.MOS057MI;
+import au.com.tmha.mos057mi.MOS057MIService;
+import au.com.tmha.mos070mi.MOS070MI;
+import au.com.tmha.mos070mi.MOS070MIService;
 import au.com.tmha.mos100mi.MOS100MI;
 import au.com.tmha.mos100mi.MOS100MIService;
 import au.com.tmha.mos104mi.MOS104MI;
@@ -102,6 +106,30 @@ public class Header {
 		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
 		
 		return mos195MI;
+	}
+	
+	public MOS070MI getMOS070MIPort() {
+		MOS070MIService mos070MIService = new MOS070MIService();
+		MOS070MI mos070MI = mos070MIService.getMOS070MIPort();		
+		getAuthentication(mos070MI);
+		
+		return mos070MI;
+	}
+	
+	public MOS057MI getMOS057MIPort() {
+		MOS057MIService mos057MIService = new MOS057MIService();
+		MOS057MI mos057MI = mos057MIService.getMOS057MIPort();		
+		getAuthentication(mos057MI);
+		
+		return mos057MI;
+	}
+	
+	public void getAuthentication(Object obj) {
+		// Set Http Basic Authentication
+		((BindingProvider)obj).getRequestContext().put(
+		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
+		((BindingProvider)obj).getRequestContext().put(
+		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
 	}
 	
 	@Scheduled(fixedDelay = 10000)

@@ -1,15 +1,23 @@
 package com.integrationwizards.service.impl;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.dao.ExportJobsDao;
 import com.integrationwizards.model.HEAllowance;
 import com.integrationwizards.model.HEAttachment;
@@ -25,6 +33,7 @@ import com.integrationwizards.model.HEReport;
 import com.integrationwizards.model.HEService;
 import com.integrationwizards.model.HESignature;
 import com.integrationwizards.model.HETime;
+import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
 
@@ -45,6 +54,10 @@ import au.com.retriever.test.barking.ETime;
 import au.com.retriever.test.barking.ExportJob;
 import au.com.retriever.test.barking.ResultExportJobs;
 import au.com.retriever.test.barking.RetrieverBarking;
+import au.com.tmha.mos070mi.MOS070MI;
+import au.com.tmha.mos070mi.updoperation.UpdOperationCollection;
+import au.com.tmha.mos070mi.updoperation.UpdOperationItem;
+import au.com.tmha.mos070mi.updoperation.UpdOperationResponseCollection;
 
 public class ExportJobsServiceImpl implements ExportJobsService {
 	private ExportJobsDao exportJobsDao;
@@ -477,5 +490,45 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		}
 		
 		return hEAttachmentList;
-	}		
+	}
+	
+	public UpdOperationResponseCollection sendMOS070MIUpdOperation(MOS070MI mos070MI, HEJob hEJob) throws Exception {
+		UpdOperationCollection getCollection = new UpdOperationCollection();
+		List<UpdOperationItem> getItemList = getCollection.getUpdOperationItem();		
+		
+		UpdOperationItem gItem = new UpdOperationItem();
+		au.com.tmha.mos070mi.updoperation.ObjectFactory factory = new au.com.tmha.mos070mi.updoperation.ObjectFactory();
+		JAXBElement<BigDecimal> createCompany = factory.createUpdOperationItemCONO(BigDecimal.valueOf(1));		
+		
+		gItem.setCONO(createCompany);
+		gItem.setMWNO(hEJob.getJobId());
+		
+		// Get OPNO from Job:duration
+		long opno = -1;
+		HJob hJob = exportJobsDao.selectJob(hEJob);
+		if(hJob != null) {
+			opno = Long.valueOf(hJob.getDuration());
+		}
+		gItem.setOPNO(BigDecimal.valueOf(opno));
+		
+		JAXBElement<XMLGregorianCalendar> createRPDT = factory.createUpdOperationItemRPDT(
+				StringUtil.getOnlyXMLGregorianCalendarForDate(hEJob.getJobDatetime()));		
+		gItem.setRPDT(createRPDT);		// Reporting Date
+		
+		JAXBElement<BigDecimal> createRTM1 = factory.createUpdOperationItemRTM1(
+				StringUtil.getOnlyDecimalTime(hEJob.getJobDatetime()));
+		gItem.setRTM1(createRTM1);
+		
+		// TODO : 
+		JAXBElement<BigDecimal> createUMAT = factory.createUpdOperationItemUMAT(BigDecimal.valueOf(60));
+		gItem.setUMAT(createUMAT);
+		
+		JAXBElement<BigDecimal> createREND = factory.createUpdOperationItemREND(BigDecimal.valueOf(1));
+		gItem.setREND(createREND);
+		
+		getItemList.add(gItem);
+		
+		UpdOperationResponseCollection getResponseCollection = mos070MI.updOperation(getCollection);
+		return getResponseCollection;
+	}
 }

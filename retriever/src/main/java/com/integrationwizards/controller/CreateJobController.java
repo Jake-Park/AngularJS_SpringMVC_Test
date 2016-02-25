@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.Spring;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.integrationwizards.common.ConstantUtil;
 import com.integrationwizards.common.Header;
 import com.integrationwizards.common.LogManager;
 import com.integrationwizards.common.LogUtil;
@@ -79,29 +81,33 @@ public class CreateJobController {
 			@RequestParam(value = "p5") String Company)
 	{   
     	LogUtil lu = null;
-    	try {
-    		lu = LogManager.getInstance().getLogObj(category);  
+    	try {    		
+    		String uuid = UUID.randomUUID().toString();
+    		lu = LogManager.getInstance().createLogObj(category, uuid);
+    		lu.updateStates(MWNO, ConstantUtil.started);
     		lu.info("Receive SmartLink From M3 : " + MWNO);
 	    	System.out.println("MWNO : " + MWNO);
 	    	System.out.println("PRNO : " + PRNO);
 	    	System.out.println("WHLO : " + WHLO);
 	    	System.out.println("USID : " + USID);
 	    	System.out.println("Company : " + Company);
-	    	
+	    	System.out.println("logId : " + uuid);
+	    		    	
 	    	Map<String, String> map = new HashMap<String, String>();
 	    	map.put("MWNO", MWNO);
 	    	map.put("PRNO", PRNO);
 	    	map.put("WHLO", WHLO);
 	    	map.put("USID", USID);
 	    	map.put("Company", Company);
+	    	map.put("logId", uuid);
 	    	
-	    	lu.info("Call M3 Web Service API");
+	    	lu.debug("Call M3 Web Service API");
 	    	createJobFromM3(map);
     	}
     	catch(Exception e) {
     		e.printStackTrace();
-    		lu.severe("Error Occurred getSmartLink : " + e.getMessage());
-    		LogManager.getInstance().closeFile(category);
+    		lu.error("Errored in getSmartLink : " + e);
+    		lu.updateStates(MWNO, ConstantUtil.errored);
     	}
     	
     	return null;
@@ -123,9 +129,8 @@ public class CreateJobController {
     	HSmartLink hSmartLink = null;
     	
     	try {
-			lu = LogManager.getInstance().getLogObj(category);    	
+			lu = LogManager.getInstance().getLogObj(mParam.get("logId"));    	
 	    	lu.info("Start createJobFromM3 : " + mParam);
-	    	mParam.put("logId", lu.getAbbrFilePath());
 	    		    	
 	    	hSmartLink = createJobService.insertSmartLink(mParam);
 	    	
@@ -138,7 +143,7 @@ public class CreateJobController {
     		Map<String, Object> jobService = new HashMap<String, Object>();
     		rParam.put("service", jobService);
     		
-    		lu.info("Start sendMOS100MI:Get");	    
+    		lu.debug("Start sendMOS100MI:Get");	    
     		// Get from MOS100MI
     		GetResponseCollection getResponseCollection = createJobService.sendMOS100MIGet(header.getMOS100MIPort(), mParam);
     		GetResponseItem getResponseItem = getResponseCollection.getGetResponseItem().get(0);
@@ -152,7 +157,7 @@ public class CreateJobController {
     		mParam.put("RORN", 	// Reference Order Number
     				String.valueOf(StringUtil.getBigDecimal(getResponseItem.getReferenceOrderNumber()))); 
     		
-    		lu.info("Start sendMOS100MI:GetMtrl");	
+    		lu.debug("Start sendMOS100MI:GetMtrl");	
 
     		//GetMtrlResponseCollection getMtrlResponseCollection = createJobService.sendMOS100MIGetMtrl(header.getMOS100MIPort(), mParam);
     		//GetMtrlResponseItem getMtrlResponseItem = getMtrlResponseCollection.getGetMtrlResponseItem().get(0);
@@ -164,7 +169,7 @@ public class CreateJobController {
     		// Set Operation Number
     		mParam.put("OPNO", StringUtil.nullToVoid(StringUtil.getBigDecimal(selWoElemResponseItem.getOperationNumber())));    		
     		
-    		lu.info("Start sendMOS104MI:LstOperElement");	
+    		lu.debug("Start sendMOS104MI:LstOperElement");
     		// Get Tech Id
     		LstOperElementResponseCollection lstOperElementResponseCollection = 
     				createJobService.sendMOS104MILstOperElement(header.getMOS104MIPort(), mParam);
@@ -177,7 +182,7 @@ public class CreateJobController {
     					StringUtil.getString(selWoElemResponseItem.getRegistrationNumberSite()));
     		}
     		
-    		lu.info("Start sendCOS100MI:GetMCOHead");	
+    		lu.debug("Start sendCOS100MI:GetMCOHead");	
     		GetMCOHeadResponseCollection getMCOHeadResponseCollection = 
     				createJobService.sendCOS100MIGetMCOHead(header.getCOS100MIPort(), mParam);
     		GetMCOHeadResponseItem getMCOHeadResponseItem = getMCOHeadResponseCollection.getGetMCOHeadResponseItem().get(0);
@@ -189,7 +194,7 @@ public class CreateJobController {
     				StringUtil.nullToVoid(StringUtil.getString(getMCOHeadResponseItem.getCustomer())));	//Customer Number 
     		jobMap.put("custId", StringUtil.getString(getMCOHeadResponseItem.getCustomer()));
     		
-    		lu.info("Start sendCRS610MI:GetAddress");	
+    		lu.debug("Start sendCRS610MI:GetAddress");	
     		// get Address    		
     		GetAddressResponseCollection getAddressResponseCollection = 
 			createJobService.sendCRS610MIGetAddress(header.getCRS610MIPort(), mParam);
@@ -198,7 +203,7 @@ public class CreateJobController {
     		
     		createJobService.setCRS610MIGetAddressData(getAddressResponseItem, rParam);
     		
-    		lu.info("Start sendMOS100MI:GetOp");	
+    		lu.debug("Start sendMOS100MI:GetOp");	
     		// Get Start Date (STDT)    		
     		GetOpResponseCollection getOpResponseCollection = 
 			createJobService.sendMOS100MIGetOp(header.getMOS100MIPort(), mParam);
@@ -216,12 +221,12 @@ public class CreateJobController {
     		jobMap.put("duration", String.valueOf(mParam.get("OPNO")));	//
     		
     		Job job = createJobService.setJobData(rParam);    
-    		createJob(job, hSmartLink);   		
-    		LogManager.getInstance().closeFile(category);
+    		createJob(job, hSmartLink);
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
-			lu.severe("Error in createJobFromM3 : " + e.getMessage());
+			lu.error("Errored in createJobFromM3 : " + e);
+			lu.updateStates(mParam.get("MWNO"), ConstantUtil.errored);
 			
 			// Update SmartLink data
 			try {
@@ -231,9 +236,6 @@ public class CreateJobController {
 			}
 			catch(Exception ee) {
 				ee.printStackTrace();
-			}
-			finally {
-				LogManager.getInstance().closeFile(category);
 			}
 		}
     	
@@ -249,11 +251,11 @@ public class CreateJobController {
      * @throws Exception
      */
 	public void createJob(Job job, HSmartLink hSmartLink) throws Exception {
-		LogUtil lu = LogManager.getInstance().getLogObj(category);
+		LogUtil lu = LogManager.getInstance().getLogObj(hSmartLink.getLogId());
 		
 		lu.info("Start inserting createJob into DB");		
-		HJob hJob = createJobService.insertCreateJob(job, lu.getAbbrFilePath());
-		lu.info("Finish inserting createJob into DB");
+		HJob hJob = createJobService.insertCreateJob(job, lu.getLogId());
+		lu.debug("Finish inserting createJob into DB");
 		
 		if(hSmartLink != null) {
 			createJobService.updateSmartLink(hSmartLink, "True");
@@ -262,8 +264,8 @@ public class CreateJobController {
 		if(header.isAccessToRetriever()) {
 			lu.info("Send createJob to Retriever");
 			Result result = createJobService.sendCreateJob(header.getRetrieverBarking(), job);
-			lu.info("Receive createJob from Retriever");
-			lu.info(StringUtil.objToMap(result));
+			lu.debug("Receive createJob from Retriever");
+			lu.debug(String.valueOf(StringUtil.objToMap(result)));
 			
 			System.out.println(result.toString());
 			System.out.println("Is Success: " + result.isSuccess());
@@ -271,16 +273,18 @@ public class CreateJobController {
 			System.out.println("Error Code: " + result.getErrorCode());
 		    System.out.println("Error Msg: " + result.getErrorMsg());
 		    
-		    lu.info("Start inserting the result of createJob");	
+		    lu.debug("Start inserting the result of createJob");	
 		    HResult hResult = createJobService.insertResult(result, hJob);
-		    lu.info("Finish inserting the result of createJob");
-		    lu.info(StringUtil.objToMap(result));
+		    lu.debug("Finish inserting the result of createJob");
+		    lu.debug(String.valueOf(StringUtil.objToMap(result)));
 		    
-		    lu.info("Start updating the result of createJob");	
+		    lu.debug("Start updating the result of createJob");	
 		    hJob = createJobService.updateCreatJob(hJob, hResult);
 		    lu.info("Finish updating the result of createJob");
 		    
-		    LogManager.getInstance().removeFile(category);
+		    // Update Log Master 
+		    lu.updateStates(hSmartLink.getMWNO(), ConstantUtil.finished);
+		    LogManager.getInstance().closeLogObj(hSmartLink.getLogId());
 		}
 		
 		hJob = createJobService.updateCreateJobIndex(hJob);
@@ -289,6 +293,7 @@ public class CreateJobController {
 	@Scheduled(fixedDelay = 20000)
 	private void reSmartLink() throws Exception {
 		LogUtil lu = null;
+		String MWNO = "";	// For error log
 		
 		try {
 			if(header.isAccessToM3()) {
@@ -297,26 +302,30 @@ public class CreateJobController {
 					System.out.println("---SmartLink--" + hSmartLink);
 					
 					// Re create log Object
-					lu = LogManager.getInstance().getLogObjById(category, hSmartLink.getLogId());
+					lu = LogManager.getInstance().getLogObj(category, hSmartLink.getLogId());
 					
+					lu.info("Retry to create SmartLink object");
 			    	Map<String, String> map = new HashMap<String, String>();
 			    	map.put("MWNO", hSmartLink.getMWNO());
+			    	MWNO = hSmartLink.getMWNO();
 			    	map.put("PRNO", hSmartLink.getPRNO());
 			    	map.put("WHLO", hSmartLink.getWHLO());
 			    	map.put("USID", hSmartLink.getUSID());
 			    	map.put("Company", hSmartLink.getCONO());
 			    	map.put("success", hSmartLink.getSuccess());
 			    	
+			    	lu.debug("Recall createJobFromM3" + map.get("MWNO"));
 			    	createJobFromM3(map);
 			    	createJobService.updateSmartLink(hSmartLink, "True");
+			    	lu.info("Finished to update SmartLink object");
 				}
 			}
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
-			if(lu != null) {
-				lu.severe("Error in reSmartLink : " + e.getMessage());
-				LogManager.getInstance().closeFile(category);
+			if(lu != null) {				
+				lu.error("Errored in reSmartLink : " + e);
+				lu.updateStates(MWNO, ConstantUtil.errored);
 			}
 		}
 		
@@ -326,6 +335,7 @@ public class CreateJobController {
 	@Scheduled(fixedDelay = 20000)
 	private void reCreateJob() throws Exception {
 		LogUtil lu = null;
+		String MWNO = "";	// For error log
 		
 		try {
 			
@@ -333,9 +343,10 @@ public class CreateJobController {
 				List<HJob> hJobList = createJobService.selectCreateJob();
 				for(HJob hJob : hJobList) {				
 					System.out.println("---job--" + hJob);
+					MWNO = hJob.getJobId();
 					
 					// Re create log Object
-					lu = LogManager.getInstance().getLogObjById(category, hJob.getLogId());
+					lu = LogManager.getInstance().getLogObj(category, hJob.getLogId());
 					
 					Set<HJobAsset> jobAssetSet = hJob.getAssets();
 					
@@ -356,19 +367,17 @@ public class CreateJobController {
 					lu.info("Send Re createJob to Retriever");
 					// retry sending createJob 
 					Result result = createJobService.reSendCreateJob(header.getRetrieverBarking(), hJob);
-					lu.info("Receive Re createJob from Retriever");
-					lu.info(StringUtil.objToMap(result));
+					lu.debug("Receive Re createJob from Retriever");
+					lu.debug(String.valueOf(StringUtil.objToMap(result)));
 					
-				    lu.info("Start inserting the result of Re createJob");	
+				    lu.debug("Start inserting the result of Re createJob");	
 				    HResult hResult = createJobService.insertResult(result, hJob);
-				    lu.info("Finish inserting the result of Re createJob");
-				    lu.info(StringUtil.objToMap(result));
+				    lu.debug("Finish inserting the result of Re createJob");
+				    lu.debug(String.valueOf(StringUtil.objToMap(result)));
 				    
-				    lu.info("Start updating the result of Re createJob");	
+				    lu.debug("Start updating the result of Re createJob");	
 				    hJob = createJobService.updateCreatJob(hJob, hResult);
 				    lu.info("Finish updating the result of Re createJob");
-				    
-				    LogManager.getInstance().removeFile(category);
 				}
 			}
     	}
@@ -376,8 +385,8 @@ public class CreateJobController {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			if(lu != null) {
-				lu.severe("Error in reCreateJob : " + e.getMessage());
-				LogManager.getInstance().closeFile(category);
+				lu.error("Errored in reCreateJob : " + e);
+				lu.updateStates(MWNO, ConstantUtil.errored);
 			}
 		}
 	}
@@ -409,16 +418,12 @@ public class CreateJobController {
 			job.setJobType("Default");
 			job.setPriority(new Boolean(false));
 			
-			lu.info(StringUtil.objToMap(job));
+			lu.info(String.valueOf(StringUtil.objToMap(job)));
 	    	
 	    	createJob(job, null);
     	}
 		catch(Exception e) {
-			lu.severe(e.getMessage());
-		}
-		finally {
-			lu.removeFile();
-			LogManager.getInstance().closeLogObj(category);
+			lu.error(e.getMessage());
 		}    	
     	
     	return job;

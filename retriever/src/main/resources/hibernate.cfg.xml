@@ -10,7 +10,7 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">sd1377</property>
         <!-- Connection Pool Size -->
-        <property name="hibernate.connection.pool_size">5</property>
+        <property name="hibernate.connection.pool_size">10</property>
          
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>
@@ -35,8 +35,7 @@
  
  
         <!-- mapping file, we can use Bean annotations too -->
-        <mapping class="com.integrationwizards.model.HJob"/>
-        <mapping class="com.integrationwizards.model.HJobAsset"/>
-        <mapping class="com.integrationwizards.model.HJobService"/>        
+        <mapping class="com.integrationwizards.model.LogMaster"/>
+        <mapping class="com.integrationwizards.model.LogDetail"/>
     </session-factory>
 </hibernate-configuration>

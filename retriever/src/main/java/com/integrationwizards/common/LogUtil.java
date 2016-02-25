@@ -1,222 +1,114 @@
 package com.integrationwizards.common;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.FileHandler;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
-/**
- * Every transaction has an own log file and this file is generated when a transaction is occurred
- * and after the end of transaction, this log file is deleted
- * Log Leverl
- * 
-    SEVERE (highest value)
-    WARNING
-    INFO
-    CONFIG
-    FINE
-    FINER
-    FINEST (lowest value)
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
- * @author User
- */
+import com.integrationwizards.model.LogDetail;
+import com.integrationwizards.model.LogMaster;
+
 public class LogUtil {
-    Logger logger = null;
-    FileHandler fh;
-    String abbrFilePath;
-    String fullFilePath;
-    String category;
+	private String logId;
+	private String category;
+	Logger logger = null;
 	
-	public LogUtil(String category) {
+	public LogUtil() {
+	}
+		
+	public LogUtil(String category, String logId) {
 		this.category = category;
-		createLogFile();
+		this.logId = logId;
 	}
 	
-	public LogUtil(String category, String id) {
-		this.category = category;
-		createLogFile(id);
+	public String getLogId() {
+		return this.logId;
 	}
 	
-	/**
-	 * Create log directory with current date
-	 * @param path
-	 * @return
-	 */
-	public String createLogDirectory(String path) {
-		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-		String today = df2.format(new Date());
-		boolean retBool = true;
-		
-		//System.out.println(today);
-		
-		File dir = new File(path + today);
-		if(!(dir.exists() && dir.isDirectory())) {
-			retBool = dir.mkdir();
-		}
-		
-		return retBool ? today : null;		
-	}
-
-	/**
-	 * Create log file for every transaction	 * 
-	 * @param category
-	 */
-	public void createLogFile() {
-		logger = Logger.getLogger(category); 
-		String path = ConstantUtil.logFileDirectory;
-		String dir = createLogDirectory(path);		
-		if(dir == null) {
-			System.out.println("Fail to Create Log Directory!");
-			return;
-		}
-		path = path + dir;
-		
-		SimpleDateFormat nowTime = new SimpleDateFormat("HHmmss");
-		String now = nowTime.format(new Date());
-		
-		final File folder = new File(path);
+	public void updateStates(String key1, int state) {
+		Session session = null;
+		Transaction trans = null;
 		
 		try {
-			int maxFnum = getMaxFileNumber(folder, category);
-			abbrFilePath = dir + File.separator + category + "_" + (maxFnum + 1) + "_" + now + ".log";
-			fullFilePath = path + File.separator + category + "_" + (maxFnum + 1) + "_" + now + ".log";
-	        // This block configure the logger with handler and formatter  
-	        fh = new FileHandler(fullFilePath);  
-	        logger.addHandler(fh);
-	        fh.setFormatter(new Formatter2()); 
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	/**
-	 * Create log file for every transaction	 * 
-	 * @param category
-	 */
-	public void createLogFile(String path) {
-		logger = Logger.getLogger(category);
-		
-		try {
-			abbrFilePath = path;
-			fullFilePath = ConstantUtil.logFileDirectory + path;
-	        // This block configure the logger with handler and formatter 
-			fh = new FileHandler(fullFilePath, true); 
+			session = LogManager.getInstance().getSession();
+			trans = session.beginTransaction();
 			
-	        logger.addHandler(fh);
-	        fh.setFormatter(new Formatter2()); 
+			LogMaster lm = new LogMaster();
+			lm.setLogId(logId);
+			lm.setKey1(key1);	// MWNO : Work Order Number
+			lm.setKey2(category);
+			lm.setState(state);
+			
+			if(session != null) {
+				session.saveOrUpdate(lm);
+				trans.commit();
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			
+			if(trans != null) {
+				trans.rollback();
+			}
 		}
 	}
 	
-	public void info(Object message) {
-		if(fh != null && logger != null && message != null) {
-			logger.info(message.toString());			
-		}
+	public void debug(String msg) {
+		detail(1, msg);
 	}
 	
-	public void severe(Object message) {
-		if(fh != null && logger != null && message != null) {
-			logger.severe(message.toString());			
-		}
+	public void info(String msg) {
+		detail(2, msg);
 	}
 	
-	/**
-	 * Get Max File index number - Each log file has an index with ascending order
-	 * @param folder
-	 * @param prefix
-	 * @return
-	 * @throws Exception
-	 */
-	public int getMaxFileNumber(File folder, String prefix) throws Exception {		
-		int fIdx = 0;
+	public void error(String msg) {
+		detail(3, msg);
+	}	
+	
+	public void detail(int level, String msg) {
+		Session session = null;
+		Transaction trans = null;
 		
-	    for (File fileEntry : folder.listFiles()) {
-	        if (!fileEntry.isDirectory()) {
-	        	String fileName = fileEntry.getName();
-	        	//System.out.println(fileName.indexOf("_") + "-----" + fileName);
-	        	
-	        	if(fileName.indexOf(prefix + "_") != -1 && fileName.indexOf("_") > 0) {
-	        		int startPos = fileName.indexOf("_") + 1;
-	        		int endPos = fileName.lastIndexOf("_");
-	        		//System.out.println("--" + startPos + "_" + endPos + "-----" + fileName.substring(startPos, endPos));
-	        		if(startPos >= endPos) {
-	        			continue;
-	        		}	        		
-	        		int tNum = Integer.parseInt(fileName.substring(startPos, endPos));
-	        		//System.out.println(fIdx + "--" + tNum);
-	        		if(tNum > fIdx) {
-	        			fIdx = tNum;
-	        		}
-	        	}
-	        }
-	    }
-	    
-		return fIdx;
-	}
-	
-	public String getFullFilePath() {
-		return fullFilePath;
-	}
-	
-	public String getAbbrFilePath() {
-		return abbrFilePath;
-	}
-	
-	public void removeFile() {		
 		try {
-			if(fh != null) {
-				fh.close();
-			}
-			if(fullFilePath != null) {
-				File f = new File(fullFilePath);
-				if(f != null) {
-					f.delete();
+			session = LogManager.getInstance().getSession();
+			trans = session.beginTransaction();
+			
+			LogDetail ld = new LogDetail();
+			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+			StackTraceElement stack = stackTraceElements[3];
+						
+			ld.setLogId(logId);
+			if(stack != null) {
+				logger = Logger.getLogger(stack.getClass());
+				ld.setClassMethod(stack.getClassName() + ":" + stack.getMethodName());
+				
+				if(logger != null) {
+					if(level == 1) {
+						logger.info(msg);
+					}
+					else if(level == 2) {
+						logger.debug(msg);
+					}
+					else {
+						logger.error(msg);
+					}
 				}
-			}		
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void closeFile() {		
-		try {
-			if(fh != null) {
-				fh.flush();
-				fh.close();
+			}
+			
+			ld.setLogLevel(level);	// 1 : INFO, 2 : DEBUG, 3 : ERROR
+			ld.setText(msg);
+			
+			if(session != null) {
+				session.save(ld);
+				trans.commit();
 			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			
+			if(trans != null) {
+				trans.rollback();
+			}
 		}
 	}
-
-}
-
-class Formatter2 extends Formatter {
-	@Override
-    public String format(LogRecord record) {
-        SimpleDateFormat logTime = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-        Calendar cal = new GregorianCalendar();
-        cal.setTimeInMillis(record.getMillis());
-        return record.getLevel()
-                + logTime.format(cal.getTime())
-                + " || "
-                + record.getMessage() + "\n";
-    }
 }

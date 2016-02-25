@@ -3,6 +3,7 @@ package com.integrationwizards.common;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -196,6 +197,42 @@ public class StringUtil {
 		}
 		
 		return date1;
+	}
+	
+	public static XMLGregorianCalendar getOnlyXMLGregorianCalendarForDate(Date date) {
+		XMLGregorianCalendar date1 = null;
+		
+		try {
+			Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+		    
+			date1 = DatatypeFactory.newInstance().newXMLGregorianCalendar();
+			date1.setYear(cal.get(Calendar.YEAR));
+			date1.setMonth(cal.get(Calendar.MONTH));
+			date1.setDay(cal.get(Calendar.DAY_OF_MONTH));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	    
+	    return date1;
+	}
+	
+	public static BigDecimal getOnlyDecimalTime(Date date) {
+		BigDecimal time = null;
+		
+		try {
+			Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+		    
+		    String timeStr = cal.get(Calendar.HOUR) + "" + cal.get(Calendar.MINUTE) + "" + cal.get(Calendar.SECOND);
+		    time = BigDecimal.valueOf(Long.valueOf(timeStr));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return time;
 	}
 	
 	

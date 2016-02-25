@@ -73,6 +73,9 @@
                 <value>com.integrationwizards.model.HETime</value>
                 
                 <value>com.integrationwizards.model.HSmartLink</value>                      
+                
+                <value>com.integrationwizards.model.LogMaster</value>
+                <value>com.integrationwizards.model.LogDetail</value>
             </list>
         </property> 
         <property name="hibernateProperties">
