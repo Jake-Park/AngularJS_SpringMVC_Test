@@ -48,6 +48,7 @@
         <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
+            	<!--  CreateJob, StatusUpdates -->
                 <value>com.integrationwizards.model.HJob</value>
                 <value>com.integrationwizards.model.HJobAsset</value>
                 <value>com.integrationwizards.model.HJobService</value>
@@ -56,6 +57,7 @@
                 <value>com.integrationwizards.model.HResultStatusUpdates</value>
                 <value>com.integrationwizards.model.HEStatus</value>
                 
+                <!-- ExportJobs -->
                 <value>com.integrationwizards.model.HResultExportJobs</value>
                 <value>com.integrationwizards.model.HEJob</value>
                 <value>com.integrationwizards.model.HEOhs</value>
@@ -76,12 +78,17 @@
                 
                 <value>com.integrationwizards.model.LogMaster</value>
                 <value>com.integrationwizards.model.LogDetail</value>
+                
+                <!-- Admin -->
+                <value>com.integrationwizards.admin.model.CodeInfo</value>
+                <value>com.integrationwizards.admin.model.AdminInfo</value>
             </list>
         </property> 
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>    
-                <prop key="hibernate.show_sql">true</prop>           
+                <prop key="hibernate.show_sql">true</prop>     
+                <prop key="hibernate.connection.pool_size">10</prop>      
             </props>
         </property>
 <!--     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfigurationWithWildcard"/>

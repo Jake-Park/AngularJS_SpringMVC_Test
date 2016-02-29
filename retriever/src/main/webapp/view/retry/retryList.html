@@ -1,0 +1,51 @@
+
+
+
+        <div ng-controller="RetryController" ng-init="getList(1)" class="content col-md-12 col-md-12 main">
+          <h1 class="page-header">Messages</h1>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th width="5%">#</th>                  
+                  <th width="25%">Tx Id</th>
+                  <th width="10%">Category</th>
+                  <th width="10%">WO Number</th>
+                  <th width="15%">Date</th>
+                  <th width="5%">Process</th>
+                  <th width="5%">State</th>
+                  <th width="15%">Error</th>
+                  <th width="10%">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="list in lists">
+                  <td>{{((pageIndex - 1) * 10) + $index+1}}</td>
+                  <td><a ng-href="#logDetail/{{list.logId}}">{{list.logId}}</a></td>
+                  <td>{{list.key2}}</td>
+                  <td>{{list.key1}}</td>
+                  <td>{{list.createdDate}}</td>
+                  <td>{{list.subProcess}}</td>
+                  <td>{{list.state}}</td>                  
+                  <td class="text-danger">{{list.error}}</td>
+                  <td>
+                  	<button type="button" class="btn btn-default btn-xs" ng-click="retry(list.logId, list.subProcess, list.key1)">Retry</button>
+					</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+			<nav style="margin:0 auto; width:300px;">
+				<ul class="pagination">
+				   <li class="{{pagination.hasPrevious()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() - 1)">&laquo;</a></li>
+				   <li ng-show="pagination.hasPrevious()"><a href="" ng-click="getList(pagination.current() - 1)">{{pagination.current() - 1}}</a></li>
+				   <li ng-hide="pagination.hasPrevious()"><span>&nbsp;</span></li>
+				   <li class="active"><a href="" ng-click="getList(pagination.current())">{{pagination.current()}}</a></li>
+				   <li ng-show="pagination.hasNext()"><a href="" ng-click="getList(pagination.current() + 1)">{{pagination.current() + 1}}</a></li>
+				   <li class="{{pagination.hasNext()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() + 1)">&raquo;</a></li>
+				</ul>	  
+			</nav>
+
+        </div>

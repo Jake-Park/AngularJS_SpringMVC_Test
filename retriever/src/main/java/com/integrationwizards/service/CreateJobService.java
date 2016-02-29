@@ -54,8 +54,7 @@ public interface CreateJobService {
 	/**
 	 * Call MOS100MI:Get API 
 	 */
-	public GetResponseCollection sendMOS100MIGet(MOS100MI port, 
-			Map<String, String> param) throws Exception;
+	public GetResponseCollection sendMOS100MIGet(Map<String, String> param) throws Exception;
 	
 	/**
 	 * Set the result from MOS100MI:Get to Map 
@@ -66,20 +65,17 @@ public interface CreateJobService {
 	/**
 	 * Call MOS195MI:SelWoElem API 
 	 */
-	public SelWoElemResponseCollection sendMOS195MISelWoElem(MOS195MI port, 
-			Map<String, String> param) throws Exception;
+	public SelWoElemResponseCollection sendMOS195MISelWoElem(Map<String, String> param) throws Exception;
 	
 	/**
 	 * Call MOS100MI:GetMtrl API 
 	 */
-	public GetMtrlResponseCollection sendMOS100MIGetMtrl(MOS100MI port, 
-			Map<String, String> param) throws Exception;
+	public GetMtrlResponseCollection sendMOS100MIGetMtrl(Map<String, String> param) throws Exception;
 	
 	/**
 	 * Call CRS610MI:GetAddress API 
 	 */
-	public GetAddressResponseCollection sendCRS610MIGetAddress(CRS610MI crs610MI, 
-			Map<String, String> param) throws Exception;
+	public GetAddressResponseCollection sendCRS610MIGetAddress(Map<String, String> param) throws Exception;
 
 	/**
 	 * Set the result from CRS610MI:GetAddress to Map 
@@ -90,14 +86,12 @@ public interface CreateJobService {
 	/**
 	 * Call MOS100MI:GetOp API 
 	 */
-	public GetOpResponseCollection sendMOS100MIGetOp(MOS100MI port, 
-			Map<String, String> param) throws Exception;
+	public GetOpResponseCollection sendMOS100MIGetOp(Map<String, String> param) throws Exception;
 
 	/**
 	 * Call MOS104MI:LstOperElement API 
 	 */
-	public LstOperElementResponseCollection sendMOS104MILstOperElement(MOS104MI mos104MI, 
-			Map<String, String> param) throws Exception;
+	public LstOperElementResponseCollection sendMOS104MILstOperElement(Map<String, String> param) throws Exception;
 	
 	/**
 	 * Set the result from MOS104MI:LstOperElement to Map 
@@ -108,8 +102,7 @@ public interface CreateJobService {
 	/**
 	 * Call COS100MI:GetMCOHead API 
 	 */
-	public GetMCOHeadResponseCollection sendCOS100MIGetMCOHead(COS100MI port, 
-			Map<String, String> param) throws Exception;
+	public GetMCOHeadResponseCollection sendCOS100MIGetMCOHead(Map<String, String> param) throws Exception;
 	
 	/**
 	 * Set the result from COS100MI:GetMCOHead to Map 
@@ -130,7 +123,7 @@ public interface CreateJobService {
 	/**
 	 * Send a createJob request to Retriever
 	 */
-	public Result sendCreateJob(RetrieverBarking port, Job job) throws Exception;
+	public Result sendCreateJob(Job job) throws Exception;
 	
 	/**
 	 * Insert the result of CreateJob from Retriever into DB
@@ -164,5 +157,5 @@ public interface CreateJobService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Result reSendCreateJob(RetrieverBarking port, HJob job) throws Exception;
+	public Result reSendCreateJob(HJob job) throws Exception;
 }

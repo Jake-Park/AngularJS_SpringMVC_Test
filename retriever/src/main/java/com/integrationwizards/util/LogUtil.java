@@ -1,4 +1,4 @@
-package com.integrationwizards.common;
+package com.integrationwizards.util;
 
 
 import org.apache.log4j.Logger;
@@ -25,7 +25,7 @@ public class LogUtil {
 		return this.logId;
 	}
 	
-	public void updateStates(String key1, int state) {
+	public void updateStates(String key1, String state, String subProcess, String errorMsg) {
 		Session session = null;
 		Transaction trans = null;
 		
@@ -38,6 +38,8 @@ public class LogUtil {
 			lm.setKey1(key1);	// MWNO : Work Order Number
 			lm.setKey2(category);
 			lm.setState(state);
+			lm.setSubProcess(subProcess);
+			lm.setError(errorMsg);
 			
 			if(session != null) {
 				session.saveOrUpdate(lm);
@@ -54,18 +56,18 @@ public class LogUtil {
 	}
 	
 	public void debug(String msg) {
-		detail(1, msg);
+		detail("DEB", msg);
 	}
 	
 	public void info(String msg) {
-		detail(2, msg);
+		detail("INF", msg);
 	}
 	
 	public void error(String msg) {
-		detail(3, msg);
+		detail("ERR", msg);
 	}	
 	
-	public void detail(int level, String msg) {
+	public void detail(String level, String msg) {
 		Session session = null;
 		Transaction trans = null;
 		
@@ -83,11 +85,11 @@ public class LogUtil {
 				ld.setClassMethod(stack.getClassName() + ":" + stack.getMethodName());
 				
 				if(logger != null) {
-					if(level == 1) {
-						logger.info(msg);
-					}
-					else if(level == 2) {
+					if(level.equals("DEB")) {
 						logger.debug(msg);
+					}
+					else if(level.equals("INF")) {
+						logger.info(msg);
 					}
 					else {
 						logger.error(msg);

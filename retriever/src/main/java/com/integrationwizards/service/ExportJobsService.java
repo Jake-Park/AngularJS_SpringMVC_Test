@@ -11,7 +11,7 @@ import au.com.tmha.mos070mi.MOS070MI;
 import au.com.tmha.mos070mi.updoperation.UpdOperationResponseCollection;
 
 public interface ExportJobsService {
-	public ResultExportJobs sendExportJobs(RetrieverBarking changeStudentDetailsImplPort) throws Exception;
+	public ResultExportJobs sendExportJobs() throws Exception;
 	public HResultExportJobs insertResultExportJobs(ResultExportJobs result) throws Exception;
-	public UpdOperationResponseCollection sendMOS070MIUpdOperation(MOS070MI mos070MI, HEJob hEJob) throws Exception;
+	public UpdOperationResponseCollection sendMOS070MIUpdOperation(HEJob hEJob) throws Exception;
 }

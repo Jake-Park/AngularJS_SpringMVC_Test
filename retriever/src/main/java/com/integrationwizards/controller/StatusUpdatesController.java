@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
-import com.integrationwizards.common.ConstantUtil;
-import com.integrationwizards.common.Header;
-import com.integrationwizards.common.LogManager;
-import com.integrationwizards.common.LogUtil;
-import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.model.HResultStatusUpdates;
 import com.integrationwizards.service.StatusUpdatesService;
+import com.integrationwizards.util.CodeUtil;
+import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.HeaderFactory;
+import com.integrationwizards.util.LogManager;
+import com.integrationwizards.util.LogUtil;
+import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.ResultExportStatusUpdates;
 
@@ -20,8 +21,6 @@ import au.com.retriever.test.barking.ResultExportStatusUpdates;
 public class StatusUpdatesController {
 	@Autowired
 	private StatusUpdatesService statusUpdatesService;
-	@Autowired
-	private Header header;	
 	private final String category = "statusUpdates";
 	
 	//@Scheduled(fixedDelay = 50000)
@@ -34,7 +33,7 @@ public class StatusUpdatesController {
 			lu = LogManager.getInstance().createLogObj(category, uuid);
 			
 			lu.info("Start StatusUpdates");
-			ResultExportStatusUpdates result = statusUpdatesService.sendStatusUpdates(header.getRetrieverBarking());
+			ResultExportStatusUpdates result = statusUpdatesService.sendStatusUpdates();
 			
 			lu.info("Receiving data from statusUpdates");
 			lu.info(String.valueOf(StringUtil.objToMap(result)));
@@ -43,7 +42,8 @@ public class StatusUpdatesController {
 		}
 		catch(Exception e) {
 			lu.error("Errored in statusUpdates" + e);
-			lu.updateStates("", ConstantUtil.errored);
+			lu.updateStates("", CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"), null, 
+					"Errored in statusUpdates");
 		}
 		finally {
 			LogManager.getInstance().closeLogObj(uuid);

@@ -1,11 +1,10 @@
-package com.integrationwizards.common;
+package com.integrationwizards.util;
 
-import java.io.IOException;
-import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.ws.BindingProvider;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import au.com.retriever.test.barking.RetrieverBarking;
@@ -25,10 +24,66 @@ import au.com.tmha.mos104mi.MOS104MIService;
 import au.com.tmha.mos195mi.MOS195MI;
 import au.com.tmha.mos195mi.MOS195MIService;
 
-@Component
-public class Header {
-	private boolean accessToRetriever = false;
-	private boolean accessToM3 = false;
+public class HeaderFactory {
+	private Map<String, Object> headerMap = null;
+	private static HeaderFactory instance = null;
+	
+	public HeaderFactory() {
+		headerMap = new HashMap<String, Object>();
+	}
+	
+	public static HeaderFactory getInstance() {
+		if(instance == null) {
+			instance = new HeaderFactory();
+		}
+		
+		return instance;
+	}
+	
+	public Object getHeader(String key) {
+		if(key.equals(ConstantUtil.RetrieverBarking)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getRetrieverBarking());
+			}
+		}
+		else if(key.equals(ConstantUtil.MOS104MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getMOS104MIPort());
+			}
+		}
+		else if(key.equals(ConstantUtil.MOS100MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getMOS100MIPort());
+			}
+		}
+		else if(key.equals(ConstantUtil.CRS610MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getCRS610MIPort());
+			}
+		}
+		else if(key.equals(ConstantUtil.COS100MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getCOS100MIPort());
+			}
+		}
+		else if(key.equals(ConstantUtil.MOS195MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getMOS195MIPort());
+			}
+		}
+		else if(key.equals(ConstantUtil.MOS070MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getMOS070MIPort());
+			}
+		}
+		else if(key.equals(ConstantUtil.MOS057MI)) {
+			if(headerMap.get(key) == null) {
+				headerMap.put(key, getMOS057MIPort());
+			}
+		}
+		
+		return headerMap.get(key);
+	}
 	
 	public RetrieverBarking getRetrieverBarking() {
 		RetrieverBarkingService service = new RetrieverBarkingService();
@@ -130,46 +185,5 @@ public class Header {
 		    BindingProvider.USERNAME_PROPERTY, "MECAPI");
 		((BindingProvider)obj).getRequestContext().put(
 		    BindingProvider.PASSWORD_PROPERTY, "M3cus3r");
-	}
-	
-	@Scheduled(fixedDelay = 10000)
-	private void sendPing() {
-		// check Retriever server
-		setAccessToRetriever(sendPing(ConstantUtil.retrieverServerURL, 80));
-		// check M3 server
-		setAccessToM3(sendPing(ConstantUtil.m3ServerURL, ConstantUtil.m3ServerPort));
-	}	
-	
-	public boolean sendPing(String URL, int port) {
-		Socket socket = null;
-		boolean reachable = false;
-		try {
-		    socket = new Socket(URL, port);
-		    reachable = true;
-		}
-		catch(IOException e) {
-			System.out.println(e.getMessage() + " => " + URL + ":" + port);
-		}
-		finally {            
-		    if (socket != null) try { socket.close(); } catch(IOException e) {}
-		}
-		
-		return reachable;
-	}
-
-	public boolean isAccessToRetriever() {
-		return accessToRetriever;
-	}
-	
-	public void setAccessToRetriever(boolean accessToRetriever) {
-		this.accessToRetriever = accessToRetriever;
-	}
-
-	public boolean isAccessToM3() {
-		return accessToM3;
-	}
-
-	public void setAccessToM3(boolean accessToM3) {
-		this.accessToM3 = accessToM3;
 	}
 }

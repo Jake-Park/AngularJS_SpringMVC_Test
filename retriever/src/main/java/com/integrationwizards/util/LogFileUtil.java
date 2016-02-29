@@ -1,4 +1,4 @@
-package com.integrationwizards.common;
+package com.integrationwizards.util;
 
 import java.io.File;
 import java.lang.reflect.Constructor;

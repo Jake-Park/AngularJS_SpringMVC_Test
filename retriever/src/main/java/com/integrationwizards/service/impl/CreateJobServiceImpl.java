@@ -13,16 +13,11 @@ import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.BindingProvider;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.integrationwizards.common.ConstantUtil;
-import com.integrationwizards.common.LogManager;
-import com.integrationwizards.common.LogUtil;
-import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.dao.CreateJobDao;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HJobAsset;
@@ -30,6 +25,12 @@ import com.integrationwizards.model.HJobService;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.service.CreateJobService;
+import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.DateUtil;
+import com.integrationwizards.util.HeaderFactory;
+import com.integrationwizards.util.LogManager;
+import com.integrationwizards.util.LogUtil;
+import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.Job;
 import au.com.retriever.test.barking.JobAsset;
@@ -63,7 +64,6 @@ import au.com.tmha.mos104mi.lstoperelement.LstOperElementItem;
 import au.com.tmha.mos104mi.lstoperelement.LstOperElementResponseCollection;
 import au.com.tmha.mos104mi.lstoperelement.LstOperElementResponseItem;
 import au.com.tmha.mos195mi.MOS195MI;
-import au.com.tmha.mos195mi.MOS195MIService;
 import au.com.tmha.mos195mi.selwoelem.SelWoElemCollection;
 import au.com.tmha.mos195mi.selwoelem.SelWoElemItem;
 import au.com.tmha.mos195mi.selwoelem.SelWoElemResponseCollection;
@@ -129,7 +129,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Call MOS100MI:Get API 
 	 */
-	public GetResponseCollection sendMOS100MIGet(MOS100MI mos100MI, Map<String, String> param) throws Exception {
+	public GetResponseCollection sendMOS100MIGet(Map<String, String> param) throws Exception {
 		GetCollection getCollection = new GetCollection();
 		List<GetItem> getItemList = getCollection.getGetItem();		
 		
@@ -146,10 +146,9 @@ public class CreateJobServiceImpl implements CreateJobService {
 		gItem.setPlanningArea(createPlanningArea);		
 		
 		getItemList.add(gItem);
-		
-		GetResponseCollection getResponseCollection = mos100MI.get(getCollection);
-		
-		return getResponseCollection;
+				
+		return ((MOS100MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.MOS100MI)).get(getCollection);
 	}
 	
 	/**
@@ -163,9 +162,9 @@ public class CreateJobServiceImpl implements CreateJobService {
 		jobMap.put("priority", (priority == 0 ? "false" : "true"));
 		
 		jobMap.put("jobDesc", StringUtil.getString(getResponseItem.getService()));
-		jobMap.put("plannedStartDate", StringUtil.getStringCalendar(getResponseItem.getRequestedStartDate()));
+		jobMap.put("plannedStartDate", DateUtil.getStringCalendar(getResponseItem.getRequestedStartDate()));
 		jobMap.put("plannedStartTime", StringUtil.getBigDecimal(getResponseItem.getRequestedStartTime()));
-		jobMap.put("plannedEndDate", StringUtil.getStringCalendar(getResponseItem.getRequestedFinishDate()));
+		jobMap.put("plannedEndDate", DateUtil.getStringCalendar(getResponseItem.getRequestedFinishDate()));
 		jobMap.put("plannedEndTime", StringUtil.getBigDecimal(getResponseItem.getRequestedFinishTime()));
 		
 		String plannedStartStr = StringUtil.nullToVoid(jobMap.get("plannedStartDate")) 
@@ -177,8 +176,8 @@ public class CreateJobServiceImpl implements CreateJobService {
 		Date plannedStart = format.parse(plannedStartStr);
 		Date plannedEnd = format.parse(plannedEndStr);
 		
-		jobMap.put("plannedStart", StringUtil.getXMLGregorianCalendar(plannedStart));
-		jobMap.put("plannedEnd", StringUtil.getXMLGregorianCalendar(plannedEnd));
+		jobMap.put("plannedStart", DateUtil.getXMLGregorianCalendar(plannedStart));
+		jobMap.put("plannedEnd", DateUtil.getXMLGregorianCalendar(plannedEnd));
 
 		// Asset
 		Map<String, Object> assetMap = rParam.get("asset");
@@ -197,7 +196,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Call MOS100MI:GetMtrl API 
 	 */
-	public GetMtrlResponseCollection sendMOS100MIGetMtrl(MOS100MI port, Map<String, String> param) throws Exception {
+	public GetMtrlResponseCollection sendMOS100MIGetMtrl(Map<String, String> param) throws Exception {
 		GetMtrlCollection getMtrlCollection = new GetMtrlCollection();
 		List<GetMtrlItem> getMtrlItemList = getMtrlCollection.getGetMtrlItem();		
 		
@@ -209,17 +208,16 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getMtrlItem.setWorkOrderNumber(param.get("MWNO")); 	// WO number
 		//getMtrlItem.setYesNo(value);
 		
-		getMtrlItemList.add(getMtrlItem);	
-		GetMtrlResponseCollection getResponseMtrlCollection = port.getMtrl(getMtrlCollection);
+		getMtrlItemList.add(getMtrlItem);
 		
-		return getResponseMtrlCollection;
+		return ((MOS100MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.MOS100MI)).getMtrl(getMtrlCollection);
 	}
 	
 	/**
 	 * Call MOS195MI:SelWoElem API 
 	 */
-	public SelWoElemResponseCollection sendMOS195MISelWoElem(MOS195MI port, 
-			Map<String, String> param) throws Exception {
+	public SelWoElemResponseCollection sendMOS195MISelWoElem(Map<String, String> param) throws Exception {
 		
 		SelWoElemCollection selWoElemCollection = new SelWoElemCollection();
 		List<SelWoElemItem> selWoElemItemList = selWoElemCollection.getSelWoElemItem();
@@ -236,16 +234,15 @@ public class CreateJobServiceImpl implements CreateJobService {
 		selWoElemItem.setWorkOrderNumber(createWorkOrderNumber);
 
 		selWoElemItemList.add(selWoElemItem);
-		
-		SelWoElemResponseCollection selWoElemResponseCollection = port.selWoElem(selWoElemCollection);
-		
-		return selWoElemResponseCollection;
+				
+		return ((MOS195MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.MOS195MI)).selWoElem(selWoElemCollection);
 	}
 	
 	/**
 	 * Call CRS610MI:GetAddress API 
 	 */
-	public GetAddressResponseCollection sendCRS610MIGetAddress(CRS610MI crs610MI, Map<String, String> param) throws Exception {
+	public GetAddressResponseCollection sendCRS610MIGetAddress(Map<String, String> param) throws Exception {
 		GetAddressCollection getAddressCollection = new GetAddressCollection();
 		List<GetAddressItem> getAddressItemList = getAddressCollection.getGetAddressItem();		
 		
@@ -261,9 +258,8 @@ public class CreateJobServiceImpl implements CreateJobService {
 		
 		getAddressItemList.add(getAddressItem);
 		
-		GetAddressResponseCollection getAddressResponseCollection = crs610MI.getAddress(getAddressCollection);
-		
-		return getAddressResponseCollection;
+		return ((CRS610MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.CRS610MI)).getAddress(getAddressCollection);
 	}
 	
 	/**
@@ -285,7 +281,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Call MOS100MI:GetOp API 
 	 */
-	public GetOpResponseCollection sendMOS100MIGetOp(MOS100MI port, Map<String, String> param) throws Exception {
+	public GetOpResponseCollection sendMOS100MIGetOp(Map<String, String> param) throws Exception {
 		GetOpCollection getOpCollection = new GetOpCollection();
 		List<GetOpItem> getOpItemList = getOpCollection.getGetOpItem();		
 		
@@ -296,16 +292,16 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getOpItem.setWorkOrderNumber(param.get("MWNO")); 	// WO number
 		//getOpItem.setYesNo(value);
 		
-		getOpItemList.add(getOpItem);	
-		GetOpResponseCollection getResponseOpCollection = port.getOp(getOpCollection);
+		getOpItemList.add(getOpItem);
 		
-		return getResponseOpCollection;
+		return ((MOS100MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.MOS100MI)).getOp(getOpCollection);
 	}
 	
 	/**
 	 * Call MOS104MI:LstOperElement API 
 	 */
-	public LstOperElementResponseCollection sendMOS104MILstOperElement(MOS104MI mos104MI, Map<String, String> param) throws Exception {
+	public LstOperElementResponseCollection sendMOS104MILstOperElement(Map<String, String> param) throws Exception {
 		LstOperElementCollection lstOperElementCollection = new LstOperElementCollection();
 		List<LstOperElementItem> lstOperElementItemList = lstOperElementCollection.getLstOperElementItem();		
 		
@@ -321,9 +317,9 @@ public class CreateJobServiceImpl implements CreateJobService {
 		lstOperElementItem.setWorkOrderNumber(param.get("MWNO")); 	// WO number
 		
 		lstOperElementItemList.add(lstOperElementItem);
-		LstOperElementResponseCollection lstOperElementResponseCollection = mos104MI.lstOperElement(lstOperElementCollection);
 		
-		return lstOperElementResponseCollection;
+		return ((MOS104MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.MOS104MI)).lstOperElement(lstOperElementCollection);
 	}
 	
 	/**
@@ -345,7 +341,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Call COS100MI:GetMCOHead API 
 	 */
-	public GetMCOHeadResponseCollection sendCOS100MIGetMCOHead(COS100MI port, Map<String, String> param) throws Exception {
+	public GetMCOHeadResponseCollection sendCOS100MIGetMCOHead(Map<String, String> param) throws Exception {
 		GetMCOHeadCollection getMCOHeadCollection = new GetMCOHeadCollection();
 		List<GetMCOHeadItem> getMCOHeadItemList = getMCOHeadCollection.getGetMCOHeadItem();
 		
@@ -361,7 +357,8 @@ public class CreateJobServiceImpl implements CreateJobService {
 		
 		getMCOHeadItemList.add(getMCOHeadItem);
 		
-		return port.getMCOHead(getMCOHeadCollection);
+		return ((COS100MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.COS100MI)).getMCOHead(getMCOHeadCollection);
 	}
 	
 	/**
@@ -508,8 +505,9 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Send a createJob request to Retriever
 	 */
-	public Result sendCreateJob(RetrieverBarking port, Job job) {
-		return port.createJob(job);
+	public Result sendCreateJob(Job job) {
+		return ((RetrieverBarking)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.RetrieverBarking)).createJob(job);
 	}
 	
 	/**
@@ -586,7 +584,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Result reSendCreateJob(RetrieverBarking port, HJob hJob) throws Exception {
+	public Result reSendCreateJob(HJob hJob) throws Exception {
 		ObjectMapper m = new ObjectMapper();
 		Map<String,Object> hJobMap = m.convertValue(hJob, Map.class);
 		hJobMap.remove("index");
@@ -634,7 +632,8 @@ public class CreateJobServiceImpl implements CreateJobService {
 		}
 		
 		//jobMap.put("services", jobServiceList);
-		return port.createJob(job);
+		return ((RetrieverBarking)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.RetrieverBarking)).createJob(job);
 		//return null;
 	}
 }

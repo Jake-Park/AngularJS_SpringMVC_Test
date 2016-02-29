@@ -2,7 +2,6 @@ package com.integrationwizards.controller;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -26,17 +25,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.integrationwizards.common.ConstantUtil;
-import com.integrationwizards.common.Header;
-import com.integrationwizards.common.LogManager;
-import com.integrationwizards.common.LogUtil;
-import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HJobAsset;
 import com.integrationwizards.model.HJobService;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.service.CreateJobService;
+import com.integrationwizards.util.CodeUtil;
+import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.DateUtil;
+import com.integrationwizards.util.LogManager;
+import com.integrationwizards.util.LogUtil;
+import com.integrationwizards.util.PingCheck;
+import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.Job;
 import au.com.retriever.test.barking.Result;
@@ -57,8 +58,6 @@ import au.com.tmha.mos195mi.selwoelem.SelWoElemResponseItem;
 public class CreateJobController {
 	@Autowired
 	private CreateJobService createJobService;
-	@Autowired
-	private Header header;
 	private final String category = "createJob";
 	
 	/**
@@ -84,7 +83,9 @@ public class CreateJobController {
     	try {    		
     		String uuid = UUID.randomUUID().toString();
     		lu = LogManager.getInstance().createLogObj(category, uuid);
-    		lu.updateStates(MWNO, ConstantUtil.started);
+    		lu.updateStates(MWNO, 
+    				CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "STA"),
+    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"), null);
     		lu.info("Receive SmartLink From M3 : " + MWNO);
 	    	System.out.println("MWNO : " + MWNO);
 	    	System.out.println("PRNO : " + PRNO);
@@ -107,7 +108,9 @@ public class CreateJobController {
     	catch(Exception e) {
     		e.printStackTrace();
     		lu.error("Errored in getSmartLink : " + e);
-    		lu.updateStates(MWNO, ConstantUtil.errored);
+    		lu.updateStates(MWNO, CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"),
+    				"Errored in getSmartLink");
     	}
     	
     	return null;
@@ -145,7 +148,7 @@ public class CreateJobController {
     		
     		lu.debug("Start sendMOS100MI:Get");	    
     		// Get from MOS100MI
-    		GetResponseCollection getResponseCollection = createJobService.sendMOS100MIGet(header.getMOS100MIPort(), mParam);
+    		GetResponseCollection getResponseCollection = createJobService.sendMOS100MIGet(mParam);
     		GetResponseItem getResponseItem = getResponseCollection.getGetResponseItem().get(0);
     		
     		createJobService.setMOS100MIDataGet(getResponseItem, rParam);
@@ -163,7 +166,7 @@ public class CreateJobController {
     		//GetMtrlResponseItem getMtrlResponseItem = getMtrlResponseCollection.getGetMtrlResponseItem().get(0);
     		
     		// Get Operation Number : SelWoElem from MOS195MI
-    		SelWoElemResponseCollection selWoElemResponseCollection = createJobService.sendMOS195MISelWoElem(header.getMOS195MIPort(), mParam);
+    		SelWoElemResponseCollection selWoElemResponseCollection = createJobService.sendMOS195MISelWoElem(mParam);
     		SelWoElemResponseItem selWoElemResponseItem = selWoElemResponseCollection.getSelWoElemResponseItem().get(0);
 
     		// Set Operation Number
@@ -172,8 +175,9 @@ public class CreateJobController {
     		lu.debug("Start sendMOS104MI:LstOperElement");
     		// Get Tech Id
     		LstOperElementResponseCollection lstOperElementResponseCollection = 
-    				createJobService.sendMOS104MILstOperElement(header.getMOS104MIPort(), mParam);
-    		LstOperElementResponseItem lstOperElementResponseItem = lstOperElementResponseCollection.getLstOperElementResponseItem().get(0);
+    				createJobService.sendMOS104MILstOperElement(mParam);
+    		LstOperElementResponseItem lstOperElementResponseItem = 
+    				lstOperElementResponseCollection.getLstOperElementResponseItem().get(0);
     		
     		createJobService.setMOS104MILstOperElementData(lstOperElementResponseItem, rParam);
     		// If serialNo is null or empty, put TAIL data into serialNo field
@@ -184,7 +188,7 @@ public class CreateJobController {
     		
     		lu.debug("Start sendCOS100MI:GetMCOHead");	
     		GetMCOHeadResponseCollection getMCOHeadResponseCollection = 
-    				createJobService.sendCOS100MIGetMCOHead(header.getCOS100MIPort(), mParam);
+    				createJobService.sendCOS100MIGetMCOHead(mParam);
     		GetMCOHeadResponseItem getMCOHeadResponseItem = getMCOHeadResponseCollection.getGetMCOHeadResponseItem().get(0);
     		
     		createJobService.setCOS100MIGetMCOHeadData(getMCOHeadResponseItem, rParam);
@@ -197,7 +201,7 @@ public class CreateJobController {
     		lu.debug("Start sendCRS610MI:GetAddress");	
     		// get Address    		
     		GetAddressResponseCollection getAddressResponseCollection = 
-			createJobService.sendCRS610MIGetAddress(header.getCRS610MIPort(), mParam);
+			createJobService.sendCRS610MIGetAddress(mParam);
     		GetAddressResponseItem getAddressResponseItem = 
     				getAddressResponseCollection.getGetAddressResponseItem().get(0);
     		
@@ -206,14 +210,14 @@ public class CreateJobController {
     		lu.debug("Start sendMOS100MI:GetOp");	
     		// Get Start Date (STDT)    		
     		GetOpResponseCollection getOpResponseCollection = 
-			createJobService.sendMOS100MIGetOp(header.getMOS100MIPort(), mParam);
+			createJobService.sendMOS100MIGetOp(mParam);
     		GetOpResponseItem getOpResponseItem = 
     				getOpResponseCollection.getGetOpResponseItem().get(0);
-    		String startDate = StringUtil.getStringCalendar(getOpResponseItem.getStartDate());
+    		String startDate = DateUtil.getStringCalendar(getOpResponseItem.getStartDate());
     		BigDecimal startTimeDecimal = (BigDecimal)StringUtil.getBigDecimal(getOpResponseItem.getStartTime());
     		String startTimeStr = StringUtil.insertLeftChar(String.valueOf(startTimeDecimal), 4, '0');
 			
-    		jobMap.put("startDate", StringUtil.getXMLGregorianCalendar("yyyy-MM-dd HHmm", startDate + " " + startTimeStr));
+    		jobMap.put("startDate", DateUtil.getXMLGregorianCalendar("yyyy-MM-dd HHmm", startDate + " " + startTimeStr));
     		
     		// Set Remain data for creating Job.    		
     		jobMap.put("jobId", mParam.get("MWNO"));	//
@@ -221,12 +225,24 @@ public class CreateJobController {
     		jobMap.put("duration", String.valueOf(mParam.get("OPNO")));	//
     		
     		Job job = createJobService.setJobData(rParam);    
-    		createJob(job, hSmartLink);
+    		
+    		lu.info("Start inserting createJob into DB");		
+    		HJob hJob = createJobService.insertCreateJob(job, lu.getLogId());
+    		lu.debug("Finish inserting createJob into DB");
+    		
+    		if(hSmartLink != null) {
+    			createJobService.updateSmartLink(hSmartLink, "True");
+    		}
+    		
+    		createJob(job, hJob, hSmartLink);
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
 			lu.error("Errored in createJobFromM3 : " + e);
-			lu.updateStates(mParam.get("MWNO"), ConstantUtil.errored);
+			lu.updateStates(mParam.get("MWNO"), 
+					CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"),
+    				"Errored in createJobFromM3");
 			
 			// Update SmartLink data
 			try {
@@ -250,44 +266,48 @@ public class CreateJobController {
      * @param job
      * @throws Exception
      */
-	public void createJob(Job job, HSmartLink hSmartLink) throws Exception {
-		LogUtil lu = LogManager.getInstance().getLogObj(hSmartLink.getLogId());
+	public void createJob(Job job, HJob hJob, HSmartLink hSmartLink) {
+		LogUtil lu = null;
+
+		try {
+			lu = LogManager.getInstance().getLogObj(hSmartLink.getLogId());
 		
-		lu.info("Start inserting createJob into DB");		
-		HJob hJob = createJobService.insertCreateJob(job, lu.getLogId());
-		lu.debug("Finish inserting createJob into DB");
-		
-		if(hSmartLink != null) {
-			createJobService.updateSmartLink(hSmartLink, "True");
-		}
-		
-		if(header.isAccessToRetriever()) {
-			lu.info("Send createJob to Retriever");
-			Result result = createJobService.sendCreateJob(header.getRetrieverBarking(), job);
-			lu.debug("Receive createJob from Retriever");
-			lu.debug(String.valueOf(StringUtil.objToMap(result)));
+			if(PingCheck.isAccessToRetriever()) {
+				lu.info("Send createJob to Retriever");
+				Result result = createJobService.sendCreateJob(job);
+				lu.debug("Receive createJob from Retriever");
+				lu.debug(String.valueOf(StringUtil.objToMap(result)));
+				
+				System.out.println(result.toString());
+				System.out.println("Is Success: " + result.isSuccess());
+				System.out.println("Tx Id: " + result.getTxId());
+				System.out.println("Error Code: " + result.getErrorCode());
+			    System.out.println("Error Msg: " + result.getErrorMsg());
+			    
+			    lu.debug("Start inserting the result of createJob");	
+			    HResult hResult = createJobService.insertResult(result, hJob);
+			    lu.debug("Finish inserting the result of createJob");
+			    lu.debug(String.valueOf(StringUtil.objToMap(result)));
+			    
+			    lu.debug("Start updating the result of createJob");	
+			    hJob = createJobService.updateCreatJob(hJob, hResult);
+			    lu.info("Finish updating the result of createJob");
+			    
+			    // Update Log Master 
+			    lu.updateStates(hSmartLink.getMWNO(), CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "FIN"), null, null);
+			    LogManager.getInstance().closeLogObj(hSmartLink.getLogId());
+			}
 			
-			System.out.println(result.toString());
-			System.out.println("Is Success: " + result.isSuccess());
-			System.out.println("Tx Id: " + result.getTxId());
-			System.out.println("Error Code: " + result.getErrorCode());
-		    System.out.println("Error Msg: " + result.getErrorMsg());
-		    
-		    lu.debug("Start inserting the result of createJob");	
-		    HResult hResult = createJobService.insertResult(result, hJob);
-		    lu.debug("Finish inserting the result of createJob");
-		    lu.debug(String.valueOf(StringUtil.objToMap(result)));
-		    
-		    lu.debug("Start updating the result of createJob");	
-		    hJob = createJobService.updateCreatJob(hJob, hResult);
-		    lu.info("Finish updating the result of createJob");
-		    
-		    // Update Log Master 
-		    lu.updateStates(hSmartLink.getMWNO(), ConstantUtil.finished);
-		    LogManager.getInstance().closeLogObj(hSmartLink.getLogId());
+			hJob = createJobService.updateCreateJobIndex(hJob);
 		}
-		
-		hJob = createJobService.updateCreateJobIndex(hJob);
+		catch(Exception e) {
+			e.printStackTrace();
+			lu.error("Errored in createJob : " + e);
+			lu.updateStates(job.getJobId(), 
+					CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "RTC"),
+    				"Errored in createJob");
+		}
 	}
 	
 	@Scheduled(fixedDelay = 20000)
@@ -296,7 +316,7 @@ public class CreateJobController {
 		String MWNO = "";	// For error log
 		
 		try {
-			if(header.isAccessToM3()) {
+			if(PingCheck.isAccessToM3()) {
 				List<HSmartLink> hSmartLinkList = createJobService.selectSmartLink();
 				for(HSmartLink hSmartLink : hSmartLinkList) {				
 					System.out.println("---SmartLink--" + hSmartLink);
@@ -325,7 +345,9 @@ public class CreateJobController {
 			e.printStackTrace();
 			if(lu != null) {				
 				lu.error("Errored in reSmartLink : " + e);
-				lu.updateStates(MWNO, ConstantUtil.errored);
+				lu.updateStates(MWNO, CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+	    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"),
+	    				"Errored in reSmartLink");
 			}
 		}
 		
@@ -339,7 +361,7 @@ public class CreateJobController {
 		
 		try {
 			
-			if(header.isAccessToRetriever()) {
+			if(PingCheck.isAccessToRetriever()) {
 				List<HJob> hJobList = createJobService.selectCreateJob();
 				for(HJob hJob : hJobList) {				
 					System.out.println("---job--" + hJob);
@@ -366,7 +388,7 @@ public class CreateJobController {
 					
 					lu.info("Send Re createJob to Retriever");
 					// retry sending createJob 
-					Result result = createJobService.reSendCreateJob(header.getRetrieverBarking(), hJob);
+					Result result = createJobService.reSendCreateJob(hJob);
 					lu.debug("Receive Re createJob from Retriever");
 					lu.debug(String.valueOf(StringUtil.objToMap(result)));
 					
@@ -386,7 +408,9 @@ public class CreateJobController {
 			System.out.println(e.getMessage());
 			if(lu != null) {
 				lu.error("Errored in reCreateJob : " + e);
-				lu.updateStates(MWNO, ConstantUtil.errored);
+				lu.updateStates(MWNO, CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+	    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "RTC"),
+	    				"Errored in reCreateJob");
 			}
 		}
 	}
@@ -420,7 +444,7 @@ public class CreateJobController {
 			
 			lu.info(String.valueOf(StringUtil.objToMap(job)));
 	    	
-	    	createJob(job, null);
+	    	//createJob(job, null);
     	}
 		catch(Exception e) {
 			lu.error(e.getMessage());

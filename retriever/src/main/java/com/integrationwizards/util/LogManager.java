@@ -1,4 +1,4 @@
-package com.integrationwizards.common;
+package com.integrationwizards.util;
 
 import java.util.HashMap;
 import java.util.Map;

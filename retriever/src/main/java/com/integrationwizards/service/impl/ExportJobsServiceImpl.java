@@ -3,21 +3,17 @@ package com.integrationwizards.service.impl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.dao.ExportJobsDao;
 import com.integrationwizards.model.HEAllowance;
 import com.integrationwizards.model.HEAttachment;
@@ -36,6 +32,10 @@ import com.integrationwizards.model.HETime;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
+import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.DateUtil;
+import com.integrationwizards.util.HeaderFactory;
+import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.EAllowance;
 import au.com.retriever.test.barking.EAttachment;
@@ -66,14 +66,15 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		this.exportJobsDao = exportJobsDao;
 	}		
 
-	public ResultExportJobs sendExportJobs(RetrieverBarking changeStudentDetailsImplPort) throws Exception {
+	public ResultExportJobs sendExportJobs() throws Exception {
 		ExportJob exportJob = new ExportJob();
 		exportJob.setExport(true);
 		exportJob.setMax(BigInteger.valueOf(50));
 		exportJob.setTimeout("300000");
 		exportJob.setUpdatedSince("300000");
 		
-		return changeStudentDetailsImplPort.exportJobs(exportJob);
+		return ((RetrieverBarking)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.RetrieverBarking)).exportJobs(exportJob);
 	}
 
 	@Transactional
@@ -492,7 +493,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		return hEAttachmentList;
 	}
 	
-	public UpdOperationResponseCollection sendMOS070MIUpdOperation(MOS070MI mos070MI, HEJob hEJob) throws Exception {
+	public UpdOperationResponseCollection sendMOS070MIUpdOperation(HEJob hEJob) throws Exception {
 		UpdOperationCollection getCollection = new UpdOperationCollection();
 		List<UpdOperationItem> getItemList = getCollection.getUpdOperationItem();		
 		
@@ -512,7 +513,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		gItem.setOPNO(BigDecimal.valueOf(opno));
 		
 		JAXBElement<XMLGregorianCalendar> createRPDT = factory.createUpdOperationItemRPDT(
-				StringUtil.getOnlyXMLGregorianCalendarForDate(hEJob.getJobDatetime()));		
+				DateUtil.getOnlyXMLGregorianCalendarForDate(hEJob.getJobDatetime()));		
 		gItem.setRPDT(createRPDT);		// Reporting Date
 		
 		JAXBElement<BigDecimal> createRTM1 = factory.createUpdOperationItemRTM1(
@@ -527,8 +528,8 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		gItem.setREND(createREND);
 		
 		getItemList.add(gItem);
-		
-		UpdOperationResponseCollection getResponseCollection = mos070MI.updOperation(getCollection);
-		return getResponseCollection;
+				
+		return ((MOS070MI)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.MOS070MI)).updOperation(getCollection);
 	}
 }

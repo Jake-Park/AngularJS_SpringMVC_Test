@@ -14,6 +14,8 @@ import com.integrationwizards.dao.StatusUpdatesDao;
 import com.integrationwizards.model.HEStatus;
 import com.integrationwizards.model.HResultStatusUpdates;
 import com.integrationwizards.service.StatusUpdatesService;
+import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.HeaderFactory;
 
 import au.com.retriever.test.barking.EStatus;
 import au.com.retriever.test.barking.ResultExportStatusUpdates;
@@ -27,14 +29,15 @@ public class StatusUpdatesServiceImpl implements StatusUpdatesService {
 		this.statusUpdatesDao = statusUpdatesDao;
 	}	
 	
-	public ResultExportStatusUpdates sendStatusUpdates(RetrieverBarking changeStudentDetailsImplPort) throws Exception {
+	public ResultExportStatusUpdates sendStatusUpdates() throws Exception {
 		StatusUpdate statusUpdate = new StatusUpdate();
 		statusUpdate.setExport(true);
 		statusUpdate.setMax(BigInteger.valueOf(50));
 		statusUpdate.setTimeout("300000");
 		statusUpdate.setUpdatedSince("300000");
 		
-		return changeStudentDetailsImplPort.exportStatusUpdates(statusUpdate);
+		return ((RetrieverBarking)HeaderFactory.getInstance()
+				.getHeader(ConstantUtil.RetrieverBarking)).exportStatusUpdates(statusUpdate);
 	}
 
 	@Transactional

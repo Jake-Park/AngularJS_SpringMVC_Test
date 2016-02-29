@@ -1,0 +1,52 @@
+ 
+
+<div class="content col-sm-6 col-sm-offset-2">
+	<h1 class="text-muted">{{title}} User</h1>
+		<form name="userForm" ng-class="{'loginBody' : !Auth.isMobile()}" ng-controller="AddController" ng-submit="userForm.$valid && add()" >
+		  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.email.$invalid && !userForm.email.$pristine }">
+			<legend class="scheduler-border"></legend>
+		  		<!-- <td style="border-top-left-radius: 4px;border-top-right-radius: 4px;"> -->
+		  		<label class="control-label col-sm-4 text-muted" for="email">Email</label>
+				<div class="col-sm-8">
+					<input type="email" class="form-control" name="email" title="Email" ng-model="email" required>
+				</div>
+		  	</fieldset>
+		  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.password.$invalid && !userForm.password.$pristine }" required>
+		  	<label class="control-label col-sm-4" for="password">Password</label>
+		    <div class="col-sm-8">
+		    	<input type="password" class="form-control" name="password" ng-model="password" ng-minlength="4" required>
+		    </div>
+		  </fieldset>
+		  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': (userForm.confirmPassword.$invalid && userForm.confirmPassword.$error.pattern) && !userForm.confirmPassword.$pristine  }">
+		  	<label class="control-label col-sm-4" for="confirmPassword">Confirm password</label>
+		    <div class="col-sm-8">
+		    	<input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword" ng-pattern="password" required>
+		    </div>
+		  </fieldset>
+		  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.name.$invalid && !userForm.name.$pristine }">
+		  	<label class="control-label col-sm-4" for="name">Name</label>
+		    <div class="col-sm-8">
+		    <input type="text" class="form-control" name="name" ng-model="name" required>
+		    </div>
+		  </fieldset>
+		  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.mobileNumber.$invalid && !userForm.mobileNumber.$pristine }">
+		  	<!-- <td style="border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;">--><label class="control-label col-sm-4" for="mobileNumber">Phone Number</label>
+		    <div class="col-sm-8">
+		    <input type="text" class="form-control" name="mobileNumber" ng-model="mobileNumber" required>
+		    </div>
+		  </fieldset>
+		  <fieldset class="form-group">
+		  	<div class="col-sm-8">
+		  	<input type="button" class="btn btn-info pull-left" value="Cancel" ng-click="location.path('/list')" />
+		  	<input type="submit" class="btn btn-primary pull-right" value="{{title}}" style="float:right; margin-bottom:3px; margin-top:5px;" />
+		  	</div>
+		  </fieldset>
+		</form>
+</div>
+<script>
+$( document ).ready(function() {
+	$("form[name='userForm'] tr").addClass( "form-group" );
+	$("form[name='userForm'] tr:not(:last)").addClass( "has-success has-feedback form-inline" );
+	$("form[name='userForm'] td:even:not(:last)").css( "background-color", "#428BCA" );
+});
+</script>

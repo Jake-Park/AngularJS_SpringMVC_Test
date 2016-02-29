@@ -6,14 +6,15 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.integrationwizards.common.ConstantUtil;
-import com.integrationwizards.common.Header;
-import com.integrationwizards.common.LogManager;
-import com.integrationwizards.common.LogUtil;
-import com.integrationwizards.common.StringUtil;
 import com.integrationwizards.model.HEJob;
 import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
+import com.integrationwizards.util.CodeUtil;
+import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.HeaderFactory;
+import com.integrationwizards.util.LogManager;
+import com.integrationwizards.util.LogUtil;
+import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.ResultExportJobs;
 
@@ -21,8 +22,6 @@ import au.com.retriever.test.barking.ResultExportJobs;
 public class ExportJobsController {
 	@Autowired
 	private ExportJobsService exportJobsService;
-	@Autowired
-	private Header header;
 	private final String category = "exportJobs";
 	
 	//@Scheduled(fixedDelay = 50000)
@@ -35,7 +34,7 @@ public class ExportJobsController {
 			lu = LogManager.getInstance().createLogObj(category, uuid);
 			
 			lu.info("Start ExportJobs");
-			ResultExportJobs result = exportJobsService.sendExportJobs(header.getRetrieverBarking());
+			ResultExportJobs result = exportJobsService.sendExportJobs();
 			
 			lu.info("Receiving data from exportJobs");
 			lu.info(String.valueOf(StringUtil.objToMap(result)));
@@ -52,7 +51,9 @@ public class ExportJobsController {
 		}
 		catch(Exception e) {
 			lu.error("Errored in exportJobs" + e);
-			lu.updateStates("", ConstantUtil.errored);
+			lu.updateStates("", CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+					null,
+					"Errored in exportJobs");
 		}
 		finally {
 			LogManager.getInstance().closeLogObj(uuid);
@@ -68,7 +69,9 @@ public class ExportJobsController {
 		}
 		catch(Exception e) {
 			lu.error("Errored in exportJobs" + e);
-			lu.updateStates(hEJob.getJobId(), ConstantUtil.errored);
+			lu.updateStates(hEJob.getJobId(), CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
+					CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3E"),
+					"Errored in exportJobs");
 		}
 	}
 }
