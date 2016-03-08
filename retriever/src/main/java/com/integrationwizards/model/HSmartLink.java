@@ -27,6 +27,7 @@ public class HSmartLink {
 	private String success;
 	private Date currReqDate;
 	private String logId;
+	private int count;
 	
 	public int getIndex() {
 		return index;
@@ -87,6 +88,12 @@ public class HSmartLink {
 	}
 	public void setLogId(String logId) {
 		this.logId = logId;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 	
 	

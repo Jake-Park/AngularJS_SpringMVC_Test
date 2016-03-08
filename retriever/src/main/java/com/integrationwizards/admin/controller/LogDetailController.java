@@ -24,11 +24,13 @@ public class LogDetailController {
 	 */	
     @RequestMapping(value="/list", method = RequestMethod.POST)
 	public @ResponseBody List<LogDetail> selectLogDetailList(@RequestBody PageVO pageVO) throws Exception
-	{
+	{    	
     	// Set Pagination Data
-    	int startIndex = ((pageVO.getPageIndex() - 1) * pageVO.getPageUnit());
+    	int startIndex = ((pageVO.getPageIndex() - 1) * pageVO.getRecordCountPerPage());
     	pageVO.setFirstIndex(startIndex);
-    	pageVO.setLastIndex(startIndex +  pageVO.getPageUnit());
+    	pageVO.setLastIndex(pageVO.getRecordCountPerPage());
+    	
+    	System.out.println("---" + pageVO);
     	
 		List<LogDetail> resultList = logDetailService.selectLogDetailList(pageVO);  
 	       

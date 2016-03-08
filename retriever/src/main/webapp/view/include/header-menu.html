@@ -18,7 +18,7 @@
 	   	</ul> -->
 	      <ul class='nav navbar-nav navbar-right collapse navbar-collapse'>
 	      	<li ng-class="{ 'active': location.path() === '/retry' }"><a href="#retry">Messages</a></li>
-	      	<li ng-class="{ 'active': location.path() === '/log' }"><a href="#log">Events</a></li>
+	      	<li ng-class="{ 'active': location.path().indexOf('/log') >= 0 }"><a href="#log">Events</a></li>
 	        <li>	        
 	          <a href="about.html" data-target='#' data-toggle="dropdown">{{Auth.getUser().id}} <span class="caret"></span></a>
 	          <ul class="dropdown-menu">

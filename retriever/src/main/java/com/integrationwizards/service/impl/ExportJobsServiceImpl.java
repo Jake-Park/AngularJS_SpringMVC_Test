@@ -12,6 +12,8 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.integrationwizards.dao.ExportJobsDao;
@@ -32,7 +34,7 @@ import com.integrationwizards.model.HETime;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
-import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.Constant;
 import com.integrationwizards.util.DateUtil;
 import com.integrationwizards.util.HeaderFactory;
 import com.integrationwizards.util.StringUtil;
@@ -54,18 +56,20 @@ import au.com.retriever.test.barking.ETime;
 import au.com.retriever.test.barking.ExportJob;
 import au.com.retriever.test.barking.ResultExportJobs;
 import au.com.retriever.test.barking.RetrieverBarking;
+import au.com.tmha.mos057mi.MOS057MI;
+import au.com.tmha.mos057mi.upd.UpdCollection;
+import au.com.tmha.mos057mi.upd.UpdItem;
+import au.com.tmha.mos057mi.upd.UpdResponseCollection;
 import au.com.tmha.mos070mi.MOS070MI;
 import au.com.tmha.mos070mi.updoperation.UpdOperationCollection;
 import au.com.tmha.mos070mi.updoperation.UpdOperationItem;
 import au.com.tmha.mos070mi.updoperation.UpdOperationResponseCollection;
 
+@Service
 public class ExportJobsServiceImpl implements ExportJobsService {
+	@Autowired
 	private ExportJobsDao exportJobsDao;
 	
-	public void setExportJobsDao(ExportJobsDao exportJobsDao) {
-		this.exportJobsDao = exportJobsDao;
-	}		
-
 	public ResultExportJobs sendExportJobs() throws Exception {
 		ExportJob exportJob = new ExportJob();
 		exportJob.setExport(true);
@@ -74,11 +78,11 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		exportJob.setUpdatedSince("300000");
 		
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.RetrieverBarking)).exportJobs(exportJob);
+				.getHeader(Constant.RetrieverBarking)).exportJobs(exportJob);
 	}
 
 	@Transactional
-	public HResultExportJobs insertResultExportJobs(ResultExportJobs result) throws Exception {
+	public HResultExportJobs insertResultExportJobs(ResultExportJobs result, String logId) throws Exception {
 		ObjectMapper m = new ObjectMapper();
 		Map<String,Object> props = m.convertValue(result, Map.class);
 		
@@ -101,6 +105,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 			p.remove("eattachment");
 			HEJob hEJob = m.convertValue(p, HEJob.class);			
 			hEJob.setTxId(result.getTxId());
+			hEJob.setLogId(logId);
 			
 			List<HEOhs> hEOhsList = setEOhsList(m, eJob, result);
 			List<HENewAsset> hENewAssetList = setENewAssetList(m, eJob, result);			
@@ -493,6 +498,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		return hEAttachmentList;
 	}
 	
+	@Transactional
 	public UpdOperationResponseCollection sendMOS070MIUpdOperation(HEJob hEJob) throws Exception {
 		UpdOperationCollection getCollection = new UpdOperationCollection();
 		List<UpdOperationItem> getItemList = getCollection.getUpdOperationItem();		
@@ -530,6 +536,75 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		getItemList.add(gItem);
 				
 		return ((MOS070MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.MOS070MI)).updOperation(getCollection);
+				.getHeader(Constant.MOS070MI)).updOperation(getCollection);
+	}
+	
+	public UpdResponseCollection sendMOS057MIUpd(HEJob hEJob) throws Exception {
+		// Get Structure Type and Serial No from Asset
+		Set<HENewAsset> eNewAssetSet = hEJob.geteNewAsset();
+		String structureType = "002";
+		String serialNo = "";
+		if(eNewAssetSet != null && eNewAssetSet.size() > 0) {
+			// Get First element of Set Object
+			for(HENewAsset eNewAsset: eNewAssetSet) {
+				structureType = eNewAsset.getAssetType();
+				serialNo = eNewAsset.getSerialNo();
+			    break;
+			}
+		}
+		
+		UpdCollection getCollection = new UpdCollection();
+		List<UpdItem> getItemList = getCollection.getUpdItem();		
+		
+		UpdItem gItem = new UpdItem();
+		au.com.tmha.mos057mi.upd.ObjectFactory factory = new au.com.tmha.mos057mi.upd.ObjectFactory();
+		JAXBElement<BigDecimal> createReferenceOrderCategory = factory.createUpdItemRORC(BigDecimal.valueOf(6));
+		
+		gItem.setRORC(createReferenceOrderCategory);
+		
+		// Work Order Number
+		JAXBElement<String> createReferenceOrderNumber = factory.createUpdItemRORN(hEJob.getJobId());
+		gItem.setRORN(createReferenceOrderNumber);
+		
+		// Structure Type
+		JAXBElement<String> createProductStructureType = factory.createUpdItemSTRT(structureType);
+		gItem.setSTRT(createProductStructureType);
+		
+		JAXBElement<String> createService = factory.createUpdItemSUFI(hEJob.getJobDesc());
+		gItem.setSUFI(createService);
+		
+		JAXBElement<BigDecimal> createSequenceNumber = factory.createUpdItemSQNR(BigDecimal.valueOf(1));
+		gItem.setSQNR(createSequenceNumber);
+		
+		JAXBElement<String> createText = factory.createUpdItemTXL1(hEJob.getWorkDone());
+		gItem.setTXL1(createText);
+		
+		JAXBElement<String> createSerialNumber = factory.createUpdItemSECP(serialNo);
+		gItem.setSECP(createSerialNumber);
+		
+		JAXBElement<String> createStatus = factory.createUpdItemSTAT("20");
+		//gItem.setSTAT(createStatus);
+		
+		JAXBElement<XMLGregorianCalendar> createMachineReadyDate = 
+				factory.createUpdItemMRDT(DateUtil.getOnlyXMLGregorianCalendarForDate(hEJob.getJobDatetime()));
+		gItem.setMRDT(createMachineReadyDate);
+		
+		JAXBElement<String> createReportedBy = factory.createUpdItemREPR("M3-02");
+		//gItem.setREPR(createReportedBy);
+		
+		getItemList.add(gItem);
+				
+		return ((MOS057MI)HeaderFactory.getInstance()
+				.getHeader(Constant.MOS057MI)).upd(getCollection);
+	}
+	
+	@Transactional
+	public List<HEJob> selectExportJobs(String count) throws Exception {
+		return exportJobsDao.selectExportJobs(count);
+	}
+	
+	@Transactional
+	public void updateLogId(HEJob hEJob) throws Exception {
+		exportJobsDao.updateLogId(hEJob);
 	}
 }

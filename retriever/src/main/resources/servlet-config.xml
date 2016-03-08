@@ -7,35 +7,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
-	<bean id="logDetailDao" class="com.integrationwizards.admin.dao.impl.LogDetailDaoImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </bean>	
-    <bean id="logDetailService" class="com.integrationwizards.admin.service.impl.LogDetailServiceImpl">
-    	<property name="logDetailDao" ref="logDetailDao"></property>
-    </bean>
-		
-	<bean id="codeDao" class="com.integrationwizards.admin.dao.impl.CodeDaoImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </bean>	
-    <bean id="codeService" class="com.integrationwizards.admin.service.impl.CodeServiceImpl">
-    	<property name="codeDao" ref="codeDao"></property>
-    </bean>
-		
-	<bean id="retryDao" class="com.integrationwizards.admin.dao.impl.RetryDaoImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </bean>	
-    <bean id="retryService" class="com.integrationwizards.admin.service.impl.RetryServiceImpl">
-    	<property name="retryDao" ref="retryDao"></property>
-    </bean>
-    
-    <bean id="adminInfoDao" class="com.integrationwizards.admin.dao.impl.AdminInfoDaoImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-    </bean>	
-    <bean id="adminInfoService" class="com.integrationwizards.admin.service.impl.AdminInfoServiceImpl">
-        <property name="adminInfoDao" ref="adminInfoDao"></property>
-    </bean>
-			    
-    <bean id="createJobDao" class="com.integrationwizards.dao.impl.CreateJobDaoImpl">
+<!--     <bean id="createJobDao" class="com.integrationwizards.dao.impl.CreateJobDaoImpl">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>	
     <bean id="createJobService" class="com.integrationwizards.service.impl.CreateJobServiceImpl">
@@ -54,5 +26,5 @@
     </bean>	
     <bean id="exportJobsService" class="com.integrationwizards.service.impl.ExportJobsServiceImpl">
     	<property name="exportJobsDao" ref="exportJobsDao"></property>
-    </bean>    
+    </bean>     -->
 </beans>

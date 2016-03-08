@@ -1,14 +1,14 @@
     app.factory('PaginatonService', function($rootScope) {
 	     return {
-	  	       Pagination: function(maxCount, $rootScope) {
-	  	         return new Pagination(maxCount);
+	  	       Pagination: function(totalRecord, $rootScope) {
+	  	         return new Pagination(totalRecord);
 	  	       }
 	  	     };
 	  	});  
   	
   	var Pagination = function(totalRecord, maxPageCount, $rootScope) { 		
   		if(maxPageCount == undefined) {
-  			maxPageCount = 10;
+  			maxPageCount = 100;
   		}
 	    this.maxPageCount = maxPageCount;
 	    this.totalRecord = totalRecord;

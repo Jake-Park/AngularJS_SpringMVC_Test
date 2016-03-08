@@ -1,6 +1,6 @@
 package com.integrationwizards.util;
 
-public class ConstantUtil {
+public class Constant {
 	public final static String logFileDirectory = "D:\\WORK\\apache-tomcat-8.0.30\\logs\\";
 	public final static String employer = "ACME Corp";
 	public final static String retrieverWsAccessId = "m3sandpitwsuser";

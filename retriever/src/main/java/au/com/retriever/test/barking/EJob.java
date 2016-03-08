@@ -1307,7 +1307,7 @@ public class EJob {
 				+ ", amountOwing=" + amountOwing + ", serialNo=" + serialNo + ", jobType=" + jobType + ", email="
 				+ email + ", firstOhsCompleted=" + firstOhsCompleted + ", accountMgrEmail=" + accountMgrEmail
 				+ ", serviceMgrEmail=" + serviceMgrEmail + ", eOhs=" + eOhs + ", eNewAsset=" + eNewAsset + ", eService="
-				+ eService + ", ePart=" + ePart + ", eSignature=" + eSignature + ", eChecklist=" + eChecklist
+				+ eService + ", ePart=" + ePart + ", eChecklist=" + eChecklist
 				+ ", eTime=" + eTime + ", eAllowance=" + eAllowance + ", ePurchaseOrder=" + ePurchaseOrder
 				+ ", eReport=" + eReport + ", paymentOption=" + paymentOption + ", cardType=" + cardType + ", cardNo="
 				+ cardNo + ", cardExpiry=" + cardExpiry + ", referenceNo=" + referenceNo + ", eAttachment="

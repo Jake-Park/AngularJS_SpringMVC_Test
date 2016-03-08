@@ -49,7 +49,7 @@ public interface CreateJobService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<HSmartLink> selectSmartLink() throws Exception;
+	public List<HSmartLink> selectSmartLink(String counts) throws Exception;
 	
 	/**
 	 * Call MOS100MI:Get API 
@@ -113,7 +113,7 @@ public interface CreateJobService {
 	/**
 	 * Set Job data in order to send a request to Retriever
 	 */
-	public Job setJobData(Map<String, Map<String, Object>> rParam) throws Exception;
+	public Job setJobData(Map<String, Map<String, Object>> rParam, String logId) throws Exception;
 	
     /**
      * Insert Job data to DB before sending a request to Retriever
@@ -148,7 +148,7 @@ public interface CreateJobService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<HJob> selectCreateJob() throws Exception;
+	public List<HJob> selectCreateJob(String counts) throws Exception;
 	
 	/**
 	 * Convert Job, Asset and Service components for sending a request to Retriever

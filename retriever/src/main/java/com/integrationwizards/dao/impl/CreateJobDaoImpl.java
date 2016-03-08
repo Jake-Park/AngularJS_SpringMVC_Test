@@ -2,23 +2,25 @@ package com.integrationwizards.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.dao.CreateJobDao;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
+import com.integrationwizards.model.LogMaster;
+import com.integrationwizards.util.StringUtil;
 
-@Repository("createJobDao")
+@Repository
 public class CreateJobDaoImpl implements CreateJobDao {
+	@Autowired
 	private SessionFactory sessionFactory;
-	
-	public void setSessionFactory(SessionFactory sf) {
-		this.sessionFactory = sf;
-	}
 	
 	public HSmartLink insertSmartLink(HSmartLink hSmartLink) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
@@ -47,23 +49,52 @@ public class CreateJobDaoImpl implements CreateJobDao {
 		session.update(hJob);
 	}
 	
-	public List<HJob> selectCreateJob() throws Exception {
+	public List<HJob> selectCreateJob(String maxCount) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		
 		String hql = "SELECT j "
 				+ "FROM HJob AS j "
 				+ "LEFT join j.assets AS a "
 				+ "LEFT join j.services AS s "
-				+ "WHERE j.success = null ";
+				+ ", LogMaster lm "
+				+ "WHERE j.logId = lm.logId AND j.success = null "
+				+ "AND lm.count <= :count "
+				+ "ORDER BY j.createdDate DESC ";
         Query query = session.createQuery(hql);
-        return query.list();
+        query.setInteger("count", StringUtil.nullToInteger(maxCount));
+        
+        List<HJob> hJobList = query.list();
+        
+        // Update counts
+        for(HJob hJob : hJobList) {
+    		Criteria criteria = session.createCriteria(LogMaster.class)
+    				.add(Restrictions.eq("logId", hJob.getLogId()));
+    		
+    		LogMaster lm = (LogMaster)criteria.uniqueResult();
+    		lm.setCount(lm.getCount() + 1);
+    		session.update(lm);
+        }
+        
+        return hJobList;
 	}
 	
-	public List<HSmartLink> selectSmartLink() throws Exception {
+	public List<HSmartLink> selectSmartLink(String maxCount) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		
-		String hql = "SELECT a FROM HSmartLink a WHERE a.success = 'False' or a.success = null ";
+		String hql = "SELECT sl FROM HSmartLink AS sl"
+				+ "AND sl.success = 'False' or sl.success = null "
+				+ "AND sl.count <= :count "
+				+ "ORDER BY sl.createdDate DESC ";
         Query query = session.createQuery(hql);
-        return query.list();
+        query.setInteger("count", StringUtil.nullToInteger(maxCount));
+        
+        List<HSmartLink> slList = query.list();
+        
+        // Update counts
+        for(HSmartLink sl : slList) {
+    		sl.setCount(sl.getCount() + 1);
+    		session.update(sl);
+        }
+        return slList;
 	}
 }

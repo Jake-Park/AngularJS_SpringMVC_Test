@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name="EJob")
 public class HEJob {
@@ -54,35 +56,46 @@ public class HEJob {
     private String firstOhsCompleted;
     private String accountMgrEmail;
     private String serviceMgrEmail;
+    private String logId;
     
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<HEOhs> eOhs = new HashSet<HEOhs>();
 	
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<HENewAsset> eNewAsset = new HashSet<HENewAsset>();
 	
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<HEService> eService = new HashSet<HEService>();
 	    
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HEPart> ePart = new HashSet<HEPart>();
 	
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HESignature> eSignature = new HashSet<HESignature>();
 	    
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HEChecklist> eChecklist = new HashSet<HEChecklist>();
 	    
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HETime> eTime = new HashSet<HETime>();
 	      
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HEAllowance> eAllowance = new HashSet<HEAllowance>();
 	          
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HEPurchaseOrder> ePurchaseOrder = new HashSet<HEPurchaseOrder>();
 	          
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @JsonIgnore
 	private Set<HEReport> eReport = new HashSet<HEReport>();
 	          
     private String paymentOption;
@@ -91,7 +104,7 @@ public class HEJob {
     private String cardExpiry;
     private String referenceNo;
 
-    @OneToMany(mappedBy = "hEJob", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
 	private Set<HEAttachment> eAttachment = new HashSet<HEAttachment>();
     
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -277,6 +290,12 @@ public class HEJob {
 	}
 	public void setServiceMgrEmail(String serviceMgrEmail) {
 		this.serviceMgrEmail = serviceMgrEmail;
+	}
+	public String getLogId() {
+		return logId;
+	}
+	public void setLogId(String logId) {
+		this.logId = logId;
 	}
 	public Set<HEOhs> geteOhs() {
 		return eOhs;

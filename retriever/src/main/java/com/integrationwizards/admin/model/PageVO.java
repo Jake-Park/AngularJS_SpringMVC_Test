@@ -10,9 +10,16 @@ public class PageVO {
     private int lastIndex = 1;
     /** recordCountPerPage */
     private int recordCountPerPage = 10;
-    private String searchKeyword;
+    private String keyword;
     
+    private String klass;
     private String logId;
+    private String category;
+    private String workOrderNum;
+    
+    private String className;
+    private String methodName;
+    private String logLevel;
 
 	public int getPageIndex() {
 		return pageIndex;
@@ -50,11 +57,29 @@ public class PageVO {
 	public void setRecordCountPerPage(int recordCountPerPage) {
 		this.recordCountPerPage = recordCountPerPage;
 	}
-	public String getSearchKeyword() {
-		return searchKeyword;
+	public String getKeyword() {
+		return keyword;
 	}
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getKlass() {
+		return klass;
+	}
+	public void setKlass(String klass) {
+		this.klass = klass;
+	}
+	public String getWorkOrderNum() {
+		return workOrderNum;
+	}
+	public void setWorkOrderNum(String workOrderNum) {
+		this.workOrderNum = workOrderNum;
 	}
 	public String getLogId() {
 		return logId;
@@ -62,11 +87,33 @@ public class PageVO {
 	public void setLogId(String logId) {
 		this.logId = logId;
 	}
+	public String getClassName() {
+		return className;
+	}
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	public String getMethodName() {
+		return methodName;
+	}
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+	public String getLogLevel() {
+		return logLevel;
+	}
+	public void setLogLevel(String logLevel) {
+		this.logLevel = logLevel;
+	}
 	@Override
 	public String toString() {
-		return "PageVO [pageIndex=" + pageIndex + ", pageUnit=" + pageUnit
-				+ ", pageSize=" + pageSize + ", firstIndex=" + firstIndex
-				+ ", lastIndex=" + lastIndex + ", recordCountPerPage="
-				+ recordCountPerPage + ", searchKeyword=" + searchKeyword + "]";
+		return "PageVO [pageIndex=" + pageIndex + ", pageUnit=" + pageUnit + ", pageSize=" + pageSize + ", firstIndex="
+				+ firstIndex + ", lastIndex=" + lastIndex + ", recordCountPerPage=" + recordCountPerPage + ", keyword="
+				+ keyword + ", klass=" + klass + ", logId=" + logId + ", category=" + category + ", workOrderNum="
+				+ workOrderNum + ", className=" + className + ", methodName=" + methodName + ", logLevel=" + logLevel
+				+ "]";
 	}
+
+
+	
 }

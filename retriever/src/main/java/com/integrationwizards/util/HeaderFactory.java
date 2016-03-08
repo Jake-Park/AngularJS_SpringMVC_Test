@@ -41,42 +41,42 @@ public class HeaderFactory {
 	}
 	
 	public Object getHeader(String key) {
-		if(key.equals(ConstantUtil.RetrieverBarking)) {
+		if(key.equals(Constant.RetrieverBarking)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getRetrieverBarking());
 			}
 		}
-		else if(key.equals(ConstantUtil.MOS104MI)) {
+		else if(key.equals(Constant.MOS104MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getMOS104MIPort());
 			}
 		}
-		else if(key.equals(ConstantUtil.MOS100MI)) {
+		else if(key.equals(Constant.MOS100MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getMOS100MIPort());
 			}
 		}
-		else if(key.equals(ConstantUtil.CRS610MI)) {
+		else if(key.equals(Constant.CRS610MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getCRS610MIPort());
 			}
 		}
-		else if(key.equals(ConstantUtil.COS100MI)) {
+		else if(key.equals(Constant.COS100MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getCOS100MIPort());
 			}
 		}
-		else if(key.equals(ConstantUtil.MOS195MI)) {
+		else if(key.equals(Constant.MOS195MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getMOS195MIPort());
 			}
 		}
-		else if(key.equals(ConstantUtil.MOS070MI)) {
+		else if(key.equals(Constant.MOS070MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getMOS070MIPort());
 			}
 		}
-		else if(key.equals(ConstantUtil.MOS057MI)) {
+		else if(key.equals(Constant.MOS057MI)) {
 			if(headerMap.get(key) == null) {
 				headerMap.put(key, getMOS057MIPort());
 			}
@@ -91,9 +91,9 @@ public class HeaderFactory {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)changeStudentDetailsImplPort).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.retrieverWsAccessId);
+		    BindingProvider.USERNAME_PROPERTY, Constant.retrieverWsAccessId);
 		((BindingProvider)changeStudentDetailsImplPort).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.retrieverWsAccessPass);	
+		    BindingProvider.PASSWORD_PROPERTY, Constant.retrieverWsAccessPass);	
 		
 		return changeStudentDetailsImplPort;
 	}
@@ -104,9 +104,9 @@ public class HeaderFactory {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)mos104MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
+		    BindingProvider.USERNAME_PROPERTY, Constant.m3WsAccessId);
 		((BindingProvider)mos104MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
+		    BindingProvider.PASSWORD_PROPERTY, Constant.m3WsAccessPass);
 		
 		return mos104MI;
 	}
@@ -117,9 +117,9 @@ public class HeaderFactory {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)mos100MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
+		    BindingProvider.USERNAME_PROPERTY, Constant.m3WsAccessId);
 		((BindingProvider)mos100MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
+		    BindingProvider.PASSWORD_PROPERTY, Constant.m3WsAccessPass);
 		
 		return mos100MI;
 	}
@@ -130,9 +130,9 @@ public class HeaderFactory {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)crs610MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
+		    BindingProvider.USERNAME_PROPERTY, Constant.m3WsAccessId);
 		((BindingProvider)crs610MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
+		    BindingProvider.PASSWORD_PROPERTY, Constant.m3WsAccessPass);
 		
 		return crs610MI;
 	}
@@ -143,9 +143,9 @@ public class HeaderFactory {
 		
 		// Set Http Basic Authentication
 		((BindingProvider)cos100MI).getRequestContext().put(
-		    BindingProvider.USERNAME_PROPERTY, ConstantUtil.m3WsAccessId);
+		    BindingProvider.USERNAME_PROPERTY, Constant.m3WsAccessId);
 		((BindingProvider)cos100MI).getRequestContext().put(
-		    BindingProvider.PASSWORD_PROPERTY, ConstantUtil.m3WsAccessPass);
+		    BindingProvider.PASSWORD_PROPERTY, Constant.m3WsAccessPass);
 		
 		return cos100MI;
 	}

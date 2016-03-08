@@ -74,7 +74,7 @@ public class LogFileUtil {
 	 */
 	public void createLogFile() {
 		logger = Logger.getLogger(category); 
-		String path = ConstantUtil.logFileDirectory;
+		String path = Constant.logFileDirectory;
 		String dir = createLogDirectory(path);		
 		if(dir == null) {
 			System.out.println("Fail to Create Log Directory!");
@@ -111,7 +111,7 @@ public class LogFileUtil {
 		
 		try {
 			abbrFilePath = path;
-			fullFilePath = ConstantUtil.logFileDirectory + path;
+			fullFilePath = Constant.logFileDirectory + path;
 	        // This block configure the logger with handler and formatter 
 			fh = new FileHandler(fullFilePath, true); 
 			

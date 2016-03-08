@@ -8,20 +8,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.admin.dao.AdminInfoDao;
 import com.integrationwizards.admin.model.AdminInfo;
 import com.integrationwizards.admin.model.PageVO;
 
-@Repository("adminInfoDao")
+@Repository
 public class AdminInfoDaoImpl implements AdminInfoDao {
+	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public void setSessionFactory(SessionFactory sf) {
-		this.sessionFactory = sf;
-	}
-
 	public AdminInfo selectAdminInfoByEmail(AdminInfo vo) {
 		Session session = this.sessionFactory.getCurrentSession();
 				

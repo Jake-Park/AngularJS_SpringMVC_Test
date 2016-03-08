@@ -114,4 +114,12 @@ public class EAttachment {
         this.attachmentComments = value;
     }
 
+	@Override
+	public String toString() {
+		return "EAttachment [attachmentFileName=" + attachmentFileName + ", attachment=" + attachment
+				+ ", attachmentComments=" + attachmentComments + "]";
+	}
+    
+    
+
 }

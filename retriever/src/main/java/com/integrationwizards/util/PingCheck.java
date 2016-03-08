@@ -14,9 +14,9 @@ public class PingCheck {
 	@Scheduled(fixedDelay = 10000)
 	private void sendPing() {
 		// check Retriever server
-		setAccessToRetriever(sendPing(ConstantUtil.retrieverServerURL, 80));
+		setAccessToRetriever(sendPing(Constant.retrieverServerURL, 80));
 		// check M3 server
-		setAccessToM3(sendPing(ConstantUtil.m3ServerURL, ConstantUtil.m3ServerPort));
+		setAccessToM3(sendPing(Constant.m3ServerURL, Constant.m3ServerPort));
 	}	
 	
 	public boolean sendPing(String URL, int port) {

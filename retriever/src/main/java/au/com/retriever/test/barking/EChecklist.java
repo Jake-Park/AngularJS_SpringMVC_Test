@@ -180,4 +180,11 @@ public class EChecklist {
         return this.eChecklistCategory;
     }
 
+	@Override
+	public String toString() {
+		return "EChecklist [checklistId=" + checklistId + ", checklistText=" + checklistText + ", dateCompleted="
+				+ dateCompleted + ", serialDesc=" + serialDesc + ", eChecklistCategory=" + eChecklistCategory + "]";
+	}
+
+    
 }

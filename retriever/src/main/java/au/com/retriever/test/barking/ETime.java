@@ -392,4 +392,15 @@ public class ETime {
         this.apprenticeId = value;
     }
 
+	@Override
+	public String toString() {
+		return "ETime [labType=" + labType + ", labQty=" + labQty + ", labQtyOt=" + labQtyOt + ", labQtyDt=" + labQtyDt
+				+ ", travelQty=" + travelQty + ", statusTime=" + statusTime + ", normalRate=" + normalRate + ", otRate="
+				+ otRate + ", dtRate=" + dtRate + ", travelRate=" + travelRate + ", fieldWorker=" + fieldWorker
+				+ ", endDatetime=" + endDatetime + ", startDatetime=" + startDatetime + ", apprenticeId=" + apprenticeId
+				+ "]";
+	}
+    
+    
+
 }

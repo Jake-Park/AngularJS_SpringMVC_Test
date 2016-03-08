@@ -31,10 +31,11 @@ public class RetryController {
     @RequestMapping(value="/list", method = RequestMethod.POST)
 	public @ResponseBody List<LogMaster> selectRetryList(@RequestBody PageVO pageVO) throws Exception
 	{
+    	System.out.println("---" + pageVO);
     	// Set Pagination Data
-    	int startIndex = ((pageVO.getPageIndex() - 1) * pageVO.getPageUnit());
+    	int startIndex = ((pageVO.getPageIndex() - 1) * pageVO.getRecordCountPerPage());
     	pageVO.setFirstIndex(startIndex);
-    	pageVO.setLastIndex(startIndex +  pageVO.getPageUnit());
+    	pageVO.setLastIndex(pageVO.getRecordCountPerPage());
     	
 		List<LogMaster> resultList = retryService.selectRetryList(pageVO);  
 	       

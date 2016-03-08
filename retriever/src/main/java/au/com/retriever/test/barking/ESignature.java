@@ -115,4 +115,11 @@ public class ESignature {
         this.signatureType = value;
     }
 
+	@Override
+	public String toString() {
+		return "ESignature [signature=" + signature + ", signatureName=" + signatureName + ", signatureType="
+				+ signatureType + "]";
+	}
+
+    
 }

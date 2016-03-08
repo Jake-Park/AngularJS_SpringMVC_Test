@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration SYSTEM 
+    "classpath://hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection properties - Driver, URL, user, password -->
@@ -10,7 +9,7 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">sd1377</property>
         <!-- Connection Pool Size -->
-        <property name="hibernate.connection.pool_size">10</property>
+        <property name="hibernate.connection.pool_size">20</property>
          
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>

@@ -415,4 +415,14 @@ public class ENewAsset {
         this.finalisedDT = value;
     }
 
+	@Override
+	public String toString() {
+		return "ENewAsset [serialNo=" + serialNo + ", serialDesc=" + serialDesc + ", serviceLevel=" + serviceLevel
+				+ ", modelNumber=" + modelNumber + ", assetType=" + assetType + ", location=" + location
+				+ ", buildingName=" + buildingName + ", installDate=" + installDate + ", make=" + make
+				+ ", assetStatus=" + assetStatus + ", notes=" + notes + ", fieldCreated=" + fieldCreated
+				+ ", isMandatory=" + isMandatory + ", finalisedDT=" + finalisedDT + "]";
+	}
+
+    
 }

@@ -4,7 +4,7 @@
 	    $scope.total = 0;
 	    $scope.pageIndex = 1;
 	    
-	    $scope.getList = function(pageIndex) {//
+	    $scope.getList = function(pageIndex, klass) {//
 	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);	
 	    	if($scope.pagination && $scope.pagination.hasList(pageIndex)) {
 	    		return;
@@ -13,9 +13,25 @@
 	    		$scope.pageIndex = pageIndex;
 	    	}
 	    	
-			var dataObj = {
-				pageIndex : pageIndex
-			};	
+	    	var	dataObj = {
+    			pageIndex : pageIndex
+			};
+	    	
+	    	// Set search keyword
+	    	if(klass) {
+	    		dataObj.klass = klass;
+	    		
+		    	if(klass == 1) {					
+					dataObj.keyword = $scope.keyword;
+		    	}	    	
+		    	else if(klass == 2) {
+					dataObj.logId = $scope.logId;
+					dataObj.category = $scope.category;
+					dataObj.workOrderNum = $scope.workOrderNum;
+		    	}
+	    	}
+	    	
+	    	//console.log(dataObj);
 			
 			// get LogMaster List
 			var res = $http.post('/retry/list', dataObj);			
@@ -26,8 +42,12 @@
 				for(var i=0; i < data.length; i++) {
 					//console.log(data[i].createdDate + "_" + c_datetime);
 					data[i].createdDate = $filter('date')(data[i].createdDate, 'yyyy-MM-dd HH:mm');
-					data[i].state = CodeUtil.getCodeValue("PROCESS_STATUS", data[i].state);
+					
+					var state = data[i].state;
+					data[i].stateClass = state == "FIN" ? "text-success" : state == "STA" ? "text-info" : "text-danger";
+					data[i].state = CodeUtil.getCodeValue("PROCESS_STATUS", state);
 					data[i].subProcess = CodeUtil.getCodeValue("SUB_PROCESS", data[i].subProcess);
+					
 				}
 				
 				$scope.lists = data;
@@ -39,7 +59,7 @@
 			// get Total Count
 			res = $http.post('/retry/listCount', dataObj);
 			res.success(function(data, status, headers, config) {
-				//console.log("Total : " + data);
+				console.log("Total : " + data);
 				$scope.pagination = PaginatonService.Pagination(data, 10);
 				$scope.pagination.setCurrent(pageIndex);
 			});

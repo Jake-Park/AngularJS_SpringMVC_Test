@@ -87,4 +87,10 @@ public class EReport {
         this.reportData = value;
     }
 
+	@Override
+	public String toString() {
+		return "EReport [reportName=" + reportName + ", reportData=" + reportData + "]";
+	}
+
+    
 }

@@ -59,6 +59,11 @@ public class LogDetail {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+	@Override
+	public String toString() {
+		return "LogDetail [index=" + index + ", logId=" + logId + ", classMethod=" + classMethod + ", logLevel="
+				+ logLevel + ", text=" + text + ", createdDate=" + createdDate + "]";
+	}
 	
 	
 }

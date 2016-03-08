@@ -171,4 +171,11 @@ public class EService {
         this.clientId = value;
     }
 
+	@Override
+	public String toString() {
+		return "EService [serviceId=" + serviceId + ", serviceName=" + serviceName + ", serviceDescription="
+				+ serviceDescription + ", serviceType=" + serviceType + ", clientId=" + clientId + "]";
+	}
+
+    
 }

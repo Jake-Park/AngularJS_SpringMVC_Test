@@ -8,13 +8,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.integrationwizards.dao.StatusUpdatesDao;
 import com.integrationwizards.model.HEStatus;
 import com.integrationwizards.model.HResultStatusUpdates;
 import com.integrationwizards.service.StatusUpdatesService;
-import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.Constant;
 import com.integrationwizards.util.HeaderFactory;
 
 import au.com.retriever.test.barking.EStatus;
@@ -22,12 +24,10 @@ import au.com.retriever.test.barking.ResultExportStatusUpdates;
 import au.com.retriever.test.barking.RetrieverBarking;
 import au.com.retriever.test.barking.StatusUpdate;
 
+@Service
 public class StatusUpdatesServiceImpl implements StatusUpdatesService {
+	@Autowired
 	private StatusUpdatesDao statusUpdatesDao;
-	
-	public void setStatusUpdatesDao(StatusUpdatesDao statusUpdatesDao) {
-		this.statusUpdatesDao = statusUpdatesDao;
-	}	
 	
 	public ResultExportStatusUpdates sendStatusUpdates() throws Exception {
 		StatusUpdate statusUpdate = new StatusUpdate();
@@ -37,7 +37,7 @@ public class StatusUpdatesServiceImpl implements StatusUpdatesService {
 		statusUpdate.setUpdatedSince("300000");
 		
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.RetrieverBarking)).exportStatusUpdates(statusUpdate);
+				.getHeader(Constant.RetrieverBarking)).exportStatusUpdates(statusUpdate);
 	}
 
 	@Transactional

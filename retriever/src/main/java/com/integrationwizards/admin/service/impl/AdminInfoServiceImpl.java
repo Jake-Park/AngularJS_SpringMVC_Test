@@ -2,6 +2,7 @@ package com.integrationwizards.admin.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +13,9 @@ import com.integrationwizards.admin.service.AdminInfoService;
 
 @Service
 public class AdminInfoServiceImpl implements AdminInfoService {
+	@Autowired
 	private AdminInfoDao adminInfoDao;
-	
-	public void setAdminInfoDao(AdminInfoDao adminInfoDao) {
-		this.adminInfoDao = adminInfoDao;
-	}	
-	
+		
 	@Transactional
 	public AdminInfo selectAdminInfoByEmail(AdminInfo vo)throws Exception {
 		return adminInfoDao.selectAdminInfoByEmail(vo);

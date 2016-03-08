@@ -2,6 +2,7 @@ package com.integrationwizards.admin.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,12 +13,9 @@ import com.integrationwizards.model.LogDetail;
 
 @Service
 public class LogDetailServiceImpl implements LogDetailService {
+	@Autowired
 	private LogDetailDao logDetailDao;
 	
-	public void setLogDetailDao(LogDetailDao logDetailDao) {
-		this.logDetailDao = logDetailDao;
-	}	
-
 	@Transactional
 	public List<LogDetail> selectLogDetailList(PageVO pageVO) throws Exception {
 		return logDetailDao.selectLogDetailList(pageVO);

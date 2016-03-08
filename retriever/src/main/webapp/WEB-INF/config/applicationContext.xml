@@ -17,19 +17,6 @@
 	<mvc:resources location="/" mapping="/**"/>	
 	<mvc:annotation-driven enableMatrixVariables="true"/>
 	<task:annotation-driven />
-	
-	<bean class= "org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="defaultViews">
-			<list>
-				<ref bean="jsonView"/>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="jsonView"	class= "org.springframework.web.servlet.view.json.MappingJacksonJsonView">
-		<property name="prettyPrint" value="true"/>
-	</bean>	
-	
 		
 	<!--  -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -46,44 +33,7 @@
     <bean id="hibernate4AnnotatedSessionFactory"
         class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="annotatedClasses">
-            <list>
-            	<!--  CreateJob, StatusUpdates -->
-                <value>com.integrationwizards.model.HJob</value>
-                <value>com.integrationwizards.model.HJobAsset</value>
-                <value>com.integrationwizards.model.HJobService</value>
-                <value>com.integrationwizards.model.HResult</value>
-                <value>com.integrationwizards.model.MessagesIndex</value>
-                <value>com.integrationwizards.model.HResultStatusUpdates</value>
-                <value>com.integrationwizards.model.HEStatus</value>
-                
-                <!-- ExportJobs -->
-                <value>com.integrationwizards.model.HResultExportJobs</value>
-                <value>com.integrationwizards.model.HEJob</value>
-                <value>com.integrationwizards.model.HEOhs</value>
-                <value>com.integrationwizards.model.HEService</value>
-                <value>com.integrationwizards.model.HENewAsset</value>
-                <value>com.integrationwizards.model.HEPart</value>
-                <value>com.integrationwizards.model.HEAllowance</value>
-                <value>com.integrationwizards.model.HEPurchaseOrder</value>
-                <value>com.integrationwizards.model.HEAttachment</value>
-                <value>com.integrationwizards.model.HEReport</value>
-                <value>com.integrationwizards.model.HESignature</value>
-                <value>com.integrationwizards.model.HEChecklist</value>
-                <value>com.integrationwizards.model.HEChecklistCategory</value>
-                <value>com.integrationwizards.model.HEChecklistItem</value>
-                <value>com.integrationwizards.model.HETime</value>
-                
-                <value>com.integrationwizards.model.HSmartLink</value>                      
-                
-                <value>com.integrationwizards.model.LogMaster</value>
-                <value>com.integrationwizards.model.LogDetail</value>
-                
-                <!-- Admin -->
-                <value>com.integrationwizards.admin.model.CodeInfo</value>
-                <value>com.integrationwizards.admin.model.AdminInfo</value>
-            </list>
-        </property> 
+        <property name="packagesToScan" value="com.integrationwizards"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>    
@@ -91,14 +41,7 @@
                 <prop key="hibernate.connection.pool_size">10</prop>      
             </props>
         </property>
-<!--     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfigurationWithWildcard"/>
-    <property name="configLocation" value="classpath:hibernate.cfg.xml"/>      -->   
     </bean>    
-    
-<!--     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    	<property name="basePackage" value="com.ace.dao" />
-    	<property name="annotationClass" value="org.springframework.stereotype.Repository" />
-    </bean> -->
     
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
@@ -106,7 +49,7 @@
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
-
+	<context:property-placeholder location="classpath*:env.properties"/>
 	
 <!-- 	<bean id= "messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
    		<property name="basename" value="message/messages"/> 
@@ -119,7 +62,19 @@
 	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	  <property name="maxUploadSize" value="10240000"/>
 	</bean>
- -->	
+ -->	 
+ 	
+	<bean class= "org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="defaultViews">
+			<list>
+				<ref bean="jsonView"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jsonView"	class= "org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+		<property name="prettyPrint" value="true"/>
+	</bean>	
 	
 	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
         <property name="prefixJson" value="false"/>
@@ -142,5 +97,4 @@
 
      <!-- import configFile  -->     
      <import resource="classpath:servlet-config.xml"/>
-<!-- <import resource="classpath:config/security-config.xml"/> -->
 </beans>

@@ -13,7 +13,8 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">   
     <link href="<%=request.getContextPath()%>/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/admin/dashboard.css" rel="stylesheet"/>
-    <link href="<%=request.getContextPath()%>/css/admin/admin.css" rel="stylesheet"/> 
+    <link href="<%=request.getContextPath()%>/css/admin/admin.css" rel="stylesheet"/>    
+    
     
     <script src="//code.jquery.com/jquery-1.11.3.js"></script>
     <script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
@@ -28,7 +29,7 @@
   <header-menu></header-menu>
     
     <div class="container">
-      <div class="row well well-lg">
+      <div class="row well well-lg mg-t10">
 		<!-- <left-menu ng-show="Auth.isLoggedIn() && !Auth.isMobile()"></left-menu> -->
            
       	<div ng-view></div>

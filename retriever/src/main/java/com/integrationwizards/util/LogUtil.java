@@ -2,9 +2,12 @@ package com.integrationwizards.util;
 
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
+import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.LogDetail;
 import com.integrationwizards.model.LogMaster;
 
@@ -33,8 +36,15 @@ public class LogUtil {
 			session = LogManager.getInstance().getSession();
 			trans = session.beginTransaction();
 			
-			LogMaster lm = new LogMaster();
-			lm.setLogId(logId);
+			Criteria criteria = session.createCriteria(LogMaster.class)
+					.add(Restrictions.eq("logId", logId));
+			
+			LogMaster lm = (LogMaster)criteria.uniqueResult();
+			
+			if(lm == null) {
+				lm = new LogMaster();
+				lm.setLogId(logId);
+			}			
 			lm.setKey1(key1);	// MWNO : Work Order Number
 			lm.setKey2(category);
 			lm.setState(state);

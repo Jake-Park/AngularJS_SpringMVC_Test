@@ -14,7 +14,9 @@ import java.util.Set;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import com.integrationwizards.model.HJobService;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.service.CreateJobService;
-import com.integrationwizards.util.ConstantUtil;
+import com.integrationwizards.util.Constant;
 import com.integrationwizards.util.DateUtil;
 import com.integrationwizards.util.HeaderFactory;
 import com.integrationwizards.util.LogManager;
@@ -70,6 +72,7 @@ import au.com.tmha.mos195mi.selwoelem.SelWoElemResponseCollection;
 
 @Service
 public class CreateJobServiceImpl implements CreateJobService {
+	@Autowired
 	private CreateJobDao createJobDao;
 	private final String category = "createJob";
 	
@@ -122,8 +125,8 @@ public class CreateJobServiceImpl implements CreateJobService {
 	 * @throws Exception
 	 */
 	@Transactional
-	public List<HSmartLink> selectSmartLink() throws Exception {
-		return createJobDao.selectSmartLink();
+	public List<HSmartLink> selectSmartLink(String counts) throws Exception {
+		return createJobDao.selectSmartLink(counts);
 	}
 	
 	/**
@@ -148,7 +151,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getItemList.add(gItem);
 				
 		return ((MOS100MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.MOS100MI)).get(getCollection);
+				.getHeader(Constant.MOS100MI)).get(getCollection);
 	}
 	
 	/**
@@ -211,7 +214,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getMtrlItemList.add(getMtrlItem);
 		
 		return ((MOS100MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.MOS100MI)).getMtrl(getMtrlCollection);
+				.getHeader(Constant.MOS100MI)).getMtrl(getMtrlCollection);
 	}
 	
 	/**
@@ -236,7 +239,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		selWoElemItemList.add(selWoElemItem);
 				
 		return ((MOS195MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.MOS195MI)).selWoElem(selWoElemCollection);
+				.getHeader(Constant.MOS195MI)).selWoElem(selWoElemCollection);
 	}
 	
 	/**
@@ -259,7 +262,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getAddressItemList.add(getAddressItem);
 		
 		return ((CRS610MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.CRS610MI)).getAddress(getAddressCollection);
+				.getHeader(Constant.CRS610MI)).getAddress(getAddressCollection);
 	}
 	
 	/**
@@ -295,7 +298,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getOpItemList.add(getOpItem);
 		
 		return ((MOS100MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.MOS100MI)).getOp(getOpCollection);
+				.getHeader(Constant.MOS100MI)).getOp(getOpCollection);
 	}
 	
 	/**
@@ -319,7 +322,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		lstOperElementItemList.add(lstOperElementItem);
 		
 		return ((MOS104MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.MOS104MI)).lstOperElement(lstOperElementCollection);
+				.getHeader(Constant.MOS104MI)).lstOperElement(lstOperElementCollection);
 	}
 	
 	/**
@@ -358,7 +361,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getMCOHeadItemList.add(getMCOHeadItem);
 		
 		return ((COS100MI)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.COS100MI)).getMCOHead(getMCOHeadCollection);
+				.getHeader(Constant.COS100MI)).getMCOHead(getMCOHeadCollection);
 	}
 	
 	/**
@@ -379,7 +382,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Set Job data in order to send a request to Retriever
 	 */
-    public Job setJobData(Map<String, Map<String, Object>> rParam) throws Exception
+    public Job setJobData(Map<String, Map<String, Object>> rParam, String logId) throws Exception
 	{   
     	Job job = new Job();
 		LogUtil lu = null;
@@ -387,13 +390,13 @@ public class CreateJobServiceImpl implements CreateJobService {
 		try {
 			Map<String, Object> jobMap = rParam.get("job");
 			
-			lu = LogManager.getInstance().getLogObj(category);    	
+			lu = LogManager.getInstance().getLogObj(category, logId);    	
 	    	lu.info("Start setJobData");	    	
 	    	
 	    	// Set Job Data
 	    	job.setJobId(StringUtil.nullToVoid(jobMap.get("jobId")));
 	    	job.setPhaseId(BigInteger.valueOf(1));
-	    	job.setEmployer(ConstantUtil.employer);
+	    	job.setEmployer(Constant.employer);
 	    	job.setTechId(StringUtil.nullToVoid(jobMap.get("techId")));	    	
 	    	
 	    	job.setCustomerName(StringUtil.nullToVoid(jobMap.get("customerName")));
@@ -443,7 +446,7 @@ public class CreateJobServiceImpl implements CreateJobService {
     	}
 		catch(Exception e) {
 			e.printStackTrace();
-			lu.error("Error in setJobData : " + e.getMessage());
+			lu.error("Error in setJobData : " + ExceptionUtils.getStackTrace(e));
 			throw e;
 		}    	
     	
@@ -507,7 +510,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	 */
 	public Result sendCreateJob(Job job) {
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.RetrieverBarking)).createJob(job);
+				.getHeader(Constant.RetrieverBarking)).createJob(job);
 	}
 	
 	/**
@@ -573,8 +576,8 @@ public class CreateJobServiceImpl implements CreateJobService {
 	 * @throws Exception
 	 */	
 	@Transactional
-	public List<HJob> selectCreateJob() throws Exception {
-		return createJobDao.selectCreateJob();
+	public List<HJob> selectCreateJob(String counts) throws Exception {
+		return createJobDao.selectCreateJob(counts);
 	}
 	
 	/**
@@ -633,7 +636,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		
 		//jobMap.put("services", jobServiceList);
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(ConstantUtil.RetrieverBarking)).createJob(job);
+				.getHeader(Constant.RetrieverBarking)).createJob(job);
 		//return null;
 	}
 }

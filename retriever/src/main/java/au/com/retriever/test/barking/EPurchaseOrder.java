@@ -142,4 +142,11 @@ public class EPurchaseOrder {
         this.poPhoto = value;
     }
 
+	@Override
+	public String toString() {
+		return "EPurchaseOrder [poNumber=" + poNumber + ", poDesc=" + poDesc + ", poValue=" + poValue + ", poPhoto="
+				+ poPhoto + "]";
+	}
+
+    
 }

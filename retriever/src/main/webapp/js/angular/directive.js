@@ -28,4 +28,11 @@
           templateUrl: "/view/include/layer.html"
         };
       });
+	
+	app.directive("pagination", function() {
+        return {
+          restrict: 'E',
+          templateUrl: "/view/include/pagination.html"
+        };
+      });
  })();    

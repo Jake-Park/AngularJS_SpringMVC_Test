@@ -20,6 +20,7 @@ public class LogMaster {
 	//  3 : M3_EJ (ServiceHub to M3 in exportJobs),
 	private String subProcess;		
 	private String error;
+	private int count;
 	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
 	private Date createdDate;
 	
@@ -65,6 +66,12 @@ public class LogMaster {
 	}
 	public String getState() {
 		return state;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 	public Date getCreatedDate() {
 		return createdDate;

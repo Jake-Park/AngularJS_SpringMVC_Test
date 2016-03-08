@@ -16,7 +16,9 @@ import javax.swing.Spring;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +33,6 @@ import com.integrationwizards.model.HJobService;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.service.CreateJobService;
-import com.integrationwizards.util.CodeUtil;
-import com.integrationwizards.util.ConstantUtil;
 import com.integrationwizards.util.DateUtil;
 import com.integrationwizards.util.LogManager;
 import com.integrationwizards.util.LogUtil;
@@ -59,6 +59,10 @@ public class CreateJobController {
 	@Autowired
 	private CreateJobService createJobService;
 	private final String category = "createJob";
+	@Value("${createJob.reSmartLink.counts}") 
+	private String slCount;
+	@Value("${createJob.reCreateJob.counts}") 
+	private String cjCount;
 	
 	/**
 	 * Get SmartLink from M3 
@@ -83,9 +87,7 @@ public class CreateJobController {
     	try {    		
     		String uuid = UUID.randomUUID().toString();
     		lu = LogManager.getInstance().createLogObj(category, uuid);
-    		lu.updateStates(MWNO, 
-    				CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "STA"),
-    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"), null);
+    		lu.updateStates(MWNO, "STA", "M3C", null);
     		lu.info("Receive SmartLink From M3 : " + MWNO);
 	    	System.out.println("MWNO : " + MWNO);
 	    	System.out.println("PRNO : " + PRNO);
@@ -108,9 +110,7 @@ public class CreateJobController {
     	catch(Exception e) {
     		e.printStackTrace();
     		lu.error("Errored in getSmartLink : " + e);
-    		lu.updateStates(MWNO, CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
-    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"),
-    				"Errored in getSmartLink");
+    		lu.updateStates(MWNO, "ERR", "M3C", "Errored in getSmartLink");
     	}
     	
     	return null;
@@ -132,7 +132,7 @@ public class CreateJobController {
     	HSmartLink hSmartLink = null;
     	
     	try {
-			lu = LogManager.getInstance().getLogObj(mParam.get("logId"));    	
+			lu = LogManager.getInstance().getLogObj(mParam.get("logId"));   
 	    	lu.info("Start createJobFromM3 : " + mParam);
 	    		    	
 	    	hSmartLink = createJobService.insertSmartLink(mParam);
@@ -224,7 +224,7 @@ public class CreateJobController {
     		jobService.put("serviceOrderId", mParam.get("MWNO"));    		
     		jobMap.put("duration", String.valueOf(mParam.get("OPNO")));	//
     		
-    		Job job = createJobService.setJobData(rParam);    
+    		Job job = createJobService.setJobData(rParam, lu.getLogId());    
     		
     		lu.info("Start inserting createJob into DB");		
     		HJob hJob = createJobService.insertCreateJob(job, lu.getLogId());
@@ -238,11 +238,8 @@ public class CreateJobController {
     	}
 		catch(Exception e) {	
 			e.printStackTrace();
-			lu.error("Errored in createJobFromM3 : " + e);
-			lu.updateStates(mParam.get("MWNO"), 
-					CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
-    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"),
-    				"Errored in createJobFromM3");
+			lu.error("Errored in createJobFromM3 : " + ExceptionUtils.getStackTrace(e));
+			lu.updateStates(mParam.get("MWNO"), "ERR", "M3C", "Errored in createJobFromM3");
 			
 			// Update SmartLink data
 			try {
@@ -294,7 +291,7 @@ public class CreateJobController {
 			    lu.info("Finish updating the result of createJob");
 			    
 			    // Update Log Master 
-			    lu.updateStates(hSmartLink.getMWNO(), CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "FIN"), null, null);
+			    lu.updateStates(hSmartLink.getMWNO(), "FIN", null, null);
 			    LogManager.getInstance().closeLogObj(hSmartLink.getLogId());
 			}
 			
@@ -302,22 +299,19 @@ public class CreateJobController {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			lu.error("Errored in createJob : " + e);
-			lu.updateStates(job.getJobId(), 
-					CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
-    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "RTC"),
-    				"Errored in createJob");
+			lu.error("Errored in createJob : " + ExceptionUtils.getStackTrace(e));
+			lu.updateStates(job.getJobId(), "ERR", "RTC", "Errored in createJob");
 		}
 	}
 	
-	@Scheduled(fixedDelay = 20000)
+	@Scheduled(fixedDelayString = "${createJob.reSmartLink.delaytime}")
 	private void reSmartLink() throws Exception {
 		LogUtil lu = null;
 		String MWNO = "";	// For error log
 		
 		try {
 			if(PingCheck.isAccessToM3()) {
-				List<HSmartLink> hSmartLinkList = createJobService.selectSmartLink();
+				List<HSmartLink> hSmartLinkList = createJobService.selectSmartLink(slCount);
 				for(HSmartLink hSmartLink : hSmartLinkList) {				
 					System.out.println("---SmartLink--" + hSmartLink);
 					
@@ -333,6 +327,7 @@ public class CreateJobController {
 			    	map.put("USID", hSmartLink.getUSID());
 			    	map.put("Company", hSmartLink.getCONO());
 			    	map.put("success", hSmartLink.getSuccess());
+			    	map.put("logId", hSmartLink.getLogId());
 			    	
 			    	lu.debug("Recall createJobFromM3" + map.get("MWNO"));
 			    	createJobFromM3(map);
@@ -344,17 +339,13 @@ public class CreateJobController {
 		catch(Exception e) {	
 			e.printStackTrace();
 			if(lu != null) {				
-				lu.error("Errored in reSmartLink : " + e);
-				lu.updateStates(MWNO, CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
-	    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "M3C"),
-	    				"Errored in reSmartLink");
+				lu.error("Errored in reSmartLink : " + ExceptionUtils.getStackTrace(e));
+				lu.updateStates(MWNO, "ERR", "M3C", "Errored in reSmartLink");
 			}
 		}
-		
-		
 	}
 	
-	@Scheduled(fixedDelay = 20000)
+	@Scheduled(fixedDelayString = "${createJob.reCreateJob.delaytime}")
 	private void reCreateJob() throws Exception {
 		LogUtil lu = null;
 		String MWNO = "";	// For error log
@@ -362,7 +353,7 @@ public class CreateJobController {
 		try {
 			
 			if(PingCheck.isAccessToRetriever()) {
-				List<HJob> hJobList = createJobService.selectCreateJob();
+				List<HJob> hJobList = createJobService.selectCreateJob(cjCount);
 				for(HJob hJob : hJobList) {				
 					System.out.println("---job--" + hJob);
 					MWNO = hJob.getJobId();
@@ -407,10 +398,8 @@ public class CreateJobController {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			if(lu != null) {
-				lu.error("Errored in reCreateJob : " + e);
-				lu.updateStates(MWNO, CodeUtil.getInstance().getCodeValue(ConstantUtil.PROCESS_STATUS, "ERR"),
-	    				CodeUtil.getInstance().getCodeValue(ConstantUtil.SUB_PROCESS, "RTC"),
-	    				"Errored in reCreateJob");
+				lu.error("Errored in reCreateJob : " + ExceptionUtils.getStackTrace(e));
+				lu.updateStates(MWNO, "ERR", "RTC", "Errored in reCreateJob");
 			}
 		}
 	}

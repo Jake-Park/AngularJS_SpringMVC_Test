@@ -219,4 +219,13 @@ public class EPart {
         this.invLocId = value;
     }
 
+	@Override
+	public String toString() {
+		return "EPart [partId=" + partId + ", partDesc=" + partDesc + ", partQty=" + partQty + ", unitPrice="
+				+ unitPrice + ", poNumber=" + poNumber + ", createDatetime=" + createDatetime + ", invLocId=" + invLocId
+				+ "]";
+	}
+    
+    
+
 }

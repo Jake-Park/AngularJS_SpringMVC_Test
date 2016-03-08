@@ -3,13 +3,51 @@
 
         <div ng-controller="RetryController" ng-init="getList(1)" class="content col-md-12 col-md-12 main">
           <h1 class="page-header">Messages</h1>
-
-          <div class="table-responsive">
+          
+          <div class="row">
+           <div class="input-group" id="adv-search">
+                <input type="text" name="keyword" ng-model="keyword" class="form-control" placeholder="Search keyword" /> 
+                <div class="input-group-btn">
+                    <div class="btn-group" role="group">
+                        <div class="dropdown dropdown-lg">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+                            	aria-expanded="false"><span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <form name="frm" ng-submit="getList(1, 2);" class="form-horizontal" role="form">
+                                  <div class="form-group">
+                                    <label for="contain">Log Id</label>
+                                    <input class="form-control" name="logId" type="text" ng-model="logId" />
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="filter">Category</label>
+                                    <select name="category" class="form-control" ng-model="category">
+                                        <option value="" selected>All</option>
+                                        <option value="createJob">createJob</option>
+                                        <option value="exportJobs">exportJobs</option>
+                                    </select>
+                                  </div>                                  
+                                  <div class="form-group">
+                                    <label for="contain">Work Order Number</label>
+                                    <input class="form-control" name="workOrderNum" type="text" ng-model="workOrderNum" />
+                                  </div>
+                                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="getList(1, 1);"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+            </div> 
+          </div>
+                      
+          <div class="table-responsive" style="border:2px;border-color:#dbdbdb;">
+ 
+	          
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th width="5%">#</th>                  
-                  <th width="25%">Tx Id</th>
+                  <th width="25%">Log Id</th>
                   <th width="10%">Category</th>
                   <th width="10%">WO Number</th>
                   <th width="15%">Date</th>
@@ -27,16 +65,19 @@
                   <td>{{list.key1}}</td>
                   <td>{{list.createdDate}}</td>
                   <td>{{list.subProcess}}</td>
-                  <td>{{list.state}}</td>                  
+                  <td class="{{list.stateClass}}"><b>{{list.state}}<b></b></td>                  
                   <td class="text-danger">{{list.error}}</td>
                   <td>
-                  	<button type="button" class="btn btn-default btn-xs" ng-click="retry(list.logId, list.subProcess, list.key1)">Retry</button>
-					</td>
+                    <div ng-if="list.subProcess !== '' && list.error !== 'NULL'">
+                  		<button type="button" class="btn btn-default btn-xs" ng-click="retry(list.logId, list.subProcess, list.key1)">Retry</button>
+                  	</div>
+				  </td>
                 </tr>
               </tbody>
             </table>
           </div>
 
+		<!-- <pagination></pagination> -->
 			<nav style="margin:0 auto; width:300px;">
 				<ul class="pagination">
 				   <li class="{{pagination.hasPrevious()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() - 1)">&laquo;</a></li>
@@ -46,6 +87,6 @@
 				   <li ng-show="pagination.hasNext()"><a href="" ng-click="getList(pagination.current() + 1)">{{pagination.current() + 1}}</a></li>
 				   <li class="{{pagination.hasNext()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() + 1)">&raquo;</a></li>
 				</ul>	  
-			</nav>
+			</nav>		
 
         </div>
