@@ -5,9 +5,10 @@ import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.integrationwizards.common.StaticSpringApplicationContext;
 
 public class LogManager {
 	private static LogManager instance = null;
@@ -16,43 +17,36 @@ public class LogManager {
 	
 	public LogManager() {
 		logMap = new HashMap<String, LogUtil>();
+		
 	}
 	
 	public static LogManager getInstance() {
 		if(instance == null) {
 			instance = new LogManager();
 		}
-		
 		return instance;
 	}
-	
-	/**
-	 * Get Session Factory from hibernate.cfg.xml
-	 * @return
-	 */
-    public SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            // loads configuration and mappings
-            Configuration configuration = new Configuration().configure();
-            ServiceRegistry serviceRegistry
-                = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties()).build();
-             
-            // builds a session factory from the service registry
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);           
-        }
-         
-        return sessionFactory;
-    }
     
     /**
      * Get Session from session factory
      * @return
      */
-    public Session getSession() {
-    	Session session = getSessionFactory().getCurrentSession();
-    	if(session == null) {
-    		session = getSessionFactory().openSession();
+    public Session getSession() throws Exception {
+    	
+    	if(this.sessionFactory == null) {
+    		this.sessionFactory = (SessionFactory)StaticSpringApplicationContext.getBean("hibernate4AnnotatedSessionFactoryForLog");
+    	}    	
+    	
+    	Session session = null;
+    	
+    	try {    	
+    		session = this.sessionFactory.getCurrentSession();
+    	}
+    	catch(Exception e) {
+    	}
+    	
+    	if(session == null) {    		
+    		session = sessionFactory.openSession();
     	}
     	
     	return session;

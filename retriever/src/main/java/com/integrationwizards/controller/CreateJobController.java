@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.integrationwizards.common.PingCheck;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HJobAsset;
 import com.integrationwizards.model.HJobService;
@@ -36,7 +37,6 @@ import com.integrationwizards.service.CreateJobService;
 import com.integrationwizards.util.DateUtil;
 import com.integrationwizards.util.LogManager;
 import com.integrationwizards.util.LogUtil;
-import com.integrationwizards.util.PingCheck;
 import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.Job;
@@ -127,7 +127,7 @@ public class CreateJobController {
      * sendMOS100MI:GetOp - get Start Date
      * @param mParam
      */
-    public void createJobFromM3(Map<String, String> mParam) {
+    public void createJobFromM3(Map<String, String> mParam) throws Exception {
     	LogUtil lu = null;
     	HSmartLink hSmartLink = null;
     	
@@ -250,6 +250,11 @@ public class CreateJobController {
 			catch(Exception ee) {
 				ee.printStackTrace();
 			}
+			
+			// if calling From reSmartLink 
+			if(mParam.get("success") != null) {
+				throw e;
+			}
 		}
     	
 		
@@ -291,7 +296,7 @@ public class CreateJobController {
 			    lu.info("Finish updating the result of createJob");
 			    
 			    // Update Log Master 
-			    lu.updateStates(hSmartLink.getMWNO(), "FIN", null, null);
+			    lu.updateStates(hSmartLink.getMWNO(), "FIN", "", "");
 			    LogManager.getInstance().closeLogObj(hSmartLink.getLogId());
 			}
 			
@@ -391,6 +396,7 @@ public class CreateJobController {
 				    lu.debug("Start updating the result of Re createJob");	
 				    hJob = createJobService.updateCreatJob(hJob, hResult);
 				    lu.info("Finish updating the result of Re createJob");
+				    lu.updateStates(MWNO, "FIN", "", "");
 				}
 			}
     	}

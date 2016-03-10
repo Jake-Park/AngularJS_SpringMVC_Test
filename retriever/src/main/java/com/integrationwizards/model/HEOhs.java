@@ -19,7 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name="EOhs")
 public class HEOhs {
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;		
 	private String txId;

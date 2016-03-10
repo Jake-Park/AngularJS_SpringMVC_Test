@@ -26,7 +26,7 @@ import au.com.retriever.test.barking.EChecklistCategory;
 @Table(name="EChecklist")
 public class HEChecklist {
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;		
 	private String txId;

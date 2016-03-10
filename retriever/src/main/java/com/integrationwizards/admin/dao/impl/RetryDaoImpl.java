@@ -1,5 +1,6 @@
 package com.integrationwizards.admin.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.admin.dao.RetryDao;
@@ -18,11 +20,14 @@ import com.integrationwizards.model.HEJob;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.model.LogMaster;
+import com.integrationwizards.util.LogManager;
+import com.integrationwizards.util.LogUtil;
 import com.integrationwizards.util.StringUtil;
 
 @Repository
 public class RetryDaoImpl implements RetryDao {
 	@Autowired
+	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;	
 	
 	public List<LogMaster> selectRetryList(PageVO pageVO) throws Exception {
@@ -48,7 +53,7 @@ public class RetryDaoImpl implements RetryDao {
 				}
 			}
 		}		
-		hql += "ORDER BY A.createdDate DESC";
+		hql += "ORDER BY A.modifiedDate DESC";
 		
         Query query = session.createQuery(hql);        
 		if(!StringUtil.isEmptyString(pageVO.getKlass())) {
@@ -142,5 +147,26 @@ public class RetryDaoImpl implements RetryDao {
 				.add(Restrictions.eq("logId", param.get("logId")));		
 		
 		return (HEJob)criteria.uniqueResult();
+	}
+	
+	public boolean finishJob(Map<String, String> param) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		Criteria criteria = session.createCriteria(LogMaster.class)
+				.add(Restrictions.eq("logId", param.get("logId")));	
+		
+		LogUtil lu = LogManager.getInstance().getLogObj(param.get("category"), param.get("logId"));
+		lu.info("Finish the job forcefully.");
+		
+		LogMaster lm = (LogMaster)criteria.uniqueResult();
+		lm.setState("FIN");
+		lm.setSubProcess("");
+		lm.setError("");
+		lm.setModifiedDate(new Date());
+		session.update(lm);
+		
+		LogManager.getInstance().closeLogObj(param.get("logId"));
+		
+		return true;
 	}
 }

@@ -59,4 +59,13 @@ public class RetryController {
 	{	       
 	   	return retryService.retryJob(param);
 	}
+    
+	/**
+	 * Finish Job
+	 */	
+    @RequestMapping(value="/finishJob", method = RequestMethod.POST)
+	public @ResponseBody boolean finishJob(@RequestBody Map<String, String> param) throws Exception
+	{	       
+	   	return retryService.finishJob(param);
+	}    
 }

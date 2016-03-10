@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.dao.CreateJobDao;
@@ -20,6 +21,7 @@ import com.integrationwizards.util.StringUtil;
 @Repository
 public class CreateJobDaoImpl implements CreateJobDao {
 	@Autowired
+	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
 	
 	public HSmartLink insertSmartLink(HSmartLink hSmartLink) throws Exception {
@@ -81,8 +83,8 @@ public class CreateJobDaoImpl implements CreateJobDao {
 	public List<HSmartLink> selectSmartLink(String maxCount) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		
-		String hql = "SELECT sl FROM HSmartLink AS sl"
-				+ "AND sl.success = 'False' or sl.success = null "
+		String hql = "SELECT sl FROM HSmartLink AS sl "
+				+ "WHERE (sl.success = 'False' OR sl.success = null) "
 				+ "AND sl.count <= :count "
 				+ "ORDER BY sl.createdDate DESC ";
         Query query = session.createQuery(hql);
@@ -90,7 +92,8 @@ public class CreateJobDaoImpl implements CreateJobDao {
         
         List<HSmartLink> slList = query.list();
         
-        // Update counts
+        // Update counts // checking count in SmartLink table instead of LogMaster 
+        // because logMaster's count field is for creatJob to Retriever.
         for(HSmartLink sl : slList) {
     		sl.setCount(sl.getCount() + 1);
     		session.update(sl);

@@ -10,4 +10,5 @@ public interface RetryService {
 	public List<LogMaster> selectRetryList(PageVO pageVO) throws Exception;
 	public int getRetryListCnt(PageVO pageVO) throws Exception;
 	public boolean retryJob(Map<String, String> param) throws Exception;
+	public boolean finishJob(Map<String, String> param) throws Exception;
 }

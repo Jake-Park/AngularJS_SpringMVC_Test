@@ -1,6 +1,7 @@
-package com.integrationwizards.util;
+package com.integrationwizards.common;
 
-public class Constant {
+public class Constants {
+	public final static String localWorkspacePath = "file:/C:/Users/User/git/AngularJS_SpringMVC_Test/retriever/src/main/resources/";
 	public final static String logFileDirectory = "D:\\WORK\\apache-tomcat-8.0.30\\logs\\";
 	public final static String employer = "ACME Corp";
 	public final static String retrieverWsAccessId = "m3sandpitwsuser";

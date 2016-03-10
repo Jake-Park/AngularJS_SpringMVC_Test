@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import com.integrationwizards.common.PingCheck;
 import com.integrationwizards.model.HResultStatusUpdates;
 import com.integrationwizards.service.StatusUpdatesService;
 import com.integrationwizards.util.LogManager;
 import com.integrationwizards.util.LogUtil;
-import com.integrationwizards.util.PingCheck;
 import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.ResultExportStatusUpdates;

@@ -1,6 +1,8 @@
 package com.integrationwizards.util;
 
 
+import java.util.Calendar;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -33,7 +35,7 @@ public class LogUtil {
 		Transaction trans = null;
 		
 		try {
-			session = LogManager.getInstance().getSession();
+			session = LogManager.getInstance().getSession();			
 			trans = session.beginTransaction();
 			
 			Criteria criteria = session.createCriteria(LogMaster.class)
@@ -50,6 +52,7 @@ public class LogUtil {
 			lm.setState(state);
 			lm.setSubProcess(subProcess);
 			lm.setError(errorMsg);
+			lm.setModifiedDate(Calendar.getInstance().getTime());
 			
 			if(session != null) {
 				session.saveOrUpdate(lm);

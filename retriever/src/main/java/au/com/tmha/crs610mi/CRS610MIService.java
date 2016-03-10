@@ -6,6 +6,9 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import com.integrationwizards.common.Constants;
+
 import javax.xml.ws.Service;
 
 /**
@@ -15,7 +18,7 @@ import javax.xml.ws.Service;
  * 
  */
 @WebServiceClient(name = "CRS610MIService", 
-                  wsdlLocation = "file:/C:/Users/User/workspace/JAXWSEclipse/WebContent/WEB-INF/CRS610MI.wsdl",
+                  wsdlLocation = Constants.localWorkspacePath + "CRS610MI.wsdl",
                   targetNamespace = "http://www.tmha.com.au/CRS610MI") 
 public class CRS610MIService extends Service {
 
@@ -26,11 +29,11 @@ public class CRS610MIService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/C:/Users/User/workspace/JAXWSEclipse/WebContent/WEB-INF/CRS610MI.wsdl");
+            url = new URL(Constants.localWorkspacePath + "CRS610MI.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(CRS610MIService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/User/workspace/JAXWSEclipse/WebContent/WEB-INF/CRS610MI.wsdl");
+                     "Can not initialize the default wsdl from {0}", Constants.localWorkspacePath + "CRS610MI.wsdl");
         }
         WSDL_LOCATION = url;
     }

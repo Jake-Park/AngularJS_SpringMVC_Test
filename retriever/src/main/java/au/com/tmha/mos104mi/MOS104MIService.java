@@ -6,6 +6,9 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import com.integrationwizards.common.Constants;
+
 import javax.xml.ws.Service;
 
 /**
@@ -15,7 +18,7 @@ import javax.xml.ws.Service;
  * 
  */
 @WebServiceClient(name = "MOS104MIService", 
-                  wsdlLocation = "file:/C:/Users/User/git/AngularJS_SpringMVC_Test/retriever/src/main/resources/MOS104MI.wsdl",
+                  wsdlLocation = Constants.localWorkspacePath + "MOS104MI.wsdl",
                   targetNamespace = "http://www.tmha.com.au/MOS104MI") 
 public class MOS104MIService extends Service {
 
@@ -26,11 +29,11 @@ public class MOS104MIService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/C:/Users/User/git/AngularJS_SpringMVC_Test/retriever/src/main/resources/MOS104MI.wsdl");
+            url = new URL(Constants.localWorkspacePath + "MOS104MI.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(MOS104MIService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/User/git/AngularJS_SpringMVC_Test/retriever/src/main/resources/MOS104MI.wsdl");
+                     "Can not initialize the default wsdl from {0}", Constants.localWorkspacePath + "MOS104MI.wsdl");
         }
         WSDL_LOCATION = url;
     }

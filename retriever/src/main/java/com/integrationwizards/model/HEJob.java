@@ -23,7 +23,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Table(name="EJob")
 public class HEJob {
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;
 	private String txId;

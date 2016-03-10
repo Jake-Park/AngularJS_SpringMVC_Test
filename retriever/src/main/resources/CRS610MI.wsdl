@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmha.com.au/CRS610MI" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://www.tmha.com.au/CRS610MI/GetAddress" xmlns:lws="http://lawson.com/ws/credentials" name="CRS610MIService" targetNamespace="http://www.tmha.com.au/CRS610MI">
+  <wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:getaddress="http://www.tmha.com.au/CRS610MI/GetAddress" elementFormDefault="qualified" targetNamespace="http://www.tmha.com.au/CRS610MI/GetAddress">
+  <xsd:annotation>
+    <xsd:documentation>Api: Customer interface Transaction: Retrieve customer address data</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="GetAddress" type="getaddress:GetAddressCollection"/>
+  <xsd:complexType name="GetAddressCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="GetAddressItem" type="getaddress:GetAddressItem"/>
+    </xsd:sequence>
+    <xsd:attribute default="100" name="maxRecords" type="xsd:int" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="GetAddressItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Company" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Company (CONO)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="CustomerNumber" nillable="false">
+        <xsd:annotation>
+          <xsd:documentation>Customer number (CUNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="AddressType" nillable="false" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Address type (ADRT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="AddressNumber" nillable="false">
+        <xsd:annotation>
+          <xsd:documentation>Address number (ADID)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="GetAddressResponse" type="getaddress:GetAddressResponseCollection"/>
+  <xsd:complexType name="GetAddressResponseCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="GetAddressResponseItem" type="getaddress:GetAddressResponseItem"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="GetAddressResponseItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Country" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Country (CSCD)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerAddress1" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer address 1 (CUA1)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="36"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerAddress2" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer address 2 (CUA2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="36"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerAddress3" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer address 3 (CUA3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="36"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerAddress4" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer address 4 (CUA4)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="36"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerName" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer name (CUNM)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="36"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Division" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Division (DIVI)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="EANLocationCode" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>EAN location code (EALO)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="AreaState" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Area/state (ECAR)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Place" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Place (EDE2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TelephoneNumber1" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Telephone number 1 (PHNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="16"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="postalCode" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>postal code (PONO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TermsText" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Terms text (TEL2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="36"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="City" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>City (TOWN)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="YourReference" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Your reference (YREF)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="30"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="AddressCategory" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Address category (ADCG)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>  <xsd:schema elementFormDefault="qualified" targetNamespace="http://lawson.com/ws/credentials"><xsd:element name="lws"><xsd:complexType><xsd:sequence><xsd:element minOccurs="0" name="company" type="xsd:integer"/><xsd:element minOccurs="0" name="division" type="xsd:string"/></xsd:sequence></xsd:complexType></xsd:element></xsd:schema></wsdl:types>
+  <wsdl:message name="GetAddressResponse">
+    <wsdl:part element="ns1:GetAddressResponse" name="GetAddressResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAddress">
+    <wsdl:part element="ns1:GetAddress" name="GetAddress">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CRS610MI">
+    <wsdl:operation name="GetAddress">
+      <wsdl:input message="tns:GetAddress" name="GetAddress">
+    </wsdl:input>
+      <wsdl:output message="tns:GetAddressResponse" name="GetAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CRS610MIServiceSoapBinding" type="tns:CRS610MI">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetAddress">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="GetAddress">
+        <soap:body use="literal"/>
+      <header message="tns:LwsHeaderMessage" part="LwsHeader" use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/"/></wsdl:input>
+      <wsdl:output name="GetAddressResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CRS610MIService">
+    <wsdl:port binding="tns:CRS610MIServiceSoapBinding" name="CRS610MIPort">
+      <soap:address location="http://erp-m3.tica.toyota-industries.com.au:21007/mws-ws/services/CRS610MI"/>
+    </wsdl:port>
+  </wsdl:service>
+<message name="LwsHeaderMessage" xmlns="http://schemas.xmlsoap.org/wsdl/"><part element="lws:lws" name="LwsHeader"/></message></wsdl:definitions>

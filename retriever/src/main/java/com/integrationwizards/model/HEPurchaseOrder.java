@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlElement;
 @Table(name="EPurchaseOrder")
 public class HEPurchaseOrder {
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;		
 	private String txId;

@@ -47,14 +47,14 @@
               <thead>
                 <tr>
                   <th width="5%">#</th>                  
-                  <th width="25%">Log Id</th>
+                  <th width="20%">Log Id</th>
                   <th width="10%">Category</th>
                   <th width="10%">WO Number</th>
                   <th width="15%">Date</th>
                   <th width="5%">Process</th>
                   <th width="5%">State</th>
                   <th width="15%">Error</th>
-                  <th width="10%">&nbsp;</th>
+                  <th width="15%">&nbsp;</th>
                 </tr>
               </thead>
               <tbody>
@@ -63,14 +63,17 @@
                   <td><a ng-href="#logDetail/{{list.logId}}">{{list.logId}}</a></td>
                   <td>{{list.key2}}</td>
                   <td>{{list.key1}}</td>
-                  <td>{{list.createdDate}}</td>
+                  <td>{{list.modifiedDate}}</td>
                   <td>{{list.subProcess}}</td>
                   <td class="{{list.stateClass}}"><b>{{list.state}}<b></b></td>                  
                   <td class="text-danger">{{list.error}}</td>
                   <td>
-                    <div ng-if="list.subProcess !== '' && list.error !== 'NULL'">
+                    <div ng-if="list.subProcess !== '' && list.error !== 'NULL' && list.state !== 'Finished'" style="display:inline;">
                   		<button type="button" class="btn btn-default btn-xs" ng-click="retry(list.logId, list.subProcess, list.key1)">Retry</button>
                   	</div>
+                    <div ng-if="list.state !== 'Finished'" style="display:inline;">
+                  		<button type="button" class="btn btn-default btn-xs" ng-click="finish(list.key2, list.logId)">Finish</button>
+                  	</div>                  	
 				  </td>
                 </tr>
               </tbody>

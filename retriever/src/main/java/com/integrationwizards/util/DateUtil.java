@@ -137,7 +137,7 @@ public class DateUtil {
 		    
 			date1 = DatatypeFactory.newInstance().newXMLGregorianCalendar();
 			date1.setYear(cal.get(Calendar.YEAR));
-			date1.setMonth(cal.get(Calendar.MONTH));
+			date1.setMonth(cal.get(Calendar.MONTH) + 1);
 			date1.setDay(cal.get(Calendar.DAY_OF_MONTH));
 		}
 		catch(Exception e) {

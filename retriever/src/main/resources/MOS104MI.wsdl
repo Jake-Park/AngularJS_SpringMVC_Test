@@ -326,7 +326,7 @@
   </wsdl:binding>
   <wsdl:service name="MOS104MIService">
     <wsdl:port binding="tns:MOS104MIServiceSoapBinding" name="MOS104MIPort">
-      <soap:address location="http://192.168.2.10:21007/mws-ws/services/MOS104MI"/>
+      <soap:address location="http://erp-m3.tica.toyota-industries.com.au:21007/mws-ws/services/MOS104MI"/>
     </wsdl:port>
   </wsdl:service>
 <message name="LwsHeaderMessage" xmlns="http://schemas.xmlsoap.org/wsdl/"><part element="lws:lws" name="LwsHeader"/></message></wsdl:definitions>

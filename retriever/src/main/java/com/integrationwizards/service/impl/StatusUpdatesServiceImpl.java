@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.integrationwizards.common.Constants;
+import com.integrationwizards.common.HeaderFactory;
 import com.integrationwizards.dao.StatusUpdatesDao;
 import com.integrationwizards.model.HEStatus;
 import com.integrationwizards.model.HResultStatusUpdates;
 import com.integrationwizards.service.StatusUpdatesService;
-import com.integrationwizards.util.Constant;
-import com.integrationwizards.util.HeaderFactory;
 
 import au.com.retriever.test.barking.EStatus;
 import au.com.retriever.test.barking.ResultExportStatusUpdates;
@@ -37,7 +37,7 @@ public class StatusUpdatesServiceImpl implements StatusUpdatesService {
 		statusUpdate.setUpdatedSince("300000");
 		
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(Constant.RetrieverBarking)).exportStatusUpdates(statusUpdate);
+				.getHeader(Constants.RetrieverBarking)).exportStatusUpdates(statusUpdate);
 	}
 
 	@Transactional

@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.dao.ExportJobsDao;
@@ -21,6 +22,7 @@ import com.integrationwizards.util.StringUtil;
 @Repository
 public class ExportJobsDaoImpl implements ExportJobsDao {
 	@Autowired
+	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
 	
 	public void insertResultExportJobs(HResultExportJobs hResult) throws Exception {
@@ -44,6 +46,8 @@ public class ExportJobsDaoImpl implements ExportJobsDao {
 		
 		Criteria criteria = session.createCriteria(LogMaster.class)
 				.add(Restrictions.eq("key2", "exportJobs"))
+				.add(Restrictions.ne("key1", ""))
+				.add(Restrictions.ne("subProcess", ""))
 				.add(Restrictions.lt("count", StringUtil.nullToInteger(maxCount)))
 				.add(Restrictions.disjunction().add(
 						Restrictions.or(
@@ -77,10 +81,8 @@ public class ExportJobsDaoImpl implements ExportJobsDao {
 	        
 	        hEJobList.add((HEJob)query.uniqueResult());
 	        
-	        System.out.println("-1--" + logMaster.getCount());
 	        logMaster.setCount(logMaster.getCount() + 1);
     		session.update(logMaster);
-    		System.out.println("-2--" + logMaster.getCount());
 		}
 		
         return hEJobList;

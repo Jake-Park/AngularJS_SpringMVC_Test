@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class RetryServiceImpl implements RetryService {
 		try {
 			String subProcess = param.get("subProcess");
 			
-			if(subProcess.equals("M3E")) { // Export Job
+			if(subProcess.equals("M3_EJ")) { // Export Job
 				lu = LogManager.getInstance().getLogObj("exportJobs", param.get("logId"));
 				lu.info("Start retry ExportJob : " + param.get("logId"));
 				
@@ -58,7 +59,7 @@ public class RetryServiceImpl implements RetryService {
 				
 				exportJobController.updateExportJobsToM3(hEJob);
 				// Update Log Master 
-			    lu.updateStates(hEJob.getJobId(), "FIN", "M3E", null);
+			    lu.updateStates(hEJob.getJobId(), "FIN", "M3_EJ", null);
 			}
 			else { // Create Job
 				lu = LogManager.getInstance().getLogObj("createJob", param.get("logId"));
@@ -68,7 +69,7 @@ public class RetryServiceImpl implements RetryService {
 				CreateJobService createJobService = appContext.getBean(CreateJobService.class);
 				HSmartLink sl = retryDao.getSmartLink(param);
 				
-				if(subProcess.equals("M3C")) { // To M3
+				if(subProcess.equals("M3_CJ")) { // To M3
 					lu.info("Send Retry createJob to M3");
 			    	Map<String, String> map = new HashMap<String, String>();
 			    	map.put("MWNO", sl.getMWNO());
@@ -98,7 +99,7 @@ public class RetryServiceImpl implements RetryService {
 		}
 		catch(Exception e) {
 			if(lu != null) {
-				lu.error("Errored in retryJob : " + e);
+				lu.error("Errored in retryJob : " + ExceptionUtils.getStackTrace(e));
 				lu.updateStates(param.get("MWNO"), "ERR", param.get("subProcess"), "Errored in retryJob");
 			}
 			throw e;
@@ -110,4 +111,8 @@ public class RetryServiceImpl implements RetryService {
 		return true;
 	}
 
+	@Transactional
+	public boolean finishJob(Map<String, String> param) throws Exception {
+		return retryDao.finishJob(param);
+	}
 }

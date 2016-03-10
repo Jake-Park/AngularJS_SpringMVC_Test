@@ -15,4 +15,5 @@ public interface RetryDao {
 	public HSmartLink getSmartLink(Map<String, String> param) throws Exception;
 	public HJob getHJob(Map<String, String> param) throws Exception;
 	public HEJob getHEJob(Map<String, String> param) throws Exception;
+	public boolean finishJob(Map<String, String> param) throws Exception;
 }

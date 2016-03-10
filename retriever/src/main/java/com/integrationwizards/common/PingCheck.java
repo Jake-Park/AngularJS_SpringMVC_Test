@@ -1,4 +1,4 @@
-package com.integrationwizards.util;
+package com.integrationwizards.common;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -14,9 +14,9 @@ public class PingCheck {
 	@Scheduled(fixedDelay = 10000)
 	private void sendPing() {
 		// check Retriever server
-		setAccessToRetriever(sendPing(Constant.retrieverServerURL, 80));
+		setAccessToRetriever(sendPing(Constants.retrieverServerURL, 80));
 		// check M3 server
-		setAccessToM3(sendPing(Constant.m3ServerURL, Constant.m3ServerPort));
+		setAccessToM3(sendPing(Constants.m3ServerURL, Constants.m3ServerPort));
 	}	
 	
 	public boolean sendPing(String URL, int port) {

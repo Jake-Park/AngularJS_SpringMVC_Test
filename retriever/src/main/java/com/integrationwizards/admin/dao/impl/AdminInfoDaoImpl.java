@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.admin.dao.AdminInfoDao;
@@ -18,6 +19,7 @@ import com.integrationwizards.admin.model.PageVO;
 @Repository
 public class AdminInfoDaoImpl implements AdminInfoDao {
 	@Autowired
+	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
 	
 	public AdminInfo selectAdminInfoByEmail(AdminInfo vo) {

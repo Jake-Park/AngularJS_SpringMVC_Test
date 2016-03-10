@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name="ETime")
 public class HETime {
 	@Id
-	@Column(name="index")
+	@Column(name="idx")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	private int index;		
 	private String txId;

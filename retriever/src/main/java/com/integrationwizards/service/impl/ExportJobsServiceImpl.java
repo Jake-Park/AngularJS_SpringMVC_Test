@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.integrationwizards.common.Constants;
+import com.integrationwizards.common.HeaderFactory;
 import com.integrationwizards.dao.ExportJobsDao;
 import com.integrationwizards.model.HEAllowance;
 import com.integrationwizards.model.HEAttachment;
@@ -34,9 +36,7 @@ import com.integrationwizards.model.HETime;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
-import com.integrationwizards.util.Constant;
 import com.integrationwizards.util.DateUtil;
-import com.integrationwizards.util.HeaderFactory;
 import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.EAllowance;
@@ -78,7 +78,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		exportJob.setUpdatedSince("300000");
 		
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(Constant.RetrieverBarking)).exportJobs(exportJob);
+				.getHeader(Constants.RetrieverBarking)).exportJobs(exportJob);
 	}
 
 	@Transactional
@@ -536,7 +536,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		getItemList.add(gItem);
 				
 		return ((MOS070MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS070MI)).updOperation(getCollection);
+				.getHeader(Constants.MOS070MI)).updOperation(getCollection);
 	}
 	
 	public UpdResponseCollection sendMOS057MIUpd(HEJob hEJob) throws Exception {
@@ -595,7 +595,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		getItemList.add(gItem);
 				
 		return ((MOS057MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS057MI)).upd(getCollection);
+				.getHeader(Constants.MOS057MI)).upd(getCollection);
 	}
 	
 	@Transactional

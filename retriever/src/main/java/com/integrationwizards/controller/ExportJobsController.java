@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import com.integrationwizards.common.PingCheck;
 import com.integrationwizards.model.HEJob;
 import com.integrationwizards.model.HENewAsset;
 import com.integrationwizards.model.HETime;
@@ -17,7 +18,6 @@ import com.integrationwizards.model.HResultExportJobs;
 import com.integrationwizards.service.ExportJobsService;
 import com.integrationwizards.util.LogManager;
 import com.integrationwizards.util.LogUtil;
-import com.integrationwizards.util.PingCheck;
 import com.integrationwizards.util.StringUtil;
 
 import au.com.retriever.test.barking.ResultExportJobs;
@@ -95,6 +95,7 @@ public class ExportJobsController {
 		try {
 			lu = LogManager.getInstance().getLogObj(hEJob.getLogId());
 			lu.info("Start updateExportJobsToM3 : " + hEJob.getJobId());
+			lu.debug(String.valueOf(StringUtil.objToMap(hEJob)));
 						
 			UpdOperationResponseCollection updOperationResponseCollection = exportJobsService.sendMOS070MIUpdOperation(hEJob);
 			lu.info("Sent MOS070MI:UpdOperation");

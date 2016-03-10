@@ -91,7 +91,8 @@ public class StringUtil {
 			Calendar cal = Calendar.getInstance();
 		    cal.setTime(date);
 		    
-		    String timeStr = cal.get(Calendar.HOUR) + "" + cal.get(Calendar.MINUTE) + "" + cal.get(Calendar.SECOND);
+		    String timeStr = cal.get(Calendar.HOUR_OF_DAY) + insertLeftChar(String.valueOf(cal.get(Calendar.MINUTE)), 2, '0');
+		    
 		    time = BigDecimal.valueOf(Long.valueOf(timeStr));
 		}
 		catch(Exception e) {

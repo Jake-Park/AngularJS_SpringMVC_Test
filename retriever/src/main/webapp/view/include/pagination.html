@@ -1,0 +1,10 @@
+			<nav style="margin:0 auto; width:300px;">
+				<ul class="pagination">
+				   <li class="{{pagination.hasPrevious()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() - 1)">&laquo;</a></li>
+				   <li ng-show="pagination.hasPrevious()"><a href="" ng-click="getList(pagination.current() - 1)">{{pagination.current() - 1}}</a></li>
+				   <li ng-hide="pagination.hasPrevious()"><span>&nbsp;</span></li>
+				   <li class="active"><a href="" ng-click="getList(pagination.current())">{{pagination.current()}}</a></li>
+				   <li ng-show="pagination.hasNext()"><a href="" ng-click="getList(pagination.current() + 1)">{{pagination.current() + 1}}</a></li>
+				   <li class="{{pagination.hasNext()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() + 1)">&raquo;</a></li>
+				</ul>	  
+			</nav>

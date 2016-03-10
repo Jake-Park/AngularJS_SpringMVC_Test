@@ -16,6 +16,8 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import com.integrationwizards.common.Constants;
+
 /**
  * Every transaction has an own log file and this file is generated when a transaction is occurred
  * and after the end of transaction, this log file is deleted
@@ -74,7 +76,7 @@ public class LogFileUtil {
 	 */
 	public void createLogFile() {
 		logger = Logger.getLogger(category); 
-		String path = Constant.logFileDirectory;
+		String path = Constants.logFileDirectory;
 		String dir = createLogDirectory(path);		
 		if(dir == null) {
 			System.out.println("Fail to Create Log Directory!");
@@ -111,7 +113,7 @@ public class LogFileUtil {
 		
 		try {
 			abbrFilePath = path;
-			fullFilePath = Constant.logFileDirectory + path;
+			fullFilePath = Constants.logFileDirectory + path;
 	        // This block configure the logger with handler and formatter 
 			fh = new FileHandler(fullFilePath, true); 
 			

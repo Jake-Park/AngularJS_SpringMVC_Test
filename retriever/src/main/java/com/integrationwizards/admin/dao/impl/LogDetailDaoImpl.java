@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.integrationwizards.admin.dao.LogDetailDao;
@@ -19,6 +20,7 @@ import com.integrationwizards.util.StringUtil;
 @Repository
 public class LogDetailDaoImpl implements LogDetailDao {
 	@Autowired
+	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
 	
 	public List<LogDetail> selectLogDetailList(PageVO pageVO) throws Exception {

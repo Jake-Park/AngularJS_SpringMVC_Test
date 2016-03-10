@@ -6,6 +6,9 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
+
+import com.integrationwizards.common.Constants;
+
 import javax.xml.ws.Service;
 
 /**
@@ -15,7 +18,7 @@ import javax.xml.ws.Service;
  * 
  */
 @WebServiceClient(name = "MOS057MIService", 
-                  wsdlLocation = "file:/C:/Users/User/workspace/JAXWSEclipse/WebContent/WEB-INF/MOS057MI.WSDL",
+                  wsdlLocation = Constants.localWorkspacePath + "MOS057MI.WSDL",
                   targetNamespace = "http://www.tmha.com.au/MOS057MI") 
 public class MOS057MIService extends Service {
 
@@ -26,11 +29,11 @@ public class MOS057MIService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/C:/Users/User/workspace/JAXWSEclipse/WebContent/WEB-INF/MOS057MI.WSDL");
+            url = new URL(Constants.localWorkspacePath + "MOS057MI.WSDL");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(MOS057MIService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/User/workspace/JAXWSEclipse/WebContent/WEB-INF/MOS057MI.WSDL");
+                     "Can not initialize the default wsdl from {0}", Constants.localWorkspacePath + "MOS057MI.WSDL");
         }
         WSDL_LOCATION = url;
     }

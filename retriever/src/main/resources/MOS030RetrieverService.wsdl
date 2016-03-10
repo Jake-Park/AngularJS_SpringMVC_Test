@@ -1,0 +1,116 @@
+<wsdl:definitions xmlns:lws="http://lawson.com/ws/credentials" xmlns:ns1="http://schemas.lawson.com/MOS030_Retriever/Delete" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schemas.lawson.com/MOS030_Retriever" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MOS030RetrieverService" targetNamespace="http://schemas.lawson.com/MOS030_Retriever">
+  <wsdl:types>
+    <xsd:schema xmlns:delete="http://schemas.lawson.com/MOS030_Retriever/Delete" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://schemas.lawson.com/MOS030_Retriever/Delete">
+      <xsd:annotation>
+        <xsd:documentation>Program: MOS030</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="Delete" type="delete:DeleteType"></xsd:element>
+      <xsd:complexType name="DeleteType">
+        <xsd:sequence>
+          <xsd:element name="MOS030" type="delete:ct_0"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ct_0">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Facility">
+            <xsd:annotation>
+              <xsd:documentation>Facility
+The field indicates the facility used.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="3"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="1" name="WorkOrderNumber">
+            <xsd:annotation>
+              <xsd:documentation>Work order number
+The field indicates the unique identity of a work order. The number series is defined for each order type.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="10"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Product">
+            <xsd:annotation>
+              <xsd:documentation>Product
+The field indicates the product number.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="15"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="DeleteResponse" type="delete:DeleteResponseType"></xsd:element>
+      <xsd:complexType name="DeleteResponseType">
+        <xsd:sequence>
+          <xsd:element name="MOS030" type="delete:ct_1"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ct_1">
+        <xsd:sequence>
+          <xsd:element name="WorkOrderNumber">
+            <xsd:annotation>
+              <xsd:documentation>Work order number
+The field indicates the unique identity of a work order. The number series is defined for each order type.</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="10"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="http://lawson.com/ws/credentials">
+      <xsd:element name="lws">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="company" type="xsd:integer"></xsd:element>
+            <xsd:element minOccurs="0" name="division" type="xsd:string"></xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Delete">
+    <wsdl:part element="ns1:Delete" name="Delete"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DeleteResponse">
+    <wsdl:part element="ns1:DeleteResponse" name="DeleteResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MOS030_Retriever">
+    <wsdl:operation name="Delete">
+      <wsdl:input message="tns:Delete" name="Delete"></wsdl:input>
+      <wsdl:output message="tns:DeleteResponse" name="DeleteResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MOS030RetrieverServiceSoapBinding" type="tns:MOS030_Retriever">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <wsdl:operation name="Delete">
+      <soap:operation soapAction="" style="document"></soap:operation>
+      <wsdl:input name="Delete">
+        <soap:body use="literal"></soap:body>
+        <header xmlns="http://schemas.xmlsoap.org/wsdl/soap/" message="tns:LwsHeaderMessage" part="LwsHeader" use="literal"></header>
+      </wsdl:input>
+      <wsdl:output name="DeleteResponse">
+        <soap:body use="literal"></soap:body>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MOS030RetrieverService">
+    <wsdl:port binding="tns:MOS030RetrieverServiceSoapBinding" name="MOS030_RetrieverPort">
+      <soap:address location="http://ERP-M3.tica.toyota-industries.com.au:16101/mws-ws/services/MOS030_Retriever"></soap:address>
+    </wsdl:port>
+  </wsdl:service>
+  <message xmlns="http://schemas.xmlsoap.org/wsdl/" name="LwsHeaderMessage">
+    <part element="lws:lws" name="LwsHeader"></part>
+  </message>
+</wsdl:definitions>

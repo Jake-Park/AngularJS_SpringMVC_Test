@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.integrationwizards.common.Constants;
+import com.integrationwizards.common.HeaderFactory;
 import com.integrationwizards.dao.CreateJobDao;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HJobAsset;
@@ -27,9 +29,7 @@ import com.integrationwizards.model.HJobService;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
 import com.integrationwizards.service.CreateJobService;
-import com.integrationwizards.util.Constant;
 import com.integrationwizards.util.DateUtil;
-import com.integrationwizards.util.HeaderFactory;
 import com.integrationwizards.util.LogManager;
 import com.integrationwizards.util.LogUtil;
 import com.integrationwizards.util.StringUtil;
@@ -151,7 +151,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getItemList.add(gItem);
 				
 		return ((MOS100MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS100MI)).get(getCollection);
+				.getHeader(Constants.MOS100MI)).get(getCollection);
 	}
 	
 	/**
@@ -214,7 +214,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getMtrlItemList.add(getMtrlItem);
 		
 		return ((MOS100MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS100MI)).getMtrl(getMtrlCollection);
+				.getHeader(Constants.MOS100MI)).getMtrl(getMtrlCollection);
 	}
 	
 	/**
@@ -239,7 +239,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		selWoElemItemList.add(selWoElemItem);
 				
 		return ((MOS195MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS195MI)).selWoElem(selWoElemCollection);
+				.getHeader(Constants.MOS195MI)).selWoElem(selWoElemCollection);
 	}
 	
 	/**
@@ -262,7 +262,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getAddressItemList.add(getAddressItem);
 		
 		return ((CRS610MI)HeaderFactory.getInstance()
-				.getHeader(Constant.CRS610MI)).getAddress(getAddressCollection);
+				.getHeader(Constants.CRS610MI)).getAddress(getAddressCollection);
 	}
 	
 	/**
@@ -298,7 +298,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getOpItemList.add(getOpItem);
 		
 		return ((MOS100MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS100MI)).getOp(getOpCollection);
+				.getHeader(Constants.MOS100MI)).getOp(getOpCollection);
 	}
 	
 	/**
@@ -322,7 +322,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		lstOperElementItemList.add(lstOperElementItem);
 		
 		return ((MOS104MI)HeaderFactory.getInstance()
-				.getHeader(Constant.MOS104MI)).lstOperElement(lstOperElementCollection);
+				.getHeader(Constants.MOS104MI)).lstOperElement(lstOperElementCollection);
 	}
 	
 	/**
@@ -361,7 +361,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		getMCOHeadItemList.add(getMCOHeadItem);
 		
 		return ((COS100MI)HeaderFactory.getInstance()
-				.getHeader(Constant.COS100MI)).getMCOHead(getMCOHeadCollection);
+				.getHeader(Constants.COS100MI)).getMCOHead(getMCOHeadCollection);
 	}
 	
 	/**
@@ -396,7 +396,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	    	// Set Job Data
 	    	job.setJobId(StringUtil.nullToVoid(jobMap.get("jobId")));
 	    	job.setPhaseId(BigInteger.valueOf(1));
-	    	job.setEmployer(Constant.employer);
+	    	job.setEmployer(Constants.employer);
 	    	job.setTechId(StringUtil.nullToVoid(jobMap.get("techId")));	    	
 	    	
 	    	job.setCustomerName(StringUtil.nullToVoid(jobMap.get("customerName")));
@@ -510,7 +510,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	 */
 	public Result sendCreateJob(Job job) {
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(Constant.RetrieverBarking)).createJob(job);
+				.getHeader(Constants.RetrieverBarking)).createJob(job);
 	}
 	
 	/**
@@ -636,7 +636,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		
 		//jobMap.put("services", jobServiceList);
 		return ((RetrieverBarking)HeaderFactory.getInstance()
-				.getHeader(Constant.RetrieverBarking)).createJob(job);
+				.getHeader(Constants.RetrieverBarking)).createJob(job);
 		//return null;
 	}
 }

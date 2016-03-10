@@ -41,7 +41,7 @@
 				// Convert date format
 				for(var i=0; i < data.length; i++) {
 					//console.log(data[i].createdDate + "_" + c_datetime);
-					data[i].createdDate = $filter('date')(data[i].createdDate, 'yyyy-MM-dd HH:mm');
+					data[i].modifiedDate = $filter('date')(data[i].modifiedDate, 'yyyy-MM-dd HH:mm');
 					
 					var state = data[i].state;
 					data[i].stateClass = state == "FIN" ? "text-success" : state == "STA" ? "text-info" : "text-danger";
@@ -91,4 +91,24 @@
 				});
 			}
 		};
+		
+		$scope.finish = function(category, logId) {//
+			if(confirm('Will you finish this job?')) {				
+				//console.log(id);
+				var dataObj = {
+					category : category,
+					logId : logId
+				};	
+				
+				var res = $http.post('/retry/finishJob', dataObj);
+				res.success(function(data, status, headers, config) {
+					//console.log(data);
+					$scope.lists = [];
+					$scope.getList($scope.pagination.current());
+				});
+				res.error(function(data, status, headers, config) {
+					console.log( "failure message: " + JSON.stringify({data: data}));
+				});
+			}
+		};		
   }]);	
