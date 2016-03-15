@@ -1,6 +1,6 @@
 	app.controller('LogDetailController', ['$scope', '$http', '$location', '$filter', 
-	                                       'CodeUtil', '$routeParams', '$uibModal', 
-	    function($scope, $http, $location, $filter, CodeUtil, $routeParams, $uibModal) {
+	                                       'CodeUtil', '$routeParams',  
+	    function($scope, $http, $location, $filter, CodeUtil, $routeParams) {
 	    $scope.lists = [];
 	  	$scope.totalItems = 0;
 		$scope.currentPage = 1;
@@ -93,25 +93,9 @@
 	    };
 	    
 	    $scope.showDetailLog = function(text) {
-			var modalInstance = $uibModal.open({
-			  animation: true,
-			  templateUrl: 'myModalContent.html',
-			  controller: 'ModalInstanceCtrl',
-			  resolve: {
-			    text: function () {
-			      return text;
-			    }
-			  }
-			});
+	    	$("#dialog").dialog( "open" );
+	    	$("#dialog").text(text);
+	    	
 		};	    
   }]);	
 	
-	// Please note that $modalInstance represents a modal window (instance) dependency.
-	// It is not the same as the $modal service used above.
-	app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, text) {
-		  $scope.text = text;
-	
-		  $scope.cancel = function () {
-			  $uibModalInstance.dismiss('cancel');
-		  };
-	});		

@@ -92,6 +92,34 @@
 					last-text="&raquo;"
 					max-size="10">
 				</uib-pagination>
-			</div>	
+			</div>
 
         </div>
+        
+
+<div id="dialog" title="LogDetail"></div>
+
+<script>
+$( "#dialog" ).dialog({ 
+	autoOpen: false, 
+	width: 800,
+	closeOnEscape: false,
+	position: { my: "top+60", at: "center", of: window },
+	  buttons: [
+      {
+        text: "close",
+        icons: {
+          primary: "ui-icon-heart"
+        },
+        click: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    ]	
+});
+</script> 
+
+
+
+
+        

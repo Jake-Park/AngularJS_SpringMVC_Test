@@ -9,17 +9,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300,900' rel='stylesheet'> -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link href="<%=request.getContextPath()%>/css/fonts/bootstrap-glyphicons.css" rel="stylesheet">   
     <link href="<%=request.getContextPath()%>/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/admin/dashboard.css" rel="stylesheet"/>
-    <link href="<%=request.getContextPath()%>/css/admin/admin.css" rel="stylesheet"/>    
-    
+    <link href="<%=request.getContextPath()%>/css/admin/admin.css" rel="stylesheet"/>
     
     <script src="<%=request.getContextPath()%>/js/asset/jquery-1.11.3.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/angular.min.js"></script>
-    <%-- <script src="<%=request.getContextPath()%>/js/asset/ui-bootstrap-tpls-0.13.4.min.js"></script>   --%>
     <script src="<%=request.getContextPath()%>/js/asset/ui-bootstrap-tpls-1.2.4.min.js"></script>
     <script src="<%=request.getContextPath()%>/js/asset/angular-route.js"></script>
     <script src="<%=request.getContextPath()%>/js/asset/angular-cookies.js"></script>
@@ -38,7 +37,7 @@
       </div>
     </div>
     <footer></footer>
-    <layer></layer>
+    <!-- <layer></layer> -->
     
    	<!-- Util -->
    	<script src="<%=request.getContextPath()%>/js/util.js"></script>

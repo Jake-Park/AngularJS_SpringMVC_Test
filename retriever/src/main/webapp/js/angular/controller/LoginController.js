@@ -3,12 +3,14 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
     	
     	// Logout - Delete Cookie
     if($routeParams.id) {
+    	 
     	console.log("---" + Auth.getUser());
     	$cookieStore.put('userInfo', null);
     	$location.path("/login");
     }
-  	    
+    console.log("AAAA");
   	  $scope.login = function() {
+  		 
   			//		
   			var dataObj = {
   					id : $scope.id,

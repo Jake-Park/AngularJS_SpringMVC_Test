@@ -1,4 +1,4 @@
-  
+
 	<div class='content col-sm-5 col-sm-offset-1' ng-class="{'loginBody' : !Auth.isMobile()}" ng-show="!Auth.isLoggedIn()">
 	<h1 class="text-muted">login</h1>
     <form name="loginForm" ng-controller="LoginController" ng-submit="loginForm.$valid && login()" novalidate>
@@ -22,13 +22,4 @@
         </fieldset>
     </form>     
   	</div>
-<!--   	
-<script>
-$(function(){ 
-	var position = $('.footer').position();
-	  $('.footer').css({ height: $(window).innerHeight() - (position.top + 50)});
-	  $(window).resize(function(){
-	    $('.footer').css({ height: $(window).innerHeight() - position.top  });
-	  });
-	});
-</script>      	 -->
+
