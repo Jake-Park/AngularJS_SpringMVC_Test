@@ -41,6 +41,9 @@ public class ExportJobsDaoImpl implements ExportJobsDao {
 		return (HJob)(criteria.list().get(0));	
 	}
 	
+	/**
+	 * Select failed to send exportJobs with limited maxCount
+	 */
 	public List<HEJob> selectExportJobs(String maxCount) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		
@@ -81,6 +84,7 @@ public class ExportJobsDaoImpl implements ExportJobsDao {
 	        
 	        hEJobList.add((HEJob)query.uniqueResult());
 	        
+	        // Whenever selected, plus count one in order to increase attempted count number
 	        logMaster.setCount(logMaster.getCount() + 1);
     		session.update(logMaster);
 		}

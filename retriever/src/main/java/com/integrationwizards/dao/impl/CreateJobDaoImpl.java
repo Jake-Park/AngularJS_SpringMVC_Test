@@ -73,6 +73,7 @@ public class CreateJobDaoImpl implements CreateJobDao {
     				.add(Restrictions.eq("logId", hJob.getLogId()));
     		
     		LogMaster lm = (LogMaster)criteria.uniqueResult();
+    		// When the failed record was selected, this regards as one attempt 
     		lm.setCount(lm.getCount() + 1);
     		session.update(lm);
         }

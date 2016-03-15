@@ -80,6 +80,8 @@ app.config(function($compileProvider){
     	  }
     	}]);
     
+ 
+    
 	app.controller('DashboardController', ['$scope', '$http', '$location', '$route', '$modal', 'Auth', 
 	               function($scope, $http, $location, $route, $modal, Auth) {
 	    $scope.lists = [];

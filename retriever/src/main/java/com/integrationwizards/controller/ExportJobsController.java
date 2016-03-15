@@ -32,6 +32,10 @@ public class ExportJobsController {
 	@Value("${exportJobs.reExportJobs.counts}") 
 	private String ejCount;
 	
+	/**
+	 * 	
+	 * @throws Exception
+	 */
 	@Scheduled(fixedDelayString = "${exportJobs.exportJobs.delaytime}")
 	public void exportJobs() throws Exception {
 		LogUtil lu = null;
@@ -64,7 +68,7 @@ public class ExportJobsController {
 						// Create new log id
 						uuid = UUID.randomUUID().toString();
 						lu = LogManager.getInstance().createLogObj(category, uuid);
-						// Update Log Id
+						// Update current Log Id to the exported job
 						hEJob.setLogId(uuid);
 						lu.info("Start sending a request to M3 : " + uuid);
 						exportJobsService.updateLogId(hEJob);
@@ -89,6 +93,11 @@ public class ExportJobsController {
 		}
 	}
 	
+	/**
+	 * Update exportJobs data from Retriever to M3
+	 * @param hEJob
+	 * @throws Exception
+	 */
 	public void updateExportJobsToM3(HEJob hEJob) throws Exception {
 		LogUtil lu = null;
 		
@@ -96,20 +105,21 @@ public class ExportJobsController {
 			lu = LogManager.getInstance().getLogObj(hEJob.getLogId());
 			lu.info("Start updateExportJobsToM3 : " + hEJob.getJobId());
 			lu.debug(String.valueOf(StringUtil.objToMap(hEJob)));
-						
+			
+			//Send MOS070MI:UpdOperation
 			UpdOperationResponseCollection updOperationResponseCollection = exportJobsService.sendMOS070MIUpdOperation(hEJob);
-			lu.info("Sent MOS070MI:UpdOperation");
+			//Send MOS057MI:Upd
 			UpdResponseCollection updResponseCollection = exportJobsService.sendMOS057MIUpd(hEJob);
-			lu.info("Sent MOS057MI:Upd");
 		}
-		catch(Exception e) {
+		catch(Exception e) {			
 			lu.error("Errored in updateExportJobsToM3 : " + ExceptionUtils.getStackTrace(e));
+			lu.error(String.valueOf(StringUtil.objToMap(hEJob)));
 			throw e;
 		}
 	}
 	
 	@Scheduled(fixedDelayString = "${exportJobs.reExportJobs.delaytime}")
-	private void reExportJobs() throws Exception {
+	public void reExportJobs() throws Exception {
 		LogUtil lu = null;
 		String jobId = "";	// For error log
 		
@@ -123,22 +133,6 @@ public class ExportJobsController {
 					
 					// Re create log Object
 					lu = LogManager.getInstance().getLogObj(category, hEJob.getLogId());
-					
-					Set<HENewAsset> eNewAssetSet = hEJob.geteNewAsset();
-					
-					if(eNewAssetSet != null) {
-						for(HENewAsset hENewAsset : eNewAssetSet) {
-							System.out.println("--asset--" + hENewAsset);
-						}
-					}
-					
-					Set<HETime> eTimeSet = hEJob.geteTime();
-					
-					if(eTimeSet != null) {
-						for(HETime hETime : eTimeSet) {
-							System.out.println("--time--" + hETime);
-						}
-					}
 					
 					lu.info("Send Re exportJobs to M3");
 					updateExportJobsToM3(hEJob);

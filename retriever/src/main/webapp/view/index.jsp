@@ -4,7 +4,7 @@
 <!doctype html>
 <html>
   <head>
-  	<title>SmartLink</title>
+  	<title>ServiceLink</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,8 @@
     <script src="<%=request.getContextPath()%>/js/asset/jquery-1.11.3.js"></script>
     <script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/angular.min.js"></script>
-    <script src="<%=request.getContextPath()%>/js/asset/ui-bootstrap-tpls-0.13.4.min.js"></script>  
+    <%-- <script src="<%=request.getContextPath()%>/js/asset/ui-bootstrap-tpls-0.13.4.min.js"></script>   --%>
+    <script src="<%=request.getContextPath()%>/js/asset/ui-bootstrap-tpls-1.2.4.min.js"></script>
     <script src="<%=request.getContextPath()%>/js/asset/angular-route.js"></script>
     <script src="<%=request.getContextPath()%>/js/asset/angular-cookies.js"></script>
   </head>
@@ -50,6 +51,6 @@
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
     <!-- Pagination -->
-    <script src="<%=request.getContextPath()%>/js/angular/pagination.js"></script>
+    <%-- <script src="<%=request.getContextPath()%>/js/angular/pagination.js"></script> --%>
   </body>
 </html>

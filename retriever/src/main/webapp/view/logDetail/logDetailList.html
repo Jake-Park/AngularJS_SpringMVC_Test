@@ -1,7 +1,7 @@
 
 
 
-        <div ng-controller="LogDetailController" ng-init="getList(1)" class="content col-md-12 col-md-12 main">
+    <div ng-controller="LogDetailController" ng-init="getList(1)" class="content col-md-12 col-md-12 main">
           <h1 class="page-header">Events</h1>
           
       <div class="row">
@@ -49,7 +49,7 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th width="5%">#</th>                  
+                  <th width="5%">##</th>                  
                   <th width="20%">Log Id</th>
                   <th width="10%">Class</th>
                   <th width="10%">Method</th>
@@ -60,7 +60,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="list in lists">
-                  <td>{{((pageIndex - 1) * 10) + $index+1}}</td>
+                  <td>{{((currentPage - 1) * 10) + $index+1}}</td>
                   <td>{{list.logId}}</td>
                   <td>{{list.className}}</td>
                   <td>{{list.methodName}}</td>
@@ -78,16 +78,20 @@
               </tbody>
             </table>
           </div>
-
-			<nav style="margin:0 auto; width:300px;">
-				<ul class="pagination">
-				   <li class="{{pagination.hasPrevious()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() - 1)">&laquo;</a></li>
-				   <li ng-show="pagination.hasPrevious()"><a href="" ng-click="getList(pagination.current() - 1)">{{pagination.current() - 1}}</a></li>
-				   <li ng-hide="pagination.hasPrevious()"><span>&nbsp;</span></li>
-				   <li class="active"><a href="" ng-click="getList(pagination.current())">{{pagination.current()}}</a></li>
-				   <li ng-show="pagination.hasNext()"><a href="" ng-click="getList(pagination.current() + 1)">{{pagination.current() + 1}}</a></li>
-				   <li class="{{pagination.hasNext()?'':'disabled'}}"><a href="" ng-click="getList(pagination.current() + 1)">&raquo;</a></li>
-				</ul>	  
-			</nav>
+          
+          	<div class="text-center">
+				<uib-pagination 
+					boundary-links="true" 
+					total-items="totalItems" 
+					ng-model="currentPage" 
+					class="pagination-sm"
+					ng-change="getList (currentPage)" 
+					previous-text="&lsaquo;" 
+					next-text="&rsaquo;" 
+					first-text="&laquo;" 
+					last-text="&raquo;"
+					max-size="10">
+				</uib-pagination>
+			</div>	
 
         </div>

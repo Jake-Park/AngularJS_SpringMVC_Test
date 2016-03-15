@@ -1,20 +1,15 @@
-	app.controller('LogDetailController', ['$scope', '$http', '$location', 'PaginatonService', '$filter', 
-	                                       'CodeUtil', '$routeParams', '$modal', 
-	    function($scope, $http, $location, PaginatonService, $filter, CodeUtil, $routeParams, $modal) {
+	app.controller('LogDetailController', ['$scope', '$http', '$location', '$filter', 
+	                                       'CodeUtil', '$routeParams', '$uibModal', 
+	    function($scope, $http, $location, $filter, CodeUtil, $routeParams, $uibModal) {
 	    $scope.lists = [];
-	    $scope.total = 0;
-	    $scope.pageIndex = 1;
+	  	$scope.totalItems = 0;
+		$scope.currentPage = 1;
 	    $scope.gLogId = $routeParams.logId ? $routeParams.logId : "";
 	    	    
 	    
 	    $scope.getList = function(pageIndex, klass) {	    	
 	    	// Checking the page existed
-	    	if($scope.pagination && $scope.pagination.hasList(pageIndex)) {
-	    		return;
-	    	}
-	    	else {
-	    		$scope.pageIndex = pageIndex;
-	    	}
+	    	$scope.currentPage = pageIndex;
 	    	
 			var dataObj = {					
 				pageIndex : pageIndex
@@ -87,8 +82,7 @@
 			res = $http.post('/logDetail/listCount', dataObj);
 			res.success(function(data, status, headers, config) {
 				console.log("Total : " + data);
-				$scope.pagination = PaginatonService.Pagination(data, 10);
-				$scope.pagination.setCurrent(pageIndex);
+				$scope.totalItems = data;
 			});
 			res.error(function(data, status, headers, config) {
 				console.log( "failure message: " + JSON.stringify({data: data}));
@@ -99,7 +93,7 @@
 	    };
 	    
 	    $scope.showDetailLog = function(text) {
-			var modalInstance = $modal.open({
+			var modalInstance = $uibModal.open({
 			  animation: true,
 			  templateUrl: 'myModalContent.html',
 			  controller: 'ModalInstanceCtrl',
@@ -114,13 +108,10 @@
 	
 	// Please note that $modalInstance represents a modal window (instance) dependency.
 	// It is not the same as the $modal service used above.
-
-
-app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, text) {
-	  $scope.text = text;
-
-	  $scope.cancel = function () {
-	    $modalInstance.dismiss('cancel');
-	  };
-	    
-});		
+	app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, text) {
+		  $scope.text = text;
+	
+		  $scope.cancel = function () {
+			  $uibModalInstance.dismiss('cancel');
+		  };
+	});		

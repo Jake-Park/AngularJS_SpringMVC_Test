@@ -43,7 +43,7 @@ public class StatusUpdatesController {
 		}
 		catch(Exception e) {
 			lu.error("Errored in statusUpdates" + ExceptionUtils.getStackTrace(e));
-			lu.updateStates("", "ERR", null, "Errored in statusUpdates");
+			lu.updateStates("", "ERR", "", "Errored in statusUpdates");
 		}
 		finally {
 			LogManager.getInstance().closeLogObj(uuid);

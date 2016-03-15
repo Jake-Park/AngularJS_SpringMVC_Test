@@ -100,7 +100,7 @@ app.config(function($compileProvider){
     	    	return retVal;
     	    }
     	  }
-    	}]);  
+    	}]); 
 	
 	// detect mobile device
 	window.mobilecheck = function() {

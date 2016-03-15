@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.integrationwizards.common.Constants;
 import com.integrationwizards.common.HeaderFactory;
+import com.integrationwizards.common.ParamName;
 import com.integrationwizards.dao.ExportJobsDao;
 import com.integrationwizards.model.HEAllowance;
 import com.integrationwizards.model.HEAttachment;
@@ -81,6 +82,9 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 				.getHeader(Constants.RetrieverBarking)).exportJobs(exportJob);
 	}
 
+	/**
+	 * Insert exportJobs data from Retriever to DB
+	 */
 	@Transactional
 	public HResultExportJobs insertResultExportJobs(ResultExportJobs result, String logId) throws Exception {
 		ObjectMapper m = new ObjectMapper();
@@ -510,13 +514,14 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		gItem.setCONO(createCompany);
 		gItem.setMWNO(hEJob.getJobId());
 		
-		// Get OPNO from Job:duration
+		// Get OPNO from Job:duration in DB
 		long opno = -1;
 		HJob hJob = exportJobsDao.selectJob(hEJob);
 		if(hJob != null) {
 			opno = Long.valueOf(hJob.getDuration());
 		}
 		gItem.setOPNO(BigDecimal.valueOf(opno));
+		
 		
 		JAXBElement<XMLGregorianCalendar> createRPDT = factory.createUpdOperationItemRPDT(
 				DateUtil.getOnlyXMLGregorianCalendarForDate(hEJob.getJobDatetime()));		
@@ -573,14 +578,18 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 		JAXBElement<String> createService = factory.createUpdItemSUFI(hEJob.getJobDesc());
 		gItem.setSUFI(createService);
 		
+		// Sequence Number
 		JAXBElement<BigDecimal> createSequenceNumber = factory.createUpdItemSQNR(BigDecimal.valueOf(1));
 		gItem.setSQNR(createSequenceNumber);
 		
+		// WorkDone messages
 		JAXBElement<String> createText = factory.createUpdItemTXL1(hEJob.getWorkDone());
 		gItem.setTXL1(createText);
 		
+		// Serial No
 		JAXBElement<String> createSerialNumber = factory.createUpdItemSECP(serialNo);
 		gItem.setSECP(createSerialNumber);
+		
 		
 		JAXBElement<String> createStatus = factory.createUpdItemSTAT("20");
 		//gItem.setSTAT(createStatus);
@@ -589,6 +598,7 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 				factory.createUpdItemMRDT(DateUtil.getOnlyXMLGregorianCalendarForDate(hEJob.getJobDatetime()));
 		gItem.setMRDT(createMachineReadyDate);
 		
+		// Tech Id
 		JAXBElement<String> createReportedBy = factory.createUpdItemREPR("M3-02");
 		//gItem.setREPR(createReportedBy);
 		
@@ -598,11 +608,17 @@ public class ExportJobsServiceImpl implements ExportJobsService {
 				.getHeader(Constants.MOS057MI)).upd(getCollection);
 	}
 	
+	/**
+	 * Select failed exportJobs data	
+	 */
 	@Transactional
 	public List<HEJob> selectExportJobs(String count) throws Exception {
 		return exportJobsDao.selectExportJobs(count);
 	}
 	
+	/**
+	 * Update LogId after receiving data from REtriever
+	 */
 	@Transactional
 	public void updateLogId(HEJob hEJob) throws Exception {
 		exportJobsDao.updateLogId(hEJob);

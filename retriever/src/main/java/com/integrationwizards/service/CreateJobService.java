@@ -3,6 +3,7 @@ package com.integrationwizards.service;
 import java.util.List;
 import java.util.Map;
 
+import com.integrationwizards.common.ParamName;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HResult;
 import com.integrationwizards.model.HSmartLink;
@@ -113,12 +114,12 @@ public interface CreateJobService {
 	/**
 	 * Set Job data in order to send a request to Retriever
 	 */
-	public Job setJobData(Map<String, Map<String, Object>> rParam, String logId) throws Exception;
+	public Job setJobData(Map<String, Map<String, Object>> rParam, @ParamName("logId") String logId) throws Exception;
 	
     /**
      * Insert Job data to DB before sending a request to Retriever
      */
-	public HJob insertCreateJob(Job job, String logId) throws Exception;
+	public HJob insertCreateJob(Job job, @ParamName("logId") String logId) throws Exception;
 	
 	/**
 	 * Send a createJob request to Retriever

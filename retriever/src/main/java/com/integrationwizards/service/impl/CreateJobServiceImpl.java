@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.integrationwizards.common.Constants;
 import com.integrationwizards.common.HeaderFactory;
+import com.integrationwizards.common.ParamName;
 import com.integrationwizards.dao.CreateJobDao;
 import com.integrationwizards.model.HJob;
 import com.integrationwizards.model.HJobAsset;
@@ -75,10 +76,6 @@ public class CreateJobServiceImpl implements CreateJobService {
 	@Autowired
 	private CreateJobDao createJobDao;
 	private final String category = "createJob";
-	
-	public void setCreateJobDao(CreateJobDao createJobDao) {
-		this.createJobDao = createJobDao;
-	}	
 	
 	/**
 	 * Insert SmartLink as a log
@@ -170,6 +167,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		jobMap.put("plannedEndDate", DateUtil.getStringCalendar(getResponseItem.getRequestedFinishDate()));
 		jobMap.put("plannedEndTime", StringUtil.getBigDecimal(getResponseItem.getRequestedFinishTime()));
 		
+		// Convert Date Type 
 		String plannedStartStr = StringUtil.nullToVoid(jobMap.get("plannedStartDate")) 
 				+ " " + StringUtil.insertLeftChar(StringUtil.nullToVoid(jobMap.get("plannedStartTime")), 4, '0');
 		String plannedEndStr = StringUtil.nullToVoid(jobMap.get("plannedEndDate")) 
@@ -182,14 +180,14 @@ public class CreateJobServiceImpl implements CreateJobService {
 		jobMap.put("plannedStart", DateUtil.getXMLGregorianCalendar(plannedStart));
 		jobMap.put("plannedEnd", DateUtil.getXMLGregorianCalendar(plannedEnd));
 
-		// Asset
+		// Set Asset Data
 		Map<String, Object> assetMap = rParam.get("asset");
 		assetMap.put("serialNo", StringUtil.getString(getResponseItem.getLotnumber()));
 		assetMap.put("assetType", StringUtil.getString(getResponseItem.getStructureType()));		
 		//assetMap.put("location", StringUtil.getString(getResponseItem.getLotnumber()));
 		assetMap.put("make", StringUtil.getString(getResponseItem.getProductDescription()));
 		
-		// Service
+		// Set Service Data
 		Map<String, Object> serviceMap = rParam.get("service");
 		serviceMap.put("serviceId", StringUtil.getString(getResponseItem.getService()));
 		serviceMap.put("serviceName", StringUtil.getString(getResponseItem.getService()));
@@ -382,7 +380,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 	/**
 	 * Set Job data in order to send a request to Retriever
 	 */
-    public Job setJobData(Map<String, Map<String, Object>> rParam, String logId) throws Exception
+    public Job setJobData(Map<String, Map<String, Object>> rParam, @ParamName("logId") String logId) throws Exception
 	{   
     	Job job = new Job();
 		LogUtil lu = null;
@@ -457,7 +455,7 @@ public class CreateJobServiceImpl implements CreateJobService {
      * Insert Job data to DB before sending a request to Retriever
      */
 	@Transactional
-	public HJob insertCreateJob(Job job, String logId) throws Exception {		
+	public HJob insertCreateJob(Job job, @ParamName("logId") String logId) throws Exception {		
 		ObjectMapper m = new ObjectMapper();
 		Map<String,Object> props = m.convertValue(job, Map.class);
 		

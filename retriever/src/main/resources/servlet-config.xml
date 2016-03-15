@@ -26,8 +26,8 @@
     </bean>	
     <bean id="exportJobsService" class="com.integrationwizards.service.impl.ExportJobsServiceImpl">
     	<property name="exportJobsDao" ref="exportJobsDao"></property>
-    </bean>     -->
-    
+    </bean>   
+      -->
     <bean id="StaticSpringApplicationContext" class="com.integrationwizards.common.StaticSpringApplicationContext"/>
 
 </beans>

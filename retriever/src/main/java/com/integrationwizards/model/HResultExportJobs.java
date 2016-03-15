@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,7 +27,7 @@ public class HResultExportJobs {
 	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
     private Date createdDate;
 	
-	@OneToMany(mappedBy = "hResultExportJobs", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hResultExportJobs", cascade = CascadeType.ALL)
     private Set<HEJob> eJob = new HashSet<HEJob>();
 
 	public String getTxId() {

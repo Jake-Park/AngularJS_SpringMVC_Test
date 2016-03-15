@@ -107,7 +107,7 @@ public class HEJob {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hEJob", cascade = CascadeType.ALL)
 	private Set<HEAttachment> eAttachment = new HashSet<HEAttachment>();
     
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="txId", nullable=false, insertable=false, updatable=false)
 	private HResultExportJobs hResultExportJobs;	
 	

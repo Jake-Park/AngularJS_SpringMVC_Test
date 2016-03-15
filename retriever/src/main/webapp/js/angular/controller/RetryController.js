@@ -1,17 +1,12 @@
-	app.controller('RetryController', ['$scope', '$http', '$location', 'PaginatonService', '$filter', 'CodeUtil', 
-	    function($scope, $http, $location, PaginatonService, $filter, CodeUtil) {
+	app.controller('RetryController', ['$scope', '$http', '$location', '$filter', 'CodeUtil', 
+	    function($scope, $http, $location, $filter, CodeUtil) {
 	    $scope.lists = [];
-	    $scope.total = 0;
-	    $scope.pageIndex = 1;
+	  	$scope.totalItems = 0;
+		$scope.currentPage = 1;
 	    
 	    $scope.getList = function(pageIndex, klass) {//
-	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);	
-	    	if($scope.pagination && $scope.pagination.hasList(pageIndex)) {
-	    		return;
-	    	}
-	    	else {
-	    		$scope.pageIndex = pageIndex;
-	    	}
+	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);
+	    	$scope.currentPage = pageIndex;
 	    	
 	    	var	dataObj = {
     			pageIndex : pageIndex
@@ -60,8 +55,7 @@
 			res = $http.post('/retry/listCount', dataObj);
 			res.success(function(data, status, headers, config) {
 				console.log("Total : " + data);
-				$scope.pagination = PaginatonService.Pagination(data, 10);
-				$scope.pagination.setCurrent(pageIndex);
+				$scope.totalItems = data;
 			});
 			res.error(function(data, status, headers, config) {
 				console.log( "failure message: " + JSON.stringify({data: data}));
