@@ -76,7 +76,7 @@ public class CreateJobController {
 	 */
     @RequestMapping(value="/parameters", 
     		params = {"p1", "p2", "p3", "p4", "p5"}, method = RequestMethod.GET)    
-	public Job getSmartLink(
+	public void getSmartLink(
 			@RequestParam(value = "p1") String MWNO, 	// WO number
 			@RequestParam(value = "p2") String PRNO, 	// Product/Asset
 			@RequestParam(value = "p3") String WHLO, 	// Warehouse
@@ -112,8 +112,6 @@ public class CreateJobController {
     		lu.error("Errored in getSmartLink : " + e);
     		lu.updateStates(MWNO, "ERR", "M3C", "Errored in getSmartLink");
     	}
-    	
-    	return null;
 	}   
     
     /**

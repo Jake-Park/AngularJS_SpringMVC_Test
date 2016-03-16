@@ -34,9 +34,15 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
   			//
   			$scope.id='';
   			$scope.password='';
+  			
+  			// Initilize content box height
+  	 	  $('.row.well').css({height: 'auto'});
+  		  $('.footer').css({ height: 40 });
   	  };
   	  
 }]);   
+
+
 
 	
 

@@ -50,4 +50,5 @@
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
   </body>
+
 </html>

@@ -60,7 +60,7 @@ form[name="userForm"] label {
   width: 100%;
   /* Set the fixed height of the footer here */  
   color: #efefef;
-  background-color: #333;  
+  background-color: #333;
 }
 
 html.touch footer {
