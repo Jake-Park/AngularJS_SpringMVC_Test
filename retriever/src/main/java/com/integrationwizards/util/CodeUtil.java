@@ -41,7 +41,7 @@ public class CodeUtil {
 					// Check existing class
 					for(Map.Entry<String, Map<String, String>> entry : codeMap.entrySet()) {
 						if(codeInfo.getCodeClass().equals(entry.getKey())) {
-							//	System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
+							System.out.println("Key : " + entry.getKey() + " Value : " + entry.getValue());
 							creClass = false;
 							break;
 						}					
@@ -54,6 +54,14 @@ public class CodeUtil {
 					Map<String, String> map = codeMap.get(codeInfo.getClass());
 					map.put(codeInfo.getCodeKey(), codeInfo.getCodeValue());
 				}
+				
+				// Add Environment properties value
+				Map<String, String> map = new HashMap<String, String>(); 
+				codeMap.put("ENV", map);
+				map.put("M3C", "${createJob.reSmartLink.counts}");				
+				map.put("RTC", "${createJob.reCreateJob.counts}");
+				map.put("M3E", "${exportJobs.reExportJobs.counts}");
+				System.out.println("-----" + map);
 			}
 		}
 		catch(Exception e) {

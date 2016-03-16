@@ -39,7 +39,7 @@ public class LoggingAspect {
 			+ "|| execution(* com.integrationwizards.service.impl.ExportJobsServiceImpl.*(..))")
 	public void exportJobsPointCut() {}
 	
-	@Before("createJobPointCut()")
+/*	@Before("createJobPointCut()")
 	public void createJobLog(JoinPoint joinPoint) {
 		beforeLog(joinPoint, "createJob");
 	}
@@ -47,7 +47,7 @@ public class LoggingAspect {
 	@Before("exportJobsPointCut()")
 	public void exportJobsLog(JoinPoint joinPoint) {
 		beforeLog(joinPoint, "exportJobs");
-	}
+	}*/
 	
 	public void beforeLog(JoinPoint joinPoint, String category) {
 /*		System.out.println("logBefore() is running!");
@@ -93,7 +93,7 @@ public class LoggingAspect {
 			System.out.println("Finally, LogID : " + logId);
 		}*/
         
-		System.out.println("******");
+		//System.out.println("******");
 	}
 	
 	public void iterateMap(String key, Object obj) {

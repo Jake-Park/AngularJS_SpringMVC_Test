@@ -38,11 +38,37 @@
 					//console.log(data[i].createdDate + "_" + c_datetime);
 					data[i].modifiedDate = $filter('date')(data[i].modifiedDate, 'yyyy-MM-dd HH:mm');
 					
-					var state = data[i].state;
-					data[i].stateClass = state == "FIN" ? "text-success" : state == "STA" ? "text-info" : "text-danger";
-					data[i].state = CodeUtil.getCodeValue("PROCESS_STATUS", state);
-					data[i].subProcess = CodeUtil.getCodeValue("SUB_PROCESS", data[i].subProcess);
+					var subProcess = data[i].subProcess;
+					data[i].subProcessText = CodeUtil.getCodeValue("SUB_PROCESS", subProcess);
 					
+					var state = data[i].state;
+					if(subProcess != "") {
+						// Checking whether the status is suspended or not
+						var count = data[i].count;
+						var maxCounts = CodeUtil.getCodeValue("ENV", subProcess);
+						console.log(count + ":" + maxCounts + ":" + subProcess + ":" + state);
+						if(state == "ERR" && count < maxCounts) {
+							state = "SUS";
+						}
+					}
+					
+					
+					//data[i].stateClass = state == "FIN" ? "text-success" : state == "STA" ? "text-info" : "text-danger";
+					switch (state) {
+					    case "FIN":
+					    	data[i].stateClass = "text-success";
+					        break;
+					    case "STA":
+					    	data[i].stateClass = "text-info";
+					        break;
+					    case "SUS":
+					    	data[i].stateClass = "text-warning";
+					        break;
+					    default:
+					    	data[i].stateClass = "text-danger";
+					}
+					//console.log(state + ":" + data[i].stateClass);
+					data[i].state = CodeUtil.getCodeValue("PROCESS_STATUS", state);
 				}
 				
 				$scope.lists = data;
@@ -75,13 +101,14 @@
 				};	
 				
 				var res = $http.post('/retry/retryJob', dataObj);
-				res.success(function(data, status, headers, config) {
+				res.success(function(data) {
 					//console.log(data);
 					$scope.lists = [];
-					$scope.getList($scope.pagination.current());
+					$scope.getList($scope.currentPage);
 				});
-				res.error(function(data, status, headers, config) {
+				res.error(function(data) {
 					console.log( "failure message: " + JSON.stringify({data: data}));
+					$scope.getList($scope.currentPage);
 				});
 			}
 		};
@@ -95,31 +122,14 @@
 				};	
 				
 				var res = $http.post('/retry/finishJob', dataObj);
-				res.success(function(data, status, headers, config) {
+				res.success(function(data) {
 					//console.log(data);
 					$scope.lists = [];
-					$scope.getList($scope.pagination.current());
+					$scope.getList($scope.currentPage);
 				});
-				res.error(function(data, status, headers, config) {
+				res.error(function(data) {
 					console.log( "failure message: " + JSON.stringify({data: data}));
 				});
 			}
 		};		
   }]);	
-	
-	app.controller('PaginationDemoCtrl', function ($scope, $log) {
-		  $scope.totalItems = 64;
-		  $scope.currentPage = 4;
-
-		  $scope.setPage = function (pageNo) {
-		    $scope.currentPage = pageNo;
-		  };
-
-		  $scope.pageChanged = function() {
-		    $log.log('Page changed to: ' + $scope.currentPage);
-		  };
-
-		  $scope.maxSize = 5;
-		  $scope.bigTotalItems = 175;
-		  $scope.bigCurrentPage = 1;
-		});

@@ -132,7 +132,7 @@ public class CreateJobController {
     	HSmartLink hSmartLink = null;
     	
     	try {
-			lu = LogManager.getInstance().getLogObj(mParam.get("logId"));   
+			lu = LogManager.getInstance().getLogObj(category, mParam.get("logId"));   
 	    	lu.info("Start createJobFromM3 : " + mParam);
 	    		    	
 	    	hSmartLink = createJobService.insertSmartLink(mParam);
@@ -235,6 +235,8 @@ public class CreateJobController {
     			createJobService.updateSmartLink(hSmartLink, "True");
     		}
     		
+    		// Refresh job status
+    		lu.updateStates(mParam.get("MWNO"), "STA", "", "Refresh Job Status");
     		createJob(job, hJob, hSmartLink);
     	}
 		catch(Exception e) {	
@@ -274,7 +276,7 @@ public class CreateJobController {
 		LogUtil lu = null;
 
 		try {
-			lu = LogManager.getInstance().getLogObj(hSmartLink.getLogId());
+			lu = LogManager.getInstance().getLogObj(hJob.getLogId());
 		
 			if(PingCheck.isAccessToRetriever()) {
 				lu.info("Send createJob to Retriever");

@@ -49,7 +49,5 @@
     <script src="<%=request.getContextPath()%>/js/angular/controller/LogDetailController.js"></script>
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
-    <!-- Pagination -->
-    <%-- <script src="<%=request.getContextPath()%>/js/angular/pagination.js"></script> --%>
   </body>
 </html>

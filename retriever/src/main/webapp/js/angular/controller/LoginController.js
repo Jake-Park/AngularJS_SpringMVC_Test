@@ -8,7 +8,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
     	$cookieStore.put('userInfo', null);
     	$location.path("/login");
     }
-    console.log("AAAA");
+
   	  $scope.login = function() {
   		 
   			//		

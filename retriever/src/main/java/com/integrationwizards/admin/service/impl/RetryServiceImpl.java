@@ -50,7 +50,7 @@ public class RetryServiceImpl implements RetryService {
 		try {
 			String subProcess = param.get("subProcess");
 			
-			if(subProcess.equals("M3_EJ")) { // Export Job
+			if(subProcess.equals("M3E")) { // Export Job
 				lu = LogManager.getInstance().getLogObj("exportJobs", param.get("logId"));
 				lu.info("Start retry ExportJob : " + param.get("logId"));
 				
@@ -59,7 +59,7 @@ public class RetryServiceImpl implements RetryService {
 				
 				exportJobController.updateExportJobsToM3(hEJob);
 				// Update Log Master 
-			    lu.updateStates(hEJob.getJobId(), "FIN", "M3_EJ", null);
+			    lu.updateStates(hEJob.getJobId(), "FIN", "", "");
 			}
 			else { // Create Job
 				lu = LogManager.getInstance().getLogObj("createJob", param.get("logId"));

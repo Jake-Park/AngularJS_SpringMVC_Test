@@ -64,7 +64,7 @@
                   <td>{{list.key2}}</td>
                   <td>{{list.key1}}</td>
                   <td>{{list.modifiedDate}}</td>
-                  <td>{{list.subProcess}}</td>
+                  <td>{{list.subProcessText}}</td>
                   <td class="{{list.stateClass}}"><b>{{list.state}}<b></b></td>                  
                   <td class="text-danger">{{list.error}}</td>
                   <td>
@@ -86,7 +86,7 @@
 					total-items="totalItems" 
 					ng-model="currentPage" 
 					class="pagination-sm"
-					ng-change="getList (currentPage)" 
+					ng-change="getList(currentPage)" 
 					previous-text="&lsaquo;" 
 					next-text="&rsaquo;" 
 					first-text="&laquo;" 
