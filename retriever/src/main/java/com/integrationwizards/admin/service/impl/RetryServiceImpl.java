@@ -106,7 +106,7 @@ public class RetryServiceImpl implements RetryService {
 		}
 		finally {
 			LogManager.getInstance().closeLogObj(param.get("logId"));
-		}
+		} 
 		
 		return true;
 	}
