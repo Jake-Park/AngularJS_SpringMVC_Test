@@ -3,6 +3,7 @@
 	    $scope.lists = [];
 	  	$scope.totalItems = 0;
 		$scope.currentPage = 1;
+		$scope.klass;
 	    
 	    $scope.getList = function(pageIndex, klass) {//
 	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);
