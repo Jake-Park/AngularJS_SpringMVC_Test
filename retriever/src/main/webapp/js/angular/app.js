@@ -38,9 +38,9 @@ app.config(function($compileProvider){
     	
         $rootScope.$on('$routeChangeStart', function (event) {
         	var path = $location.path();
-            if (path != "/add" && !Auth.isLoggedIn()) {
-                console.log('DENY');
+            if (path != "/add" && !Auth.isLoggedIn()) {                
                 event.preventDefault();
+                console.log('DENY : ');
                 $location.path('/login');
             }
             else {

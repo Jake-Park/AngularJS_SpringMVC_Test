@@ -35,13 +35,11 @@ public class RetryDaoImpl implements RetryDao {
 		//List<AdminInfo> AdminInfoList = session.createQuery("from AdminInfo").list();
 		
 		String hql = "FROM LogMaster A WHERE 1=1 ";
-		if(!StringUtil.isEmptyString(pageVO.getKlass())) {
-			if(pageVO.getKlass().equals("1")) {	// All search
-				if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
-					hql += "AND (A.logId like :keyword OR A.key1 like :keyword OR A.key2 like :keyword) ";
-				}
+		
+			if(!StringUtil.isEmptyString(pageVO.getKeyword())) {	// All search
+				hql += "AND (A.logId like :keyword OR A.key1 like :keyword OR A.key2 like :keyword) ";
 			}
-			else if(pageVO.getKlass().equals("2")) {
+			else {
 				if(!StringUtil.isEmptyString(pageVO.getLogId())) {
 					hql += "AND A.logId like :logId ";
 				}
@@ -52,28 +50,26 @@ public class RetryDaoImpl implements RetryDao {
 					hql += "AND A.key1 like :workOrderNum ";
 				}
 			}
-		}		
+			
 		hql += "ORDER BY A.modifiedDate DESC";
 		
         Query query = session.createQuery(hql);        
-		if(!StringUtil.isEmptyString(pageVO.getKlass())) {
-			if(pageVO.getKlass().equals("1")) {	// All search
-				if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
-					query.setParameter("keyword", "%" + pageVO.getKeyword() + "%");
-				}
+		
+		if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
+			query.setParameter("keyword", "%" + pageVO.getKeyword() + "%");
+		}
+		else  {
+			if(!StringUtil.isEmptyString(pageVO.getLogId())) {
+				query.setParameter("logId", "%" + pageVO.getLogId() + "%");
 			}
-			else if(pageVO.getKlass().equals("2")) {
-				if(!StringUtil.isEmptyString(pageVO.getLogId())) {
-					query.setParameter("logId", "%" + pageVO.getLogId() + "%");
-				}
-				if(!StringUtil.isEmptyString(pageVO.getCategory())) {
-					query.setParameter("category", "%" + pageVO.getCategory() + "%");
-				}
-				if(!StringUtil.isEmptyString(pageVO.getWorkOrderNum())) {
-					query.setParameter("workOrderNum", "%" + pageVO.getWorkOrderNum()+ "%");
-				}
+			if(!StringUtil.isEmptyString(pageVO.getCategory())) {
+				query.setParameter("category", "%" + pageVO.getCategory() + "%");
 			}
-		}	
+			if(!StringUtil.isEmptyString(pageVO.getWorkOrderNum())) {
+				query.setParameter("workOrderNum", "%" + pageVO.getWorkOrderNum()+ "%");
+			}
+		}
+		
 		query.setFirstResult(pageVO.getFirstIndex());
         query.setMaxResults(pageVO.getLastIndex());
         
@@ -92,30 +88,27 @@ public class RetryDaoImpl implements RetryDao {
 		Criteria criteria = session.createCriteria(LogMaster.class)
 				.setProjection(Projections.rowCount());
 		
-		if(!StringUtil.isEmptyString(pageVO.getKlass())) {
-			if(pageVO.getKlass().equals("1")) {	// All search
-				if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
-					criteria.add(Restrictions.disjunction().add(
-							Restrictions.or(
-									Restrictions.like("logId", "%" + pageVO.getKeyword() + "%"),
-									Restrictions.like("key2", "%" + pageVO.getKeyword() + "%"),
-									Restrictions.like("key1", "%" + pageVO.getKeyword() + "%")
-							)
-					));
-				}
-			}
-			else if(pageVO.getKlass().equals("2")) {
-				if(!StringUtil.isEmptyString(pageVO.getLogId())) {
-					criteria.add(Restrictions.like("logId", "%" + pageVO.getLogId() + "%"));
-				}
-				if(!StringUtil.isEmptyString(pageVO.getCategory())) {
-					criteria.add(Restrictions.like("key2", "%" + pageVO.getCategory() + "%"));
-				}
-				if(!StringUtil.isEmptyString(pageVO.getWorkOrderNum())) {
-					criteria.add(Restrictions.like("key1", "%" + pageVO.getWorkOrderNum() + "%"));
-				}
-			}
+
+		if(!StringUtil.isEmptyString(pageVO.getKeyword())) {// All search
+			criteria.add(Restrictions.disjunction().add(
+					Restrictions.or(
+							Restrictions.like("logId", "%" + pageVO.getKeyword() + "%"),
+							Restrictions.like("key2", "%" + pageVO.getKeyword() + "%"),
+							Restrictions.like("key1", "%" + pageVO.getKeyword() + "%")
+					)
+			));
 		}
+		else {
+			if(!StringUtil.isEmptyString(pageVO.getLogId())) {
+				criteria.add(Restrictions.like("logId", "%" + pageVO.getLogId() + "%"));
+			}
+			if(!StringUtil.isEmptyString(pageVO.getCategory())) {
+				criteria.add(Restrictions.like("key2", "%" + pageVO.getCategory() + "%"));
+			}
+			if(!StringUtil.isEmptyString(pageVO.getWorkOrderNum())) {
+				criteria.add(Restrictions.like("key1", "%" + pageVO.getWorkOrderNum() + "%"));
+			}
+			}
 		
 		long count = (Long)criteria.uniqueResult();
 		

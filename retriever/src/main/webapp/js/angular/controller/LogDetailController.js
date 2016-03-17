@@ -7,37 +7,29 @@
 	    $scope.gLogId = $routeParams.logId ? $routeParams.logId : "";
 	    	    
 	    
-	    $scope.getList = function(pageIndex, klass) {	    	
+	    $scope.getList = function(pageIndex) {	    	
 	    	// Checking the page existed
 	    	$scope.currentPage = pageIndex;
 	    	
 			var dataObj = {					
 				pageIndex : pageIndex
-			};	
-			
-			if($scope.gLogId != "") {
-				dataObj.logId = $scope.gLogId;
-			}
+			};
 			
 	    	// Set search keyword
-	    	if(klass) {
-	    		dataObj.klass = klass;
-	    		
-		    	if(klass == 1) {					
-					dataObj.keyword = $scope.keyword;
-		    	}	    	
-		    	else if(klass == 2) {
-					dataObj.logId = $scope.logId;
-					dataObj.className = $scope.className;
-					dataObj.methodName = $scope.methodName;
-					dataObj.logLevel = $scope.logLevel;
-		    	}
+	    	if($scope.keyword) {					
+				dataObj.keyword = $scope.keyword;
+	    	}	    	
+	    	else {
+				dataObj.logId = $scope.logId;
+				dataObj.className = $scope.className;
+				dataObj.methodName = $scope.methodName;
+				dataObj.logLevel = $scope.logLevel;
 	    	}
 			
 			//console.log($scope.gLogId + "dataObj : " + dataObj.logId);
 			
 			// get LogMaster List
-			var res = $http.post('/logDetail/list', dataObj);			
+			var res = $http.post('/logDetail/list/'+$scope.gLogId, dataObj);			
 			res.success(function(data, status, headers, config) {
 				//console.log(JSON.stringify(data));
 				
@@ -79,7 +71,7 @@
 			});
 			
 			// get Total Count
-			res = $http.post('/logDetail/listCount', dataObj);
+			res = $http.post('/logDetail/listCount/'+$scope.gLogId, dataObj);
 			res.success(function(data, status, headers, config) {
 				console.log("Total : " + data);
 				$scope.totalItems = data;
@@ -93,9 +85,10 @@
 	    };
 	    
 	    $scope.showDetailLog = function(text) {
-	    	$("#dialog").dialog( "open" );
-	    	$("#dialog").text(text);
+	    	/*$("#dialog").dialog( "open" );
+	    	$("#dialog").text(text);*/
 	    	
+	    	$('#myModal').find('.modal-body').html(text);
 		};	    
   }]);	
 	

@@ -79,6 +79,22 @@ html.no-touch footer {
   font-size: 14px;
 }
 
+/* Modal Setup */
+.modal-backdrop
+{
+    opacity:0.0 !important;
+}
+
+.modal.fade.in {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+#myModal .modal-dialog
+{
+  width: 70%;
+}
+
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
     .layer_width {width: 95%;}

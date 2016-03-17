@@ -36,6 +36,8 @@ public class RetryController {
     	pageVO.setFirstIndex(startIndex);
     	pageVO.setLastIndex(pageVO.getRecordCountPerPage());
     	
+    	System.out.println("---" + pageVO);
+    	
 		List<LogMaster> resultList = retryService.selectRetryList(pageVO);  
 	       
 	   	return resultList;

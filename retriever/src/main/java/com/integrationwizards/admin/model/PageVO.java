@@ -12,7 +12,6 @@ public class PageVO {
     private int recordCountPerPage = 10;
     private String keyword;
     
-    private String klass;
     private String logId;
     private String category;
     private String workOrderNum;
@@ -69,12 +68,6 @@ public class PageVO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public String getKlass() {
-		return klass;
-	}
-	public void setKlass(String klass) {
-		this.klass = klass;
-	}
 	public String getWorkOrderNum() {
 		return workOrderNum;
 	}
@@ -109,7 +102,7 @@ public class PageVO {
 	public String toString() {
 		return "PageVO [pageIndex=" + pageIndex + ", pageUnit=" + pageUnit + ", pageSize=" + pageSize + ", firstIndex="
 				+ firstIndex + ", lastIndex=" + lastIndex + ", recordCountPerPage=" + recordCountPerPage + ", keyword="
-				+ keyword + ", klass=" + klass + ", logId=" + logId + ", category=" + category + ", workOrderNum="
+				+ keyword + ",  logId=" + logId + ", category=" + category + ", workOrderNum="
 				+ workOrderNum + ", className=" + className + ", methodName=" + methodName + ", logLevel=" + logLevel
 				+ "]";
 	}

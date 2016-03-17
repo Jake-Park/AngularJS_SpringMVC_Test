@@ -1,6 +1,6 @@
 app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore', '$routeParams', 'Auth', 'CodeUtil',   
                                        function($scope, $http, $location, $cookieStore, $routeParams, Auth, CodeUtil) {
-    	
+	
     	// Logout - Delete Cookie
     if($routeParams.id) {
     	 
@@ -42,9 +42,6 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
   	  
 }]);   
 
-
-
-	
 
 
 	

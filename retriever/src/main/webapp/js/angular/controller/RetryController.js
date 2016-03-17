@@ -5,7 +5,7 @@
 		$scope.currentPage = 1;
 		$scope.klass;
 	    
-	    $scope.getList = function(pageIndex, klass) {//
+	    $scope.getList = function(pageIndex) {//
 	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);
 	    	$scope.currentPage = pageIndex;
 	    	
@@ -14,17 +14,14 @@
 			};
 	    	
 	    	// Set search keyword
-	    	if(klass) {
-	    		dataObj.klass = klass;
-	    		
-		    	if(klass == 1) {					
-					dataObj.keyword = $scope.keyword;
-		    	}	    	
-		    	else if(klass == 2) {
-					dataObj.logId = $scope.logId;
-					dataObj.category = $scope.category;
-					dataObj.workOrderNum = $scope.workOrderNum;
-		    	}
+    		
+	    	if($scope.keyword) {					
+				dataObj.keyword = $scope.keyword;
+	    	}	    	
+	    	else {
+				dataObj.logId = $scope.logId;
+				dataObj.category = $scope.category;
+				dataObj.workOrderNum = $scope.workOrderNum;
 	    	}
 	    	
 	    	//console.log(dataObj);

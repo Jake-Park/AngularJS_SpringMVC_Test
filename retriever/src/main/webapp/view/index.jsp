@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="context" value="${pageContext.request.contextPath}" />
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
   	<title>C3 Gateway</title>
@@ -38,6 +38,8 @@
     </div>
     <footer></footer>
     <!-- <layer></layer> -->
+ 
+
     
    	<!-- Util -->
    	<script src="<%=request.getContextPath()%>/js/util.js"></script>
@@ -50,5 +52,6 @@
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
   </body>
+
 
 </html>

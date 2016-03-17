@@ -13,7 +13,7 @@
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
                             	aria-expanded="false"><span class="caret"></span></button>
                             <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                <form name="frm" ng-submit="getList(1, 2);" class="form-horizontal" role="form">
+                                <form name="frm" ng-submit="getList(1);" class="form-horizontal" role="form">
                                   <div class="form-group">
                                     <label for="contain">Log Id</label>
                                     <input class="form-control" name="logId" type="text" ng-model="logId" />
@@ -39,7 +39,7 @@
                                 </form>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" ng-click="getList(1, 1);"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                        <button type="submit" class="btn btn-primary" ng-click="getList(1);"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                     </div>
                 </div>
             </div> 
@@ -70,7 +70,8 @@
                   		{{list.text}}
                   	</div>
                   	<div ng-if="list.textFlag == 'false'">
-                  		<a href="" ng-click="showDetailLog(list.detailText)">{{list.text}}</a>
+                  		<!-- <a href="" ng-click="showDetailLog(list.detailText)">{{list.text}}</a> -->
+                  		<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" ng-click="showDetailLog(list.detailText)">{{list.text}}</a>
                   	</div>
                   </td>
                   <td>{{list.createdDate}}</td>
@@ -97,10 +98,30 @@
         </div>
         
 
-<div id="dialog" title="LogDetail"></div>
+<!-- <div id="dialog" title="LogDetail"></div> -->
+
+<!-- Modal -->
+ 
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Log Detail</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
-$( "#dialog" ).dialog({ 
+/* $( "#dialog" ).dialog({ 
 	autoOpen: false, 
 	width: 800,
 	closeOnEscape: false,
@@ -116,8 +137,8 @@ $( "#dialog" ).dialog({
         }
       }
     ]	
-});
-</script> 
+}); */
+</script>
 
 
 

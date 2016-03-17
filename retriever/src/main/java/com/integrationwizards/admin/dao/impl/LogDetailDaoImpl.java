@@ -23,65 +23,57 @@ public class LogDetailDaoImpl implements LogDetailDao {
 	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
 	
-	public List<LogDetail> selectLogDetailList(PageVO pageVO) throws Exception {
+	public List<LogDetail> selectLogDetailList(PageVO pageVO, String gLogId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		String order = "DESC";
 		
 		String hql = "FROM LogDetail A WHERE 1=1 ";
-		if(StringUtil.isEmptyString(pageVO.getKlass()) && !StringUtil.isEmptyString(pageVO.getLogId())) {
+		if(!StringUtil.isEmptyString(gLogId)) {
 			hql +="AND A.logId = :logId ";
 			order = "ASC";
-		}		
-		else if(!StringUtil.isEmptyString(pageVO.getKlass())) {
-			if(pageVO.getKlass().equals("1")) {	// All search
-				if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
-					hql += "AND (A.logId like :keyword OR A.classMethod like :keyword OR A.logLevel like :keyword) ";
-				}
+		}	
+		if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
+			hql += "AND (A.logId like :keyword OR A.classMethod like :keyword OR A.logLevel like :keyword) ";
+		}
+		else {
+			if(!StringUtil.isEmptyString(pageVO.getLogId())) {
+				hql += "AND A.logId like :logId ";
 			}
-			else if(pageVO.getKlass().equals("2")) {
-				if(!StringUtil.isEmptyString(pageVO.getLogId())) {
-					hql += "AND A.logId like :logId ";
-				}
-				if(!StringUtil.isEmptyString(pageVO.getClassName())) {
-					hql += "AND A.classMethod like :className ";
-				}
-				if(!StringUtil.isEmptyString(pageVO.getMethodName())) {
-					hql += "AND A.classMethod like :methodName ";
-				}				
-				if(!StringUtil.isEmptyString(pageVO.getLogLevel())) {
-					hql += "AND A.logLevel like :logLevel ";
-				}
+			if(!StringUtil.isEmptyString(pageVO.getClassName())) {
+				hql += "AND A.classMethod like :className ";
 			}
-		}		
-		
+			if(!StringUtil.isEmptyString(pageVO.getMethodName())) {
+				hql += "AND A.classMethod like :methodName ";
+			}				
+			if(!StringUtil.isEmptyString(pageVO.getLogLevel())) {
+				hql += "AND A.logLevel like :logLevel ";
+			}
+		}
 		
 		hql += "ORDER BY A.createdDate " + order;
 		
 		
         Query query = session.createQuery(hql);
         
-        if(StringUtil.isEmptyString(pageVO.getKlass()) && !StringUtil.isEmptyString(pageVO.getLogId())) {
-        	query.setParameter("logId", pageVO.getLogId());
+        if(!StringUtil.isEmptyString(gLogId)) {
+        	query.setParameter("logId", gLogId);
         }
-        else if(!StringUtil.isEmptyString(pageVO.getKlass())) {
-			if(pageVO.getKlass().equals("1")) {	// All search
-				if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
-					query.setParameter("keyword", "%" + pageVO.getKeyword() + "%");
-				}
+		if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
+			query.setParameter("keyword", "%" + pageVO.getKeyword() + "%");
+		
+		}
+		else {
+			if(!StringUtil.isEmptyString(pageVO.getLogId())) {
+				query.setParameter("logId", "%" + pageVO.getLogId() + "%");
 			}
-			else if(pageVO.getKlass().equals("2")) {
-				if(!StringUtil.isEmptyString(pageVO.getLogId())) {
-					query.setParameter("logId", "%" + pageVO.getLogId() + "%");
-				}
-				if(!StringUtil.isEmptyString(pageVO.getClassName())) {
-					query.setParameter("className", "%" + pageVO.getClassName() + "%");
-				}
-				if(!StringUtil.isEmptyString(pageVO.getMethodName())) {
-					query.setParameter("methodName", "%" + pageVO.getMethodName() + "%");
-				}				
-				if(!StringUtil.isEmptyString(pageVO.getLogLevel())) {
-					query.setParameter("logLevel", "%" + pageVO.getLogLevel() + "%");
-				}
+			if(!StringUtil.isEmptyString(pageVO.getClassName())) {
+				query.setParameter("className", "%" + pageVO.getClassName() + "%");
+			}
+			if(!StringUtil.isEmptyString(pageVO.getMethodName())) {
+				query.setParameter("methodName", "%" + pageVO.getMethodName() + "%");
+			}				
+			if(!StringUtil.isEmptyString(pageVO.getLogLevel())) {
+				query.setParameter("logLevel", "%" + pageVO.getLogLevel() + "%");
 			}
 		}
         
@@ -96,41 +88,37 @@ public class LogDetailDaoImpl implements LogDetailDao {
 		return results;
 	}
 
-	public int getLogDetailListCnt(PageVO pageVO) throws Exception {
+	public int getLogDetailListCnt(PageVO pageVO, String gLogId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
 		
 		//Projections
 		Criteria criteria = session.createCriteria(LogDetail.class)
 				.setProjection(Projections.rowCount());
 		
-		if(StringUtil.isEmptyString(pageVO.getKlass()) && !StringUtil.isEmptyString(pageVO.getLogId())) {
-			criteria.add(Restrictions.eq("logId", pageVO.getLogId()));
+		if(!StringUtil.isEmptyString(gLogId)) {
+			criteria.add(Restrictions.eq("logId", gLogId));
 		}
-		else if(!StringUtil.isEmptyString(pageVO.getKlass())) {
-			if(pageVO.getKlass().equals("1")) {	// All search
-				if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
-					criteria.add(Restrictions.disjunction().add(
-							Restrictions.or(
-									Restrictions.like("logId", "%" + pageVO.getKeyword() + "%"),
-									Restrictions.like("classMethod", "%" + pageVO.getKeyword() + "%"),
-									Restrictions.like("logLevel", "%" + pageVO.getKeyword() + "%")
-							)
-					));
-				}
+		if(!StringUtil.isEmptyString(pageVO.getKeyword())) {
+			criteria.add(Restrictions.disjunction().add(
+					Restrictions.or(
+							Restrictions.like("logId", "%" + pageVO.getKeyword() + "%"),
+							Restrictions.like("classMethod", "%" + pageVO.getKeyword() + "%"),
+							Restrictions.like("logLevel", "%" + pageVO.getKeyword() + "%")
+					)
+			));
+		}
+		else {
+			if(!StringUtil.isEmptyString(pageVO.getLogId())) {
+				criteria.add(Restrictions.like("logId", "%" + pageVO.getLogId() + "%"));
 			}
-			else if(pageVO.getKlass().equals("2")) {
-				if(!StringUtil.isEmptyString(pageVO.getLogId())) {
-					criteria.add(Restrictions.like("logId", "%" + pageVO.getLogId() + "%"));
-				}
-				if(!StringUtil.isEmptyString(pageVO.getClassName())) {
-					criteria.add(Restrictions.like("classMethod", "%" + pageVO.getClassName() + "%"));
-				}
-				if(!StringUtil.isEmptyString(pageVO.getMethodName())) {
-					criteria.add(Restrictions.like("classMethod", "%" + pageVO.getMethodName() + "%"));
-				}
-				if(!StringUtil.isEmptyString(pageVO.getLogLevel())) {
-					criteria.add(Restrictions.like("logLevel", "%" + pageVO.getLogLevel() + "%"));
-				}
+			if(!StringUtil.isEmptyString(pageVO.getClassName())) {
+				criteria.add(Restrictions.like("classMethod", "%" + pageVO.getClassName() + "%"));
+			}
+			if(!StringUtil.isEmptyString(pageVO.getMethodName())) {
+				criteria.add(Restrictions.like("classMethod", "%" + pageVO.getMethodName() + "%"));
+			}
+			if(!StringUtil.isEmptyString(pageVO.getLogLevel())) {
+				criteria.add(Restrictions.like("logLevel", "%" + pageVO.getLogLevel() + "%"));
 			}
 		}
 				

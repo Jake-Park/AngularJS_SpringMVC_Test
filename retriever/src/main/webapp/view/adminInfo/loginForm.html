@@ -22,15 +22,20 @@
         </fieldset>
     </form>     
   	</div>
+  	
+
+
+
 
 <script>
 //Adjust footer height
-$(function(){
-		console.log($('.row.well').height() + "::" + $('.footer').height());
+$(function(){		
  	  $('.row.well').css({ height: $(window).innerHeight() - 232 });
 	  $('.footer').css({ height: 150 });
 	  $(window).resize(function(){
 	    $('.row.well').css({ height: $(window).innerHeight() - 232});
 	  }); 
 	});
+	
+
 </script>

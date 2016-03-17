@@ -17,13 +17,13 @@ public class LogDetailServiceImpl implements LogDetailService {
 	private LogDetailDao logDetailDao;
 	
 	@Transactional
-	public List<LogDetail> selectLogDetailList(PageVO pageVO) throws Exception {
-		return logDetailDao.selectLogDetailList(pageVO);
+	public List<LogDetail> selectLogDetailList(PageVO pageVO, String gLogId) throws Exception {
+		return logDetailDao.selectLogDetailList(pageVO, gLogId);
 	}
 
 	@Transactional
-	public int getLogDetailListCnt(PageVO pageVO) throws Exception {
-		return logDetailDao.getLogDetailListCnt(pageVO);
+	public int getLogDetailListCnt(PageVO pageVO, String gLogId) throws Exception {
+		return logDetailDao.getLogDetailListCnt(pageVO, gLogId);
 	}
 
 }
