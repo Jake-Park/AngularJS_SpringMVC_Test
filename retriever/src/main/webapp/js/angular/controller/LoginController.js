@@ -24,7 +24,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
   					Auth.setUser(data); //Update the state of the user in the app
   					CodeUtil.init();
   					//window.location.replace("/view/index.html");
-  					$location.path("/retry");
+  					$location.path("/dashboard");
   				}				
   			});
   			res.error(function(data, status, headers, config) {

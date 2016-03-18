@@ -49,6 +49,7 @@
     <script src="<%=request.getContextPath()%>/js/angular/controller/LoginController.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/controller/RetryController.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/controller/LogDetailController.js"></script>
+    <script src="<%=request.getContextPath()%>/js/angular/controller/DashboardController.js"></script>
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
   </body>

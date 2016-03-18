@@ -10,6 +10,10 @@ app.config(function($compileProvider){
 	  {
 		controller: 'LoginController',
 		templateUrl: '/view/adminInfo/loginForm.html'
+	  }).when('/dashboard',
+	  {
+	    controller: 'DashboardController',
+	    templateUrl: '/view/dashboard/dashboard.html'
 	  }).when('/log',
 	  {
 	    controller: 'LogDetailController',

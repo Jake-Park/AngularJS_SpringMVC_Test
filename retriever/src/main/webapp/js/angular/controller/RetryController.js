@@ -6,6 +6,7 @@
 		$scope.klass;
 	    
 	    $scope.getList = function(pageIndex) {//
+	    	$scope.showWarning = true;
 	    	//console.log($scope.pagination.current() + "pageIndex : " + pageIndex);
 	    	$scope.currentPage = pageIndex;
 	    	
