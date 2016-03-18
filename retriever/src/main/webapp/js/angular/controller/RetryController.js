@@ -4,6 +4,7 @@
 	  	$scope.totalItems = 0;
 		$scope.currentPage = 1;
 		$scope.klass;
+		$scope.showBar = true; 
 	    
 	    $scope.getList = function(pageIndex) {//
 	    	$scope.showWarning = true;

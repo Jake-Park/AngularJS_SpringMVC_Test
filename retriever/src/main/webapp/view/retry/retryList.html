@@ -65,7 +65,7 @@
                   <td>{{list.key1}}</td>
                   <td>{{list.modifiedDate}}</td>
                   <td>{{list.subProcessText}}</td>
-                  <td class="{{list.stateClass}}"><b>{{list.state}}<b></b></td>                  
+                  <td class="{{list.stateClass}}"><b>{{list.state}}</b></td>                  
                   <td class="text-danger">{{list.error}}</td>
                   <td>
                     <div ng-if="list.subProcess !== '' && list.error !== 'NULL' && list.state !== 'Finished'" style="display:inline;">
@@ -79,6 +79,14 @@
               </tbody>
             </table>
           </div>
+          
+        
+<!-- <div id="progress_bar" class="col-sm-6" ng-show="showBar">
+	<uib-progressbar class="progress-striped active" max="400" value="400" type="danger"><i><b>Processing...</b></i></uib-progressbar>
+</div>
+<a href="javascript:waitingDialog.show();" data-toggle="modal" data-target="#pleaseWaitDialog">  
+-->   
+      
 			
     		<div class="text-center">
 				<uib-pagination 
@@ -93,12 +101,13 @@
 					last-text="&raquo;"
 					max-size="10">
 				</uib-pagination>
-			</div>
-			
-<!--     <uib-progressbar class="progress-striped active" value="dynamic" type="warning">
-    	<i ng-show="showWarning">Retrying process</i>
-    </uib-progressbar>   --> 
-    			
+			</div>	
         </div>
+
+<script>
+//$("#progress_bar").parent().css({position: 'relative'});
+//$("#progress_bar").css({top:200, left:200, position:'absolute'});
+</script>        
+     
         
-  
+
