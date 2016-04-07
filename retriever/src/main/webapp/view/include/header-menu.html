@@ -17,9 +17,10 @@
 	   		<li ng-class="{ 'active': location.path() === '/list' || location.path().indexOf('edit') > 0 }"><a href="#list">List</a></li>
 	   	</ul> -->
 	      <ul class='nav navbar-nav navbar-right collapse navbar-collapse'>
-	        <li ng-class="{ 'active': location.path() === '/dashboard' }"><a href="#dashboard">Dashboard</a></li>
+	        <li ng-class="{ 'active': location.path() === '/dashboard' }"><a href="#dashboard">Dashboard</a></li>	        
 	      	<li ng-class="{ 'active': location.path() === '/retry' }"><a href="#retry">Messages</a></li>
 	      	<li ng-class="{ 'active': location.path().indexOf('/log') >= 0 }"><a href="#log">Events</a></li>
+	      	<li ng-class="{ 'active': location.path() === '/document' }"><a href="#document">Document</a></li>
 	        <li>	        
 	          <a href="about.html" data-target='#' data-toggle="dropdown">{{Auth.getUser().id}} <span class="caret"></span></a>
 	          <ul class="dropdown-menu">

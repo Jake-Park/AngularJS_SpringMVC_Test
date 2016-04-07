@@ -15,9 +15,9 @@ body {
 }
 
 .form-group .form-control {
- 	margin-left : 10px;
+ 	margin-left : 0px;
  	width : 100%;
- 	margin-bottom : 10px;
+ 	margin-bottom : 0px;
 }
 
 form[name="userForm"] label {
@@ -109,7 +109,7 @@ html.no-touch footer {
 }
 
 .vcenter {
-    display: inline-block;
+    
     vertical-align: middle !important;
     float: none;
 }
@@ -149,7 +149,7 @@ html.no-touch footer {
 
 @media only screen and (min-width: 768px) {
     #adv-search {
-        width: 300px;
+        width: 330px;
         margin: 0 auto;
         float : right;
         margin-right: 15px;
@@ -158,11 +158,17 @@ html.no-touch footer {
         position: static !important;
     }
     .dropdown.dropdown-lg .dropdown-menu {
-        min-width: 300px;
+        min-width: 330px;
     }
 }
 /* End of search box css */
 
 .mg-t10 {
 	margin-top: 10px;
+}
+
+/* Set */
+.form-group .col-md-6 {
+	padding-right: 0px;
+	padding-left: 0px;
 }

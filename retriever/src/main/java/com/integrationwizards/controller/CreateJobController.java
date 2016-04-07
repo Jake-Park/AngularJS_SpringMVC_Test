@@ -310,7 +310,7 @@ public class CreateJobController {
 		}
 	}
 	
-	@Scheduled(fixedDelayString = "${createJob.reSmartLink.delaytime}")
+	//@Scheduled(fixedDelayString = "${createJob.reSmartLink.delaytime}")
 	public void reSmartLink() throws Exception {
 		LogUtil lu = null;
 		String MWNO = "";	// For error log
@@ -351,7 +351,7 @@ public class CreateJobController {
 		}
 	}
 	
-	@Scheduled(fixedDelayString = "${createJob.reCreateJob.delaytime}")
+	//@Scheduled(fixedDelayString = "${createJob.reCreateJob.delaytime}")
 	public void reCreateJob() throws Exception {
 		LogUtil lu = null;
 		String MWNO = "";	// For error log

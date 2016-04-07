@@ -4,35 +4,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.integrationwizards.admin.model.CodeInfo;
 import com.integrationwizards.admin.service.CodeService;
 
-public class CodeUtil {
+@Component
+public class CodeUtil implements InitializingBean {
 	@Autowired
-	private ApplicationContext appContext;
-	private static CodeUtil instance = null;
+	CodeService codeService;
 	private Map<String, Map<String, String>> codeMap = null;
+	@Value("${createJob.reSmartLink.counts}") 
+	private String slCount;
+	@Value("${createJob.reCreateJob.counts}") 
+	private String cjCount;
+	@Value("${exportJobs.reExportJobs.counts}") 
+	private String ejCount;
 	
-	public CodeUtil() {
-		init();
+	public void afterPropertiesSet() throws Exception {
 		codeMap = new HashMap<String, Map<String, String>>();
-	}
-	
-	public static CodeUtil getInstance() {
-		if(instance == null) {
-			instance = new CodeUtil();
-		}
-		
-		return instance;
+		init();
 	}
 	
 	// Initialize all codes
 	public void init() {
 		try {
-			CodeService codeService = appContext.getBean(CodeService.class);
 			List<CodeInfo> codeList = codeService.selectAllCode();
 			
 			if(codeList != null) {
@@ -51,17 +50,9 @@ public class CodeUtil {
 						codeMap.put(codeInfo.getCodeClass(), new HashMap<String, String>());
 					}
 					
-					Map<String, String> map = codeMap.get(codeInfo.getClass());
+					Map<String, String> map = codeMap.get(codeInfo.getCodeClass());
 					map.put(codeInfo.getCodeKey(), codeInfo.getCodeValue());
 				}
-				
-				// Add Environment properties value
-				Map<String, String> map = new HashMap<String, String>(); 
-				codeMap.put("ENV", map);
-				map.put("M3C", "${createJob.reSmartLink.counts}");				
-				map.put("RTC", "${createJob.reCreateJob.counts}");
-				map.put("M3E", "${exportJobs.reExportJobs.counts}");
-				System.out.println("-----" + map);
 			}
 		}
 		catch(Exception e) {

@@ -22,7 +22,7 @@ public class StatusUpdatesController {
 	private StatusUpdatesService statusUpdatesService;
 	private final String category = "statusUpdates";
 	
-	@Scheduled(fixedDelayString = "${statusUpdates.statusUpdates.delaytime}")
+	//@Scheduled(fixedDelayString = "${statusUpdates.statusUpdates.delaytime}")
 	public void statusUpdates() throws Exception {
 		LogUtil lu = null;
 		String uuid = "";

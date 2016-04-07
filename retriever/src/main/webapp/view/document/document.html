@@ -1,0 +1,27 @@
+
+        <div class="content col-sm-11 col-md-11 main">
+          <h1 class="page-header">Document</h1>
+			<form name="frm" ng-controller="DocumentController" ng-init="getDocumentList()" method="post" id="fromFileUpload"
+			 enctype="multipart/form-data" ng-submit="upload($event)">
+		        <div class="form-group vcenter" ng-show="showUpload">
+		            <label class="control-label col-md-3" for="file">Please upload the file : </label>
+		            <div class="col-md-4 input-max controls ">
+		                <input class="inline-block" type="file" name="file" ng-model="file" data-rule-required="true" id="file"         
+		                	accept=".xml">
+		            </div>
+		            <div class="col-md-5 actions">   
+		            	<input type="submit" class="btn btn-primary" value="Upload" />
+		            </div>
+		        </div>	
+		        <div class="form-group vcenter" ng-show="showDownload">
+		            <label class="control-label col-md-3" for="file">Download the file : </label>
+		            <div class="col-md-6 input-max controls "><a href="/download?id={{id}}">{{fileName}}</a></div>
+		        </div>
+			    <div id="progress_bar" class="col-sm-6" ng-show="showBar" style="position:absolute;">
+					<uib-progressbar class="progress-striped active vcenter" max="400" value="400" style="height:30px;" type="danger"><i><b>Processing...</b></i></uib-progressbar>
+				</div>   
+			</form>
+        </div>
+        
+<script src="/js/include.js"></script>
+     

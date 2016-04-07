@@ -10,7 +10,7 @@
                 <div class="input-group-btn">
                     <div class="btn-group" role="group">
                         <div class="dropdown dropdown-lg">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" 
+                            <button type="button" class="btn btn-default" onClick="javascript:$('.dropdown-menu.dropdown-menu-right').toggle();"
                             	aria-expanded="false"><span class="caret"></span></button>
                             <div class="dropdown-menu dropdown-menu-right" role="menu">
                                 <form name="frm" ng-submit="getList(1);" class="form-horizontal" role="form">
@@ -30,7 +30,32 @@
                                     <label for="contain">Work Order Number</label>
                                     <input class="form-control" name="workOrderNum" type="text" ng-model="workOrderNum" />
                                   </div>
+                                  
+								<div class="form-group">                                  
+										<label for="contain">Date</label>
+								      <div class="col-md-6" style="padding-right:5px;">
+								        <p class="input-group">
+								          <input type="text" class="form-control" uib-datepicker-popup="MM-dd-yyyy" ng-model="startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="start" ng-readonly="true" />
+								          <span class="input-group-btn">
+								            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+								          </span>
+								        </p>
+								      </div>
+								
+								      <div class="col-md-6" style="padding-left:5px;">
+								        <p class="input-group">
+								          <input type="text" class="form-control" uib-datepicker-popup="MM-dd-yyyy" ng-model="endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="end" ng-readonly="true" />
+								          <span class="input-group-btn">
+								            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+								          </span>
+								        </p>
+								      </div>
+								</div>      
+      
+      
+                               	<div class="form-group">
                                   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                </div>
                                 </form>
                             </div>
                         </div>
@@ -69,7 +94,7 @@
                   <td class="text-danger">{{list.error}}</td>
                   <td>
                     <div ng-if="list.subProcess !== '' && list.error !== 'NULL' && list.state !== 'Finished'" style="display:inline;">
-                  		<button type="button" class="btn btn-default btn-xs" ng-click="retry(list.logId, list.subProcess, list.key1)">Retry</button>
+                  		<button type="button" class="btn btn-default btn-xs" ng-click="retry($event, list.logId, list.subProcess, list.key1)">Retry</button>
                   	</div>
                     <div ng-if="list.state !== 'Finished'" style="display:inline;">
                   		<button type="button" class="btn btn-default btn-xs" ng-click="finish(list.key2, list.logId)">Finish</button>
@@ -81,11 +106,9 @@
           </div>
           
         
-<!-- <div id="progress_bar" class="col-sm-6" ng-show="showBar">
+<div id="progress_bar" class="col-sm-6" ng-show="showBar" style="position:absolute;">
 	<uib-progressbar class="progress-striped active" max="400" value="400" type="danger"><i><b>Processing...</b></i></uib-progressbar>
 </div>
-<a href="javascript:waitingDialog.show();" data-toggle="modal" data-target="#pleaseWaitDialog">  
--->   
       
 			
     		<div class="text-center">
@@ -103,11 +126,7 @@
 				</uib-pagination>
 			</div>	
         </div>
-
-<script>
-//$("#progress_bar").parent().css({position: 'relative'});
-//$("#progress_bar").css({top:200, left:200, position:'absolute'});
-</script>        
+        
      
         
 

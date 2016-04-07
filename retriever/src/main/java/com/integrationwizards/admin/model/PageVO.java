@@ -1,5 +1,7 @@
 package com.integrationwizards.admin.model;
 
+import java.util.Date;
+
 public class PageVO {
     private int pageIndex = 1;
     private int pageUnit = 10;
@@ -19,6 +21,9 @@ public class PageVO {
     private String className;
     private String methodName;
     private String logLevel;
+    
+    private Date startDate;
+    private Date endDate;
 
 	public int getPageIndex() {
 		return pageIndex;
@@ -98,15 +103,25 @@ public class PageVO {
 	public void setLogLevel(String logLevel) {
 		this.logLevel = logLevel;
 	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 	@Override
 	public String toString() {
 		return "PageVO [pageIndex=" + pageIndex + ", pageUnit=" + pageUnit + ", pageSize=" + pageSize + ", firstIndex="
 				+ firstIndex + ", lastIndex=" + lastIndex + ", recordCountPerPage=" + recordCountPerPage + ", keyword="
-				+ keyword + ",  logId=" + logId + ", category=" + category + ", workOrderNum="
-				+ workOrderNum + ", className=" + className + ", methodName=" + methodName + ", logLevel=" + logLevel
-				+ "]";
+				+ keyword + ", logId=" + logId + ", category=" + category + ", workOrderNum=" + workOrderNum
+				+ ", className=" + className + ", methodName=" + methodName + ", logLevel=" + logLevel + ", startDate="
+				+ startDate + ", endDate=" + endDate + "]";
 	}
-
-
 	
 }

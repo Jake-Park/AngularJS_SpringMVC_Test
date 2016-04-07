@@ -36,7 +36,7 @@ public class ExportJobsController {
 	 * 	
 	 * @throws Exception
 	 */
-	@Scheduled(fixedDelayString = "${exportJobs.exportJobs.delaytime}")
+	//@Scheduled(fixedDelayString = "${exportJobs.exportJobs.delaytime}")
 	public void exportJobs() throws Exception {
 		LogUtil lu = null;
 		String uuid = "";

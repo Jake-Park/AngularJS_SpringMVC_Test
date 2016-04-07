@@ -26,6 +26,10 @@ app.config(function($compileProvider){
 	  {
 	    controller: 'RetryController',
 	    templateUrl: '/view/retry/retryList.html'
+	  }).when('/document',
+	  {
+	    controller: 'DocumentController',
+	    templateUrl: '/view/document/document.html'
 	  }).when('/logout/:id',
 	  {
 		controller: 'LoginController',
@@ -105,6 +109,60 @@ app.config(function($compileProvider){
     	    }
     	  }
     	}]); 
+    
+	app.controller('DocumentController', ['$scope', '$http', '$location', '$route', 
+	                    	               function($scope, $http, $location, $route) {
+		$scope.showUpload = true;
+		$scope.showDownload = false;
+		$scope.showBar = false;
+    	    
+	    $scope.getDocumentList = function() {//
+	    	console.log("pageIndex : ");
+	    };
+	    
+	    $scope.upload = function($event){
+	    	console.log("continueFileUpload : ");
+	    	if(!file.files[0]) {
+	    		alert("Please, select file!");
+	    	}
+	    	
+	    	$("#progress_bar").css({left:$event.pageX - 800, top:$event.pageY - 20});
+			// Show Progress Bar
+			$scope.showBar = true;
+			
+	    	var uploadUrl="/uploadFile";
+	    	var formData=new FormData();
+	    	console.log(file.files[0]);
+	    	formData.append("file",file.files[0]);
+	    	
+	    	try {
+    	    	$http({
+    	    	    method: 'POST',
+    	    	    url: uploadUrl,
+    	    	    headers: {'Content-Type': undefined},
+    	    	    data: formData,
+    	    	    transformRequest: function(data, headersGetterFunction) {
+    	    	    	return data;
+    	    	    }
+    	    	}).success(function(data) {   
+    	    		console.log("success : " + data.id);
+    	    		if(data.id) {
+    	    			$scope.showUpload = false;
+    	    			$scope.showDownload = true;
+    	    			$scope.fileName = data.downloadFileName
+    	    			$scope.id = encodeURIComponent(data.id);
+    	    		}
+    	    		$scope.showBar = false;
+    	    	}).error(function(data) {
+    				console.log( "failure message: " + JSON.stringify({data: data}));
+    				$scope.showBar = false;
+    			});
+	    	}
+	    	catch(e) {
+	    		//console.log(e);
+	    	}
+	    };
+    }]);    
 	
 	// detect mobile device
 	window.mobilecheck = function() {

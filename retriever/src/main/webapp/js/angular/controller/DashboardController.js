@@ -1,5 +1,5 @@
-	app.controller('DashboardController', ['$scope', '$http', '$location', '$route', '$modal', 'Auth', 
-	               function($scope, $http, $location, $route, $modal, Auth) {
+	app.controller('DashboardController', ['$scope', '$http', '$location', '$route', 'Auth', 
+	               function($scope, $http, $location, $route, Auth) {
 	    $scope.lists = [];
 	    $scope.items = [];
 	    

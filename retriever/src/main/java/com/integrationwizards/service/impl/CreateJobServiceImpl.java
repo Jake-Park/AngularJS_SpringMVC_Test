@@ -35,6 +35,8 @@ import com.integrationwizards.util.LogManager;
 import com.integrationwizards.util.LogUtil;
 import com.integrationwizards.util.StringUtil;
 
+import static com.integrationwizards.util.StringUtil.nullToVoid;
+
 import au.com.retriever.test.barking.Job;
 import au.com.retriever.test.barking.JobAsset;
 import au.com.retriever.test.barking.JobService;
@@ -168,7 +170,7 @@ public class CreateJobServiceImpl implements CreateJobService {
 		jobMap.put("plannedEndTime", StringUtil.getBigDecimal(getResponseItem.getRequestedFinishTime()));
 		
 		// Convert Date Type 
-		String plannedStartStr = StringUtil.nullToVoid(jobMap.get("plannedStartDate")) 
+		String plannedStartStr = nullToVoid(jobMap.get("plannedStartDate")) 
 				+ " " + StringUtil.insertLeftChar(StringUtil.nullToVoid(jobMap.get("plannedStartTime")), 4, '0');
 		String plannedEndStr = StringUtil.nullToVoid(jobMap.get("plannedEndDate")) 
 				+ " " + StringUtil.insertLeftChar(StringUtil.nullToVoid(jobMap.get("plannedEndTime")), 4, '0');

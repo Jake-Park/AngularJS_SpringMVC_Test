@@ -69,7 +69,7 @@ public class RetryServiceImpl implements RetryService {
 				CreateJobService createJobService = appContext.getBean(CreateJobService.class);
 				HSmartLink sl = retryDao.getSmartLink(param);
 				
-				if(subProcess.equals("M3_CJ")) { // To M3
+				if(subProcess.equals("M3C")) { // To M3
 					lu.info("Send Retry createJob to M3");
 			    	Map<String, String> map = new HashMap<String, String>();
 			    	map.put("MWNO", sl.getMWNO());
@@ -78,9 +78,9 @@ public class RetryServiceImpl implements RetryService {
 			    	map.put("USID", sl.getUSID());
 			    	map.put("Company", sl.getCONO());
 			    	map.put("logId", sl.getLogId());
+			    	map.put("success", "False");
 			    	
 					createJobController.createJobFromM3(map);
-					createJobService.updateSmartLink(sl, "True");
 				}
 				else { // To Retriever
 					HJob hJob = retryDao.getHJob(param);				

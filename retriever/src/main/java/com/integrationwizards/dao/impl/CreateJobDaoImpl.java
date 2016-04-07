@@ -33,6 +33,7 @@ public class CreateJobDaoImpl implements CreateJobDao {
 	
 	public void updateSmartLink(HSmartLink hSmartLink) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();
+		
 		session.update(hSmartLink);
 		
 		if(hSmartLink.getSuccess().equals("True")) {
