@@ -81,17 +81,16 @@ public class TableHandler {
         		// set vertical alignment to "center"
         		CTVerticalJc va = tcpr.addNewVAlign();
         		va.setVal(STVerticalJc.CENTER);
-        		
         		        		
         		CTTcBorders cttcB = tcpr.addNewTcBorders();
         		cttcB.addNewLeft().setVal(STBorder.SINGLE);
-        		cttcB.addNewBottom().setVal(STBorder.DOUBLE);
-        		cttcB.addNewTop().setVal(STBorder.DOUBLE); 
+        		cttcB.addNewBottom().setVal(STBorder.SINGLE);
+        		cttcB.addNewTop().setVal(STBorder.SINGLE); 
         		cttcB.addNewRight().setVal(STBorder.SINGLE);
         		 
         		//cttcB.addNewLeft().setColor("79AAFF");
-        		cttcB.addNewBottom().setColor("79AAFF");
-        		cttcB.addNewTop().setColor("79AAFF");
+        		//cttcB.addNewBottom().setColor("79AAFF");
+        		//cttcB.addNewTop().setColor("79AAFF");
         		//cttcB.addNewRight().setColor("79AAFF");
 
         		// create cell color element
@@ -220,13 +219,13 @@ public class TableHandler {
         		        		
         		CTTcBorders cttcB = tcpr.addNewTcBorders();
         		cttcB.addNewLeft().setVal(STBorder.SINGLE);
-        		cttcB.addNewBottom().setVal(STBorder.DOUBLE);
-        		cttcB.addNewTop().setVal(STBorder.DOUBLE); 
+        		cttcB.addNewBottom().setVal(STBorder.SINGLE);
+        		cttcB.addNewTop().setVal(STBorder.SINGLE); 
         		cttcB.addNewRight().setVal(STBorder.SINGLE);
         		 
         		//cttcB.addNewLeft().setColor("79AAFF");
-        		cttcB.addNewBottom().setColor("79AAFF");
-        		cttcB.addNewTop().setColor("79AAFF");
+        		//cttcB.addNewBottom().setColor("79AAFF");
+        		//cttcB.addNewTop().setColor("79AAFF");
         		//cttcB.addNewRight().setColor("79AAFF");
 
         		// create cell color element
@@ -378,12 +377,12 @@ public class TableHandler {
         		va.setVal(STVerticalJc.CENTER);
         		
         		CTTcBorders cttcB = tcpr.addNewTcBorders();
-        		cttcB.addNewBottom().setVal(STBorder.DOUBLE);
+        		cttcB.addNewBottom().setVal(STBorder.SINGLE);
         		cttcB.addNewLeft().setVal(STBorder.SINGLE);
-        		cttcB.addNewTop().setVal(STBorder.DOUBLE); 
+        		cttcB.addNewTop().setVal(STBorder.SINGLE); 
         		cttcB.addNewRight().setVal(STBorder.SINGLE);
-        		cttcB.addNewBottom().setColor("79AAFF");
-        		cttcB.addNewTop().setColor("79AAFF");
+        		//cttcB.addNewBottom().setColor("79AAFF");
+        		//cttcB.addNewTop().setColor("79AAFF");
 
         		// create cell color element
         		CTShd ctshd = tcpr.addNewShd();

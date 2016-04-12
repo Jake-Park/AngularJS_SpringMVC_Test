@@ -14,6 +14,7 @@
     <link href="<%=request.getContextPath()%>/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/admin/dashboard.css" rel="stylesheet"/>
     <link href="<%=request.getContextPath()%>/css/admin/admin.css" rel="stylesheet"/>
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     
     <script src="<%=request.getContextPath()%>/js/asset/jquery-1.11.3.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -22,6 +23,8 @@
     <script src="<%=request.getContextPath()%>/js/asset/ui-bootstrap-tpls-1.2.4.min.js"></script>
     <script src="<%=request.getContextPath()%>/js/asset/angular-route.js"></script>
     <script src="<%=request.getContextPath()%>/js/asset/angular-cookies.js"></script>
+    
+
   </head>
   <body ng-app="Admin">
 
@@ -50,6 +53,7 @@
     <script src="<%=request.getContextPath()%>/js/angular/controller/RetryController.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/controller/LogDetailController.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/controller/DashboardController.js"></script>
+    <script src="<%=request.getContextPath()%>/js/angular/controller/AddController.js"></script>
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
   </body>

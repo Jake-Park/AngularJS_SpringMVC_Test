@@ -1,13 +1,17 @@
 
-        <div class="content col-sm-11 col-md-11 main">
+        <div ng-controller="DocumentController" class="content col-sm-11 col-md-11 main">
           <h1 class="page-header">Document</h1>
-			<form name="frm" ng-controller="DocumentController" ng-init="getDocumentList()" method="post" id="fromFileUpload"
+			<form name="frm" ng-init="getDocumentList()" method="post" id="fromFileUpload"
 			 enctype="multipart/form-data" ng-submit="upload($event)">
 		        <div class="form-group vcenter" ng-show="showUpload">
 		            <label class="control-label col-md-3" for="file">Please upload the file : </label>
 		            <div class="col-md-4 input-max controls ">
-		                <input class="inline-block" type="file" name="file" ng-model="file" data-rule-required="true" id="file"         
-		                	accept=".xml">
+<!-- 		                <input class="inline-block" type="file" name="file" ng-model="file" data-rule-required="true" id="file"         
+		                	accept=".xml"> -->
+						<label class="file">
+						  <input type="file" name="file" ng-model="file" data-rule-required="true" id="file" accept=".xml">
+						  <span class="file-custom"></span>
+						</label>			                	
 		            </div>
 		            <div class="col-md-5 actions">   
 		            	<input type="submit" class="btn btn-primary" value="Upload" />
@@ -21,7 +25,28 @@
 					<uib-progressbar class="progress-striped active vcenter" max="400" value="400" style="height:30px;" type="danger"><i><b>Processing...</b></i></uib-progressbar>
 				</div>   
 			</form>
+
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			
+			  <!-- Identify your business so that you can collect the payments. -->
+			  <input type="hidden" name="business" value="jake.park0120@gmail.com">
+			
+			  <!-- Specify a Buy Now button. -->
+			  <input type="hidden" name="cmd" value="_xclick">
+			
+			  <!-- Specify details about the item that buyers will purchase. -->
+			  <input type="hidden" name="item_name" value="Generated Document by Integeration Wizards">
+			  <input type="hidden" name="amount" value="5.00">
+			  <input type="hidden" name="currency_code" value="AUD">
+			
+			  <!-- Display the payment button. -->
+			  <input type="submit" class="btn btn-primary" value="Pay Now"/>
+			</form>			
         </div>
+        
+       	<div class="content">
+
+		</div>
         
 <script src="/js/include.js"></script>
      

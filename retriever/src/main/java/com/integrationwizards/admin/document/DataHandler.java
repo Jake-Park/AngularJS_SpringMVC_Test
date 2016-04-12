@@ -288,7 +288,7 @@ public class DataHandler {
         	if(api.get("PARAM_I") != null) {
             	XWPFRun p5r2 = new StyleBuilder(p5.createRun(), 2, true, "Cambria", 12, null).getRun();
             	p5r2.setText("Inbound");
-            	p5r2.addBreak();
+            	//p5r2.addBreak();
             	
         		tableHandler.createFieldTable(doc, (List<Map<String, String>>)api.get("PARAM_I"));
         	}
@@ -299,7 +299,7 @@ public class DataHandler {
         	if(api.get("PARAM_O") != null) {
             	XWPFRun p6r3 = new StyleBuilder(p6.createRun(), 1, true, "Cambria", 12, null).getRun();
             	p6r3.setText("Outbound");
-            	p6r3.addBreak();
+            	//p6r3.addBreak();
             	
             	tableHandler.createFieldTable(doc, (List<Map<String, String>>)api.get("PARAM_O"));
         	}

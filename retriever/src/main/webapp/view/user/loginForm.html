@@ -6,31 +6,31 @@
     		<legend class="scheduler-border"></legend>
     		<label for="email" class="control-label col-sm-4 text-muted">Id</label>
     		<div class="col-sm-8 pull-left">
-				<input ng-model="id" type="text" name="id" class="form-control" title="Id" ng-init="id='administrator'" required />
+				<input ng-model="id" type="text" name="id" class="form-control" title="Id" ng-init="id='jake.park0120@gmail.com'" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required />
 			</div>
 			<!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span> -->
     	</fieldset>
     	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.email.$pristine }">
     		<label for="password" class="control-label col-sm-4 text-muted">Password</label>
     		<div class="col-sm-8 pull-left">
-				<input ng-model="password" type="password" name="password" class="form-control" title="password" ng-minlength="4" ng-init="password='asdf'" required>
+				<input ng-model="password" type="password" name="password" class="form-control" title="password" ng-minlength="4" ng-init="password='sd1377'" required>
 			</div>
     	</fieldset>
     	<fieldset class="form-group">
-    	  	<!-- <input type="button" class="btn btn-info pull-left" value="Register" ng-click="location.path('/add')" /> -->
+    	  	<input type="button" class="btn btn-success pull-left" value="Register" ng-click="location.path('/add')" />
     	  	    <!-- Single button -->
-		    <div class="btn-group" uib-dropdown is-open="status.isopen">
+<!-- 		    <div class="btn-group" uib-dropdown is-open="status.isopen">
 		      <button id="single-button" type="button" class="btn btn-success" uib-dropdown-toggle ng-disabled="disabled">
 		        Target System <span class="caret"></span>
 		      </button>
 		      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
 		        <li role="menuitem"><a href="javascript:void(0);">Retriever</a></li>
-		        <!-- <li role="menuitem"><a href="#">Another action</a></li>
+		        <li role="menuitem"><a href="#">Another action</a></li>
 		        <li role="menuitem"><a href="#">Something else here</a></li>
 		        <li class="divider"></li>
-		        <li role="menuitem"><a href="#">Separated link</a></li> -->
+		        <li role="menuitem"><a href="#">Separated link</a></li>
 		      </ul>
-		    </div>
+		    </div> -->
           	<input type="submit" class="btn btn-primary pull-right" value="Login" />
         </fieldset>
     </form>     
@@ -49,6 +49,4 @@ $(function(){
 	    $('.row.well').css({ height: $(window).innerHeight() - 232});
 	  }); 
 	});
-	
-
 </script>

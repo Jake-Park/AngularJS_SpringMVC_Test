@@ -9,7 +9,15 @@ app.config(function($compileProvider){
 	  $routeProvider.when('/login',
 	  {
 		controller: 'LoginController',
-		templateUrl: '/view/adminInfo/loginForm.html'
+		templateUrl: '/view/user/loginForm.html'
+	  }).when('/add',
+	  {
+	    controller: 'AddController',
+	    templateUrl: '/view/user/registerUser.html'
+	  }).when('/edit/:id/:path',
+	  {
+		controller: 'AddController',
+		templateUrl: '/view/user/registerUser.html'
 	  }).when('/dashboard',
 	  {
 	    controller: 'DashboardController',
@@ -33,7 +41,7 @@ app.config(function($compileProvider){
 	  }).when('/logout/:id',
 	  {
 		controller: 'LoginController',
-		templateUrl: '/view/adminInfo/loginForm.html'
+		templateUrl: '/view/user/loginForm.html'
 	  }).otherwise(
 	  {
 	      redirectTo: '/login'

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
-import com.integrationwizards.admin.model.AdminInfo;
+import com.integrationwizards.admin.model.UserInfo;
 import com.integrationwizards.admin.model.PageVO;
 
 @Component
@@ -23,7 +23,7 @@ public class AdminCommon {
 	}	
 	
 	public String getAdminEmail(HttpServletRequest request) {
-		AdminInfo adminInfo = ((AdminInfo)request.getSession().getAttribute("adminInfo"));
+		UserInfo adminInfo = ((UserInfo)request.getSession().getAttribute("adminInfo"));
 		if(adminInfo != null) {
 			return adminInfo.getEmail();
 		}

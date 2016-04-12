@@ -22,9 +22,9 @@
 	      	<li ng-class="{ 'active': location.path().indexOf('/log') >= 0 }"><a href="#log">Events</a></li>
 	      	<li ng-class="{ 'active': location.path() === '/document' }"><a href="#document">Document</a></li>
 	        <li>	        
-	          <a href="about.html" data-target='#' data-toggle="dropdown">{{Auth.getUser().id}} <span class="caret"></span></a>
+	          <a href="about.html" data-target='#' data-toggle="dropdown">{{Auth.getUser().email}} <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <!-- <li><a href="#edit/{{Auth.getUser().id}}/login">Edit Profile</a></li> -->
+	            <li><a href="#edit/{{Auth.getUser().id}}/dashboard">Edit Profile</a></li>
 	            <li class="divider"></li>
 	            <li><a href="#logout/{{Auth.getUser().id}}">LogOut</a></li>
 	          </ul>

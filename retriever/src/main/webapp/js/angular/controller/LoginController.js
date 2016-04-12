@@ -2,22 +2,21 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
                                        function($scope, $http, $location, $cookieStore, $routeParams, Auth, CodeUtil) {
 	
     	// Logout - Delete Cookie
-    if($routeParams.id) {
-    	 
+    if($routeParams.id) {    	 
     	console.log("---" + Auth.getUser());
     	$cookieStore.put('userInfo', null);
     	$location.path("/login");
     }
 
   	  $scope.login = function() {
-  		 
   			//		
   			var dataObj = {
-  					id : $scope.id,
-  					password : $scope.password
+				email : $scope.id,
+				password : $scope.password
   			};	
+  			console.log(dataObj);
 
-  			var res = $http.post('/admin/login', dataObj);			
+  			var res = $http.post('/user/login', dataObj);			
   			res.success(function(data, status, headers, config) {
   				
   				if(data) {
@@ -25,7 +24,10 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore
   					CodeUtil.init();
   					//window.location.replace("/view/index.html");
   					$location.path("/dashboard");
-  				}				
+  				}
+  				else {
+  					alert("Fail to login!");
+  				}
   			});
   			res.error(function(data, status, headers, config) {
   				console.log( "failure message: " + JSON.stringify({data: data}));

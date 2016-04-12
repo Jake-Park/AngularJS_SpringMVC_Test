@@ -12,23 +12,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.integrationwizards.admin.dao.AdminInfoDao;
-import com.integrationwizards.admin.model.AdminInfo;
+import com.integrationwizards.admin.dao.UserInfoDao;
+import com.integrationwizards.admin.model.UserInfo;
 import com.integrationwizards.admin.model.PageVO;
 
 @Repository
-public class AdminInfoDaoImpl implements AdminInfoDao {
+public class UserInfoDaoImpl implements UserInfoDao {
 	@Autowired
 	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
 	
-	public AdminInfo selectAdminInfoByEmail(AdminInfo vo) {
+	public UserInfo selectAdminInfoByEmail(UserInfo vo) {
 		Session session = this.sessionFactory.getCurrentSession();
 				
-		Criteria criteria = session.createCriteria(AdminInfo.class)
-				.add(Restrictions.eq("email", vo.getEmail()));
+		Criteria criteria = session.createCriteria(UserInfo.class)
+				.add(Restrictions.eq("email", vo.getEmail()))
+				.add(Restrictions.eq("password", vo.getPassword()));
 		
-		vo = (AdminInfo)criteria.uniqueResult();		
+		vo = (UserInfo)criteria.uniqueResult();		
 		
 /*		List<AdminInfo> AdminInfoList = session.createQuery("from AdminInfo").list();
 		
@@ -39,19 +40,19 @@ public class AdminInfoDaoImpl implements AdminInfoDao {
 		return vo;
 	}
 
-	public AdminInfo selectAdminInfo(AdminInfo vo) {
+	public UserInfo selectAdminInfo(UserInfo vo) {
 		Session session = this.sessionFactory.getCurrentSession();
 		
-		Criteria criteria = session.createCriteria(AdminInfo.class)
+		Criteria criteria = session.createCriteria(UserInfo.class)
 				.add(Restrictions.eq("email", vo.getEmail()))
 				.add(Restrictions.eq("password", vo.getPassword()));
 		
-		vo = (AdminInfo)criteria.uniqueResult();		
+		vo = (UserInfo)criteria.uniqueResult();		
 		
 		return vo;
 	}
 
-	public void insertAdminInfo(AdminInfo vo) {
+	public void insertUserInfo(UserInfo vo) {
 		Session session = this.sessionFactory.getCurrentSession();
         //Save the Model object
         //session.persist(vo);
@@ -60,7 +61,7 @@ public class AdminInfoDaoImpl implements AdminInfoDao {
 		//tx1.commit();
 	}
 
-	public List<AdminInfo> selectAdminInfoList(PageVO vo) {
+	public List<UserInfo> selectAdminInfoList(PageVO vo) {
 		Session session = this.sessionFactory.getCurrentSession();
 		//List<AdminInfo> AdminInfoList = session.createQuery("from AdminInfo").list();
 		
@@ -68,7 +69,7 @@ public class AdminInfoDaoImpl implements AdminInfoDao {
         Query query = session.createQuery(hql);
         query.setFirstResult(vo.getFirstIndex());
         query.setMaxResults(vo.getLastIndex());
-        List<AdminInfo> results = query.list();
+        List<UserInfo> results = query.list();
 		
 /*		for(AdminInfo p : AdminInfoList) {
 			System.out.println("AdminInfo List : " + p);
@@ -80,30 +81,30 @@ public class AdminInfoDaoImpl implements AdminInfoDao {
 		Session session = this.sessionFactory.getCurrentSession();
 		
 		//Projections example
-		long count = (Long)session.createCriteria(AdminInfo.class)
+		long count = (Long)session.createCriteria(UserInfo.class)
 				.setProjection(Projections.rowCount())
 				.uniqueResult();
 		
 		return Integer.parseInt(String.valueOf(count));
 	}
 
-	public AdminInfo selectAdminInfoById(AdminInfo vo) {
+	public UserInfo selectAdminInfoById(UserInfo vo) {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from AdminInfo where id = :id");
+		Query query = session.createQuery("from UserInfo where id = :id");
 		query.setString("id", vo.getId());
-		AdminInfo p = (AdminInfo) query.uniqueResult();
+		UserInfo p = (UserInfo) query.uniqueResult();
 /*		Session session = this.sessionFactory.getCurrentSession();
 		AdminInfo p = (AdminInfo)session.load(AdminInfo.class, vo.getId());*/
 		return p;		
 	}
 
-	public void updateAdminInfo(AdminInfo vo) {
+	public void updateAdminInfo(UserInfo vo) {
 		Session session = this.sessionFactory.getCurrentSession();
         //Save the Model object
 		session.update(vo);
 	}
 
-	public void deleteAdminInfo(AdminInfo vo) {
+	public void deleteAdminInfo(UserInfo vo) {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("Delete From AdminInfo Where id=:id");
 		query.setString("id", vo.getId());
@@ -122,7 +123,7 @@ public class AdminInfoDaoImpl implements AdminInfoDao {
 
 	}
 
-	public void updateLoginSuccess(AdminInfo vo) {
+	public void updateLoginSuccess(UserInfo vo) {
 		// TODO Auto-generated method stub
 
 	}
