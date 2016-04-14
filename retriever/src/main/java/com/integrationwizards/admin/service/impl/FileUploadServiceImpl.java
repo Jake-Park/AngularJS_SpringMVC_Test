@@ -15,6 +15,8 @@ import com.integrationwizards.admin.dao.FileUploadDao;
 import com.integrationwizards.admin.document.DocumentHandler;
 import com.integrationwizards.admin.model.Document;
 import com.integrationwizards.admin.service.FileUploadService;
+import com.integrationwizards.model.Order;
+import com.paypal.api.payments.Payment;
 
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
@@ -69,6 +71,19 @@ public class FileUploadServiceImpl implements FileUploadService {
 	@Transactional
 	public Document getDocument(String id) throws Exception {
 		return fileUploadDao.getDocument(id);
+	}
+	
+	@Transactional
+	public void insertOrder(Payment payment, String orderId) throws Exception {
+		Order order = new Order();
+		order.setOrderId(orderId);
+		order.setPaymentId(payment.getId());
+		fileUploadDao.insertOrder(order);
+	}
+	
+	@Transactional
+	public Order getOrderByOrderId(String orderId) throws Exception {
+		return fileUploadDao.getOrderByOrderId(orderId);
 	}
 
 }

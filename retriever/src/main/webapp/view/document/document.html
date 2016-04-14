@@ -26,26 +26,12 @@
 				</div>   
 			</form>
 
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-			
-			  <!-- Identify your business so that you can collect the payments. -->
-			  <input type="hidden" name="business" value="jake.park0120@gmail.com">
-			
-			  <!-- Specify a Buy Now button. -->
-			  <input type="hidden" name="cmd" value="_xclick">
-			
-			  <!-- Specify details about the item that buyers will purchase. -->
-			  <input type="hidden" name="item_name" value="Generated Document by Integeration Wizards">
-			  <input type="hidden" name="amount" value="5.00">
-			  <input type="hidden" name="currency_code" value="AUD">
-			
-			  <!-- Display the payment button. -->
-			  <input type="submit" class="btn btn-primary" value="Pay Now"/>
-			</form>			
         </div>
         
        	<div class="content">
-
+<form action='pay' METHOD='POST'>
+<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
+</form>
 		</div>
         
 <script src="/js/include.js"></script>

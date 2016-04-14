@@ -6,9 +6,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.integrationwizards.admin.dao.FileUploadDao;
 import com.integrationwizards.admin.model.Document;
+import com.integrationwizards.model.Order;
 
 @Repository
 public class FileUploadDaoImpl implements FileUploadDao {
@@ -36,4 +38,16 @@ public class FileUploadDaoImpl implements FileUploadDao {
 		return (Document)query.uniqueResult();
 	}
 
+	public void insertOrder(Order order) throws Exception {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(order);
+	}
+	
+	@Transactional
+	public Order getOrderByOrderId(String orderId) throws Exception {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Order where orderId = :orderId");
+		query.setString("orderId", orderId);
+		return (Order)query.uniqueResult();
+	}
 }
