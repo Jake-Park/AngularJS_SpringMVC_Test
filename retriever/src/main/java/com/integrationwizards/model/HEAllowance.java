@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="EAllowance")
+@Table(name="eallowance")
 public class HEAllowance {
 	@Id
 	@Column(name="idx")

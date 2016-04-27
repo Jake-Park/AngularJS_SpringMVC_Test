@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.integrationwizards.admin.model.Document;
-import com.integrationwizards.admin.service.FileUploadService;
+import com.integrationwizards.admin.model.UserInfo;
+import com.integrationwizards.admin.service.DocumentService;
+import com.integrationwizards.common.Constants;
 import com.integrationwizards.model.Order;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.Details;
@@ -33,27 +36,34 @@ import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentExecution;
 import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
-import com.paypal.base.ConfigManager;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 
 @Controller
-public class FileUploadController {
+public class DocumentController {
 	@Autowired
-	FileUploadService fileUploadService;
+	DocumentService documentService;
 	
     /**
      * Upload single file using Spring Controller
      */
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public @ResponseBody Map<String, String> uploadFileHandler(@RequestParam("file") MultipartFile file) throws Exception {
+    public @ResponseBody Map<String, String> uploadFileHandler(@RequestParam("file") MultipartFile file, 
+    		HttpServletRequest request, HttpSession session) throws Exception {
+    	Map<String, String> returnMap = null;
+    	
         if (!file.isEmpty()) {
-        	return fileUploadService.upload(file);
+        	returnMap = documentService.upload(file);
+        	
+        	// update points
+        	if(returnMap.get("downloadFileName") != null) {
+        		documentService.updatePoints((UserInfo)session.getAttribute(Constants.USER_KEY));
+        	}
         } 
-        else {
-        	return null;
-        }
+        
+        return returnMap;
+        
     }
     
     
@@ -70,7 +80,7 @@ public class FileUploadController {
     		return;
     	}
     	
-    	Document document = fileUploadService.getDocument(id);    	
+    	Document document = documentService.getDocument(id);    	
           
         // set content attributes for the response
         response.setContentType("application/octet-stream");
@@ -145,14 +155,14 @@ public class FileUploadController {
 		
 		System.out.println(approvalURL);
 		
-		fileUploadService.insertOrder(returnPayment, orderId);
+		documentService.insertOrder(returnPayment, orderId);
     }
     
     @RequestMapping(value = "/approve/{orderId}", method = RequestMethod.GET)
     public void approvePaypal(@PathVariable String orderId, HttpServletRequest request) throws Exception {
     	String payerId = request.getParameter("PayerID");
 		
-		Order order = fileUploadService.getOrderByOrderId(orderId);
+		Order order = documentService.getOrderByOrderId(orderId);
 		
 		System.out.println(order.getPaymentId() + "----approve----" + orderId);
 
@@ -198,9 +208,9 @@ public class FileUploadController {
 		// OAuthTokenCredential by passing in
 		// ClientID and ClientSecret
 
-			// ClientID and ClientSecret retrieved from configuration
-			String clientID = "AcmGyUxTU8YdEzkWo5LbQrCXkKMnRVeEQOnBLhXEy0Uc8z2-X9ls3CMU8Ab2weHcNy2Zo0XVJlEyR0HQ";
-			String clientSecret = "EI3FZ_pv9qpT3zBdH0aCcTgl_f8gUJgdHzXBTSl5-4eNIJKY6dO8EB3oYzSyUWv1lP40HyVl-1vdtaUy";
+		// ClientID and ClientSecret retrieved from configuration
+		String clientID = "AcmGyUxTU8YdEzkWo5LbQrCXkKMnRVeEQOnBLhXEy0Uc8z2-X9ls3CMU8Ab2weHcNy2Zo0XVJlEyR0HQ";
+		String clientSecret = "EI3FZ_pv9qpT3zBdH0aCcTgl_f8gUJgdHzXBTSl5-4eNIJKY6dO8EB3oYzSyUWv1lP40HyVl-1vdtaUy";
 		return new OAuthTokenCredential(clientID, clientSecret).getAccessToken();
 	}
 }

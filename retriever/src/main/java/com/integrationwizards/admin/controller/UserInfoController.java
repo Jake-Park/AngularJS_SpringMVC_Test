@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import com.integrationwizards.admin.model.PageVO;
 import com.integrationwizards.admin.model.UserInfo;
 import com.integrationwizards.admin.service.UserInfoService;
 import com.integrationwizards.admin.util.AdminCommon;
+import com.integrationwizards.common.Constants;
 import com.integrationwizards.util.StringUtil;
 
 @Controller
@@ -28,20 +30,19 @@ import com.integrationwizards.util.StringUtil;
 public class UserInfoController {
 	@Autowired
 	private UserInfoService userInfoService;
-	@Autowired
-	private AdminCommon adminCommon;
 	
 	/**
 	 *  Login Info Check
 	 */	
     @RequestMapping(value="/login", method = RequestMethod.POST)    
-	public @ResponseBody UserInfo loginForm(@RequestBody UserInfo userInfo, Model model, HttpServletRequest request) throws Exception
+	public @ResponseBody UserInfo loginForm(@RequestBody UserInfo userInfo, Model model, 
+			HttpServletRequest request, HttpSession session) throws Exception
 	{   //
     	String strPassword = userInfo.getPassword();//EncryptUtils.toSHA256(    	
     	userInfo = userInfoService.selectAdminInfoByEmail(userInfo);
-    	/*
+    	
     	if(userInfo != null) {
-    		int loginFailCount = StringUtil.nullToInteger(userInfo.getLoginFailCount());  
+    		/*int loginFailCount = StringUtil.nullToInteger(userInfo.getLoginFailCount());  
 
 			userInfo.setPassword(strPassword);
 			String email = userInfo.getEmail();
@@ -57,17 +58,15 @@ public class UserInfoController {
         		return null;
         	}
         	else {
-        		userInfoService.updateLoginSuccess(userInfo);
-        		request.getSession().setAttribute(AdminCommon.ADMIN_KEY, userInfo);
+        		userInfoService.updateLoginSuccess(userInfo);*/    	
+        		//request.getSession().setAttribute(Constants.USER_KEY, userInfo);
+        		session.setAttribute(Constants.USER_KEY, userInfo);
 
-        		model.addAttribute("id", userInfo.getId());
+        		/*model.addAttribute("id", userInfo.getId());
         		return userInfo;
-        	}
+        	}*/
 
     	}
-    	else {
-    		model.addAttribute("result", "noneUser");
-    	}*/
     	
     	return userInfo;
 	}
@@ -105,7 +104,9 @@ public class UserInfoController {
  	    
  	    try {
 	 	   		
-	 	   	if("Register".equals(StringUtil.nullToEmpty(command))) { 	   		
+	 	   	if("Register".equals(StringUtil.nullToEmpty(command))) {
+	 	   		// Add default points
+	 	   		userInfo.setPoints(50);
 	 	   		userInfoService.insertUserInfo(userInfo);
 	 	   	}
 	     	else if ("Edit".equals(StringUtil.nullToEmpty(command))) {

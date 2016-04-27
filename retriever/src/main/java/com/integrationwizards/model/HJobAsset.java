@@ -17,7 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 @Entity
-@Table(name="JobAsset")
+@Table(name="jobasset")
 public class HJobAsset {
 	@Id
 	@Column(name="idx")

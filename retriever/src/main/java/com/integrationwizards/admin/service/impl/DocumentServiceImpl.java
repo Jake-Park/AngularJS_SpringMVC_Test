@@ -11,19 +11,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.integrationwizards.admin.dao.FileUploadDao;
+import com.integrationwizards.admin.dao.DocumentDao;
 import com.integrationwizards.admin.document.DocumentHandler;
 import com.integrationwizards.admin.model.Document;
-import com.integrationwizards.admin.service.FileUploadService;
+import com.integrationwizards.admin.model.UserInfo;
+import com.integrationwizards.admin.service.DocumentService;
 import com.integrationwizards.model.Order;
 import com.paypal.api.payments.Payment;
 
 @Service
-public class FileUploadServiceImpl implements FileUploadService {
+public class DocumentServiceImpl implements DocumentService {
 	@Autowired
 	DocumentHandler documentHandler;
 	@Autowired
-	FileUploadDao fileUploadDao;
+	DocumentDao documentDao;
 	
 	/**
 	 * Upload file data into database using temporary file
@@ -56,7 +57,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         document.setDownloadFileData((byte[])downloadMap.get("downloadFileData"));
         
         // save
-        fileUploadDao.save(document);
+        documentDao.save(document);
         
         Map<String, String> retMap = new HashMap<>();
         retMap.put("id", document.getId());
@@ -70,7 +71,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 	 */
 	@Transactional
 	public Document getDocument(String id) throws Exception {
-		return fileUploadDao.getDocument(id);
+		return documentDao.getDocument(id);
 	}
 	
 	@Transactional
@@ -78,12 +79,20 @@ public class FileUploadServiceImpl implements FileUploadService {
 		Order order = new Order();
 		order.setOrderId(orderId);
 		order.setPaymentId(payment.getId());
-		fileUploadDao.insertOrder(order);
+		documentDao.insertOrder(order);
 	}
 	
 	@Transactional
 	public Order getOrderByOrderId(String orderId) throws Exception {
-		return fileUploadDao.getOrderByOrderId(orderId);
+		return documentDao.getOrderByOrderId(orderId);
+	}
+	
+	@Transactional
+	public boolean updatePoints(UserInfo userInfo) throws Exception {
+		// Subtract Points
+		int points = userInfo.getPoints();
+		userInfo.setPoints((points - 50));
+		return documentDao.updatePoints(userInfo);
 	}
 
 }

@@ -6,15 +6,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="PAYMENTORDER")
+@Table(name="paymentorder")
 public class Order {
 	@Id
 	@Column(name="orderId")	
 	private String orderId;
 	private String paymentId;
 	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	public String getOrderId() {
 		return orderId;

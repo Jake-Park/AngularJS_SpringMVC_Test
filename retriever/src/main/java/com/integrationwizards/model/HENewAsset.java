@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
-@Table(name="ENewAsset")
+@Table(name="enewasset")
 public class HENewAsset {
 	@Id
 	@Column(name="idx")

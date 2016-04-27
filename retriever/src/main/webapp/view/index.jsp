@@ -32,7 +32,7 @@
   <header-menu></header-menu>
     
     <div class="container">
-      <div class="row well well-lg mg-t10">
+      <div class="row well well-lg mg-t60">
 		<!-- <left-menu ng-show="Auth.isLoggedIn() && !Auth.isMobile()"></left-menu> -->
            
       	<div ng-view></div>
@@ -54,6 +54,7 @@
     <script src="<%=request.getContextPath()%>/js/angular/controller/LogDetailController.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/controller/DashboardController.js"></script>
     <script src="<%=request.getContextPath()%>/js/angular/controller/AddController.js"></script>
+    <script src="<%=request.getContextPath()%>/js/angular/controller/DocumentController.js"></script>
     <!-- Directives -->
     <script src="<%=request.getContextPath()%>/js/angular/directive.js"></script>
   </body>

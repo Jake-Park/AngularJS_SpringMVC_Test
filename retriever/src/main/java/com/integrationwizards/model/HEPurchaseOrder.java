@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
 @Entity
-@Table(name="EPurchaseOrder")
+@Table(name="epurchaseorder")
 public class HEPurchaseOrder {
 	@Id
 	@Column(name="idx")

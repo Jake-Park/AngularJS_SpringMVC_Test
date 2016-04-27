@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="DOCUMENT")
+@Table(name="document")
 public class Document {
 	@Id
 	@Column(name="id")

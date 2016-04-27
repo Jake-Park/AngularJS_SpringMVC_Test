@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
 @Entity
-@Table(name="EAttachment")
+@Table(name="eattachment")
 public class HEAttachment {
 	@Id
 	@Column(name="idx")

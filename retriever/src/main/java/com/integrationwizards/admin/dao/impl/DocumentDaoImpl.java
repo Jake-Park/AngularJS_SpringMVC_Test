@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.integrationwizards.admin.dao.FileUploadDao;
+import com.integrationwizards.admin.dao.DocumentDao;
 import com.integrationwizards.admin.model.Document;
+import com.integrationwizards.admin.model.UserInfo;
 import com.integrationwizards.model.Order;
 
 @Repository
-public class FileUploadDaoImpl implements FileUploadDao {
+public class DocumentDaoImpl implements DocumentDao {
 	@Autowired
 	@Qualifier("hibernate4AnnotatedSessionFactory")
 	private SessionFactory sessionFactory;
@@ -49,5 +50,21 @@ public class FileUploadDaoImpl implements FileUploadDao {
 		Query query = session.createQuery("from Order where orderId = :orderId");
 		query.setString("orderId", orderId);
 		return (Order)query.uniqueResult();
+	}
+	
+	@Transactional
+	public boolean updatePoints(UserInfo userInfo) throws Exception {
+		boolean retBool = true;
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.update(userInfo);
+		}
+		catch(Exception e) {
+			retBool = false;
+			throw e;
+		}
+		
+		return retBool;
 	}
 }

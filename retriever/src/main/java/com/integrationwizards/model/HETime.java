@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="ETime")
+@Table(name="etime")
 public class HETime {
 	@Id
 	@Column(name="idx")

@@ -11,7 +11,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Result")
+@Table(name="result")
 public class HResult {
 	@Id
 	@Column(name="txId")

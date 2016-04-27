@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
-@Table(name="EJob")
+@Table(name="ejob")
 public class HEJob {
 	@Id
 	@Column(name="idx")

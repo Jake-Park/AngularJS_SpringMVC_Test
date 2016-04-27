@@ -1,11 +1,11 @@
 
         <div ng-controller="DocumentController" class="content col-sm-11 col-md-11 main">
           <h1 class="page-header">Document</h1>
-			<form name="frm" ng-init="getDocumentList()" method="post" id="fromFileUpload"
+			<form name="frm" ng-init="initDocument()" method="post" id="fromFileUpload"
 			 enctype="multipart/form-data" ng-submit="upload($event)">
 		        <div class="form-group vcenter" ng-show="showUpload">
-		            <label class="control-label col-md-3" for="file">Please upload the file : </label>
-		            <div class="col-md-4 input-max controls ">
+		            <label ng-show="showUploadButton" class="control-label col-md-3" for="file">Please upload the file : </label>		            
+		            <div ng-show="showUploadButton" class="col-md-4 input-max controls ">
 <!-- 		                <input class="inline-block" type="file" name="file" ng-model="file" data-rule-required="true" id="file"         
 		                	accept=".xml"> -->
 						<label class="file">
@@ -13,8 +13,10 @@
 						  <span class="file-custom"></span>
 						</label>			                	
 		            </div>
+		            <label ng-show="showPayButton" class="control-label col-md-7">Your Point is : {{points}}. You need 50 points at least for generating a document.</label>
 		            <div class="col-md-5 actions">   
-		            	<input type="submit" class="btn btn-primary" value="Upload" />
+		            	<input type="submit" ng-show="showUploadButton" class="btn btn-primary" value="Upload" />
+		            	<input type="button" ng-show="showPayButton" class="btn btn-primary" value="Pay" />
 		            </div>
 		        </div>	
 		        <div class="form-group vcenter" ng-show="showDownload">
@@ -25,14 +27,7 @@
 					<uib-progressbar class="progress-striped active vcenter" max="400" value="400" style="height:30px;" type="danger"><i><b>Processing...</b></i></uib-progressbar>
 				</div>   
 			</form>
-
-        </div>
-        
-       	<div class="content">
-<form action='pay' METHOD='POST'>
-<input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
-</form>
-		</div>
+        </div>        
         
 <script src="/js/include.js"></script>
      

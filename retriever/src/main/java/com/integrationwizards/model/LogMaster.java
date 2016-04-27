@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="LogMaster")
+@Table(name="logmaster")
 public class LogMaster {
 	@Id
 	private String logId;

@@ -2,15 +2,18 @@ package com.integrationwizards.admin.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="USERINFO")
+@Table(name="userinfo")
 public class UserInfo {
 	@Id
 	@Column(name="idx")
@@ -21,6 +24,7 @@ public class UserInfo {
 	private String name;
 	private String company;
 	private String phoneNumber;
+	private int points;
 	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
 	private Date createdDate;
 	private Date modifiedDate;
@@ -60,6 +64,12 @@ public class UserInfo {
 	}
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	public int getPoints() {
+		return points;
+	}
+	public void setPoints(int points) {
+		this.points = points;
 	}
 	public Date getCreatedDate() {
 		return createdDate;

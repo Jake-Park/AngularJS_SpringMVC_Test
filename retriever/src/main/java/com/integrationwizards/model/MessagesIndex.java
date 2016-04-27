@@ -6,9 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="MessagesIndex")
+@Table(name="messagesindex")
 public class MessagesIndex {
 	@Id
 	@Column(name="txId")
@@ -16,6 +18,7 @@ public class MessagesIndex {
 	private String success;    
 	private String trnCategory;
 	@Column(name="createdDate", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+	@Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     private Date lastRetryDate;
     

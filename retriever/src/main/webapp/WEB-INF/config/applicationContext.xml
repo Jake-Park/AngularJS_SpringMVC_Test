@@ -28,7 +28,7 @@
         <property name="url"
             value="jdbc:mysql://localhost/retriever" />
         <property name="username" value="root" />
-        <property name="password" value="sd1377" />
+        <property name="password" value="c5gateway" />
     </bean>
     
     

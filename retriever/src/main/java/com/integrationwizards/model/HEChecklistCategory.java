@@ -23,7 +23,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import au.com.retriever.test.barking.EChecklistItem;
 
 @Entity
-@Table(name="EChecklistCategory")
+@Table(name="echecklistcategory")
 public class HEChecklistCategory {
 	@Id
 	@Column(name="idx")

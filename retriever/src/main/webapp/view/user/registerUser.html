@@ -9,7 +9,7 @@
 			  		<!-- <td style="border-top-left-radius: 4px;border-top-right-radius: 4px;"> -->
 			  		<label class="control-label col-sm-4 text-muted" for="email">Email</label>
 					<div class="col-sm-8">
-						<input type="email" class="form-control" name="email" title="Email" ng-model="email" required ng-init="id='jake.park0120@gmail.com'" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/">
+						<input type="email" class="form-control" name="email" title="Email" ng-model="email" required ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/">
 					</div>
 			  	</fieldset>
 			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.password.$invalid && !userForm.password.$pristine }" required>
@@ -18,10 +18,10 @@
 			    	<input type="password" class="form-control" name="password" ng-model="password" ng-minlength="4" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required>
 			    </div>
 			  </fieldset>
-			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': (userForm.confirmPassword.$error.noMatch) && !userForm.confirmPassword.$pristine  }">
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.confirmPassword.$error.noMatch && !userForm.name.$pristine }">
 			  	<label class="control-label col-sm-4" for="confirmPassword">Confirm password</label>
 			    <div class="col-sm-8">
-			    	<input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword" valid-password-c required>
+			    	<input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword" required><!--  valid-password-c  -->
 			    </div>
 			  </fieldset>
 			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.name.$invalid && !userForm.name.$pristine }">

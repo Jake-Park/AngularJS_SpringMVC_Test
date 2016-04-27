@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
-@Table(name="EStatus")
+@Table(name="estatus")
 public class HEStatus {
 	@Id
 	@Column(name="idx")

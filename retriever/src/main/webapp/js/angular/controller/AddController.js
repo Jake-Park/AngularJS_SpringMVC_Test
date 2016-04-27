@@ -1,17 +1,22 @@
 	app.controller('AddController', ['$scope', '$http', '$location', '$routeParams', 'Auth', 
 	    function($scope, $http, $location, $routeParams, Auth) {
 		$scope.title = "Register";
-		$scope.email = 'jake.park0120@gmail.com';
-		$scope.password = 'Sd1377';
+/*		$scope.email = 'mwallgren@integrationwizards.com';
+		$scope.password = 'C5gateway';
 		
-		$scope.confirmPassword = 'Sd1377';
-		$scope.name = 'Jake Park';
+		$scope.confirmPassword = 'C5gateway';
+		$scope.name = 'Mathias Wallgren';
 		$scope.company = 'Integeration Wizards';
-		$scope.phoneNumber = '0402175809';
+		$scope.phoneNumber = '0402123456';*/
 		
 	  $scope.add = function() {
 		  console.log($scope.userForm.$valid);
 		  if(!$scope.userForm.$valid) {
+			  return;
+		  }
+		  
+		  if($scope.password != $scope.confirmPassword) {
+			  alert('Password and Confirm password are not matched!');
 			  return;
 		  }
 		   
@@ -72,4 +77,4 @@
 	            })
 	        }
 	    }
-	})	
+	});

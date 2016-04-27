@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
 @Entity
-@Table(name="ESignature")
+@Table(name="esignature")
 public class HESignature {
 	@Id
 	@Column(name="idx")

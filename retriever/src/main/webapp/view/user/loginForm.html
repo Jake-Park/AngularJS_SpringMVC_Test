@@ -1,19 +1,19 @@
 
-	<div class='content col-sm-5 col-sm-offset-1' ng-class="{'loginBody' : !Auth.isMobile()}" ng-show="!Auth.isLoggedIn()">
+	<div class='content col-md-6 col-sm-offset-1' ng-class="{'loginBody' : !Auth.isMobile()}" ng-show="!Auth.isLoggedIn()">
 	<h1 class="text-muted">login</h1>
     <form name="loginForm" ng-controller="LoginController" ng-submit="loginForm.$valid && login()" novalidate>
     	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
     		<legend class="scheduler-border"></legend>
-    		<label for="email" class="control-label col-sm-4 text-muted">Id</label>
-    		<div class="col-sm-8 pull-left">
-				<input ng-model="id" type="text" name="id" class="form-control" title="Id" ng-init="id='jake.park0120@gmail.com'" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required />
+    		<label for="email" class="control-label col-md-4 text-muted">Id</label>
+    		<div class="col-md-8 pull-left">
+				<input ng-model="id" type="text" name="id" class="form-control" title="Id" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required />
 			</div>
 			<!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span> -->
     	</fieldset>
-    	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.email.$pristine }">
-    		<label for="password" class="control-label col-sm-4 text-muted">Password</label>
-    		<div class="col-sm-8 pull-left">
-				<input ng-model="password" type="password" name="password" class="form-control" title="password" ng-minlength="4" ng-init="password='sd1377'" required>
+    	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+    		<label for="password" class="control-label col-md-4 text-muted">Password</label>
+    		<div class="col-md-8 pull-left">
+				<input ng-model="password" type="password" name="password" class="form-control" title="password" ng-minlength="4" required>
 			</div>
     	</fieldset>
     	<fieldset class="form-group">

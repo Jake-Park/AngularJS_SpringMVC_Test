@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="SmartLink")
+@Table(name="smartlink")
 public class HSmartLink {
 	@Id
 	@Column(name="idx")

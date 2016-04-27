@@ -7,7 +7,7 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost/retriever</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">sd1377</property>
+        <property name="hibernate.connection.password">c5gateway</property>
         <!-- Connection Pool Size -->
         <property name="hibernate.connection.pool_size">10</property>
          
@@ -34,7 +34,7 @@
  
  
         <!-- mapping file, we can use Bean annotations too -->
-        <mapping class="com.integrationwizards.model.LogMaster"/>
-        <mapping class="com.integrationwizards.model.LogDetail"/>
+        <!-- <mapping class="com.integrationwizards.model.LogMaster"/>
+        <mapping class="com.integrationwizards.model.LogDetail"/> -->
     </session-factory>
 </hibernate-configuration>

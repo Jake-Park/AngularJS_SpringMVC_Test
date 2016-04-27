@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
-@Table(name="ResultExportStatusUpdates")
+@Table(name="resultexportstatusupdates")
 public class HResultStatusUpdates {
 	@Id
 	@Column(name="txId")

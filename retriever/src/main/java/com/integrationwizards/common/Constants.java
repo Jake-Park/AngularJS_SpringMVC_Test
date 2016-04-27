@@ -26,4 +26,7 @@ public class Constants {
 	public final static String MOS195MI = "MOS195MI";
 	public final static String MOS070MI = "MOS070MI";
 	public final static String MOS057MI = "MOS057MI";
+	
+	// UserKey
+	public final static String USER_KEY = "userInfo";
 }
