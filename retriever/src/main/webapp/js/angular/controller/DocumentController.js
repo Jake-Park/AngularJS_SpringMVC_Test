@@ -20,8 +20,14 @@
 	    };
 	    
 	    $scope.upload = function($event){
-	    	console.log("continueFileUpload : ");
-	    	if(!file.files[0]) {
+	    	var file = document.getElementById("file");
+	    	console.log("continueFileUpload : " + file.files);
+	    	
+	    	if(file.files) {
+	    		file = file.files[0];
+	    	}	    	
+	    	
+	    	if(!file) {
 	    		alert("Please, select file!");
 	    	}
 	    	
@@ -30,9 +36,20 @@
 			$scope.showBar = true;
 			
 	    	var uploadUrl="/uploadFile";
-	    	var formData=new FormData();
-	    	console.log(file.files[0]);
-	    	formData.append("file",file.files[0]);
+	    	
+	    	
+	    	if(typeof FormData == "undefined") {
+	    		console.log("---files-1--");
+	    		var formData = [];
+	    		formData.push("file", file);
+	    	}
+	    	else {
+	    		console.log("---files-2--");
+	    		var formData = new FormData();
+	    		formData.append("file",file);
+	    	}
+	    	
+	    	console.log("---files-3--");
 	    	
 	    	try {
     	    	$http({

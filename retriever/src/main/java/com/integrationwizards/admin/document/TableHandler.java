@@ -326,22 +326,26 @@ public class TableHandler {
         // Parse version log to table
         if(!StringUtil.isEmptyString(versionLogDetail)) {
         	String[] rows = versionLogDetail.split("\\*");
+        	//System.out.println("-----------" + rows.length);   
         	texts = new String[rows.length-1][4];
         	
         	if(rows != null) {
         		for(int i=1; i < rows.length; i++) {
         			String row = rows[i];
-        			//System.out.print(i + "===>" + row + "\t");
+        			if(StringUtil.isEmptyString(row)) {
+        				continue;
+        			}
+        			System.out.print(i + "===>" + row + "\t");
         			String[] cols = row.split("\t");
         			for(int j=0; j < cols.length; j++) {
         				String col = cols[j];
-        				//System.out.print(i + ":" + j + "===>" + col + "\t");
+        				System.out.print(i + ":" + j + "===>" + col + "\t");
         				if(col.equals("@")) {
         					col = " ";
         				}
         				texts[i-1][j] = col;
         			}
-        			//System.out.println("");
+        			System.out.println("");
         		}
         	}
         }
@@ -439,7 +443,8 @@ public class TableHandler {
             	else {
             		// Description
             		if(colCt == 3) {
-            			String strDesc = texts[rowCt][colCt];            			
+            			String strDesc = texts[rowCt][colCt];   
+            			System.out.println(rowCt + "---" + colCt + "----Desc----" + strDesc);
             			String[] strs = strDesc.split("\\n");
             			for(int i=0; i < strs.length; i++) {
             				rh.setText(strs[i].replaceAll("\\n", ""));
