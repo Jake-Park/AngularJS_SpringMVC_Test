@@ -38,5 +38,6 @@
         <mapping class="com.ace.model.AdminInfo"/>
         <mapping class="com.ace.model.BookInfo"/>
         <mapping class="com.ace.model.TeacherInfo"/>        
+        <mapping class="com.ace.model.OtpUser"/>
     </session-factory>
 </hibernate-configuration>

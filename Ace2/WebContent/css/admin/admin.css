@@ -2,7 +2,11 @@
 
 /********** admin **********/ 
 body {
-	/*background-color:whitesmoke;*/
+	background-color:#F5F5F5;
+}
+
+.index-row {
+	 margin-bottom: 0px;
 }
 
 .neighborhood-guides {
@@ -96,4 +100,8 @@ html.no-touch footer {
     display: inline-block;
     vertical-align: middle !important;
     float: none;
+}
+
+.carousel-indicators {
+	margin-bottom: -20px;
 }

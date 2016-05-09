@@ -1,0 +1,921 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmha.com.au/MOS057MI" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns3="http://schemas.xmlsoap.org/soap/http" xmlns:ns2="http://www.tmha.com.au/MOS057MI/Add" xmlns:ns1="http://www.tmha.com.au/MOS057MI/Upd" xmlns:lws="http://lawson.com/ws/credentials" name="MOS057MIService" targetNamespace="http://www.tmha.com.au/MOS057MI">
+  <wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:upd="http://www.tmha.com.au/MOS057MI/Upd" elementFormDefault="qualified" targetNamespace="http://www.tmha.com.au/MOS057MI/Upd">
+  <xsd:annotation>
+    <xsd:documentation>Api: Service Error report Transaction: Update record</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="Upd" type="upd:UpdCollection"/>
+  <xsd:complexType name="UpdCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="UpdItem" type="upd:UpdItem"/>
+    </xsd:sequence>
+    <xsd:attribute default="100" name="maxRecords" type="xsd:int" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="UpdItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RORC" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reference order category (RORC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RORN" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Reference order number (RORN)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RORL" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reference order line (RORL)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RORX" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Line suffix (RORX)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="STRT" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Product structure type (STRT)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SUFI" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Service (SUFI)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SQNR" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Sequence number (SQNR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MAIN" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Main service (MAIN)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="STAT" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Status (STAT)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RIDC" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reference identity code (RIDC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RIDN" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Order number (RIDN)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RIDL" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Order line (RIDL)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RIDX" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Line suffix (RIDX)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ITNO" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Item number (ITNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="FCLA" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 1 (FCLA)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="FCL2" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 2 (FCL2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="FCL3" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 3 (FCL3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BRDT" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Breakdown date (BRDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BRTI" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Break down time (BRTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MRDT" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Machine ready date (MRDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MRTI" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Machine ready time (MRTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="EQDT" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Equipment in production - date (EQDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="EQTI" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Equipment in production - time (EQTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ERQT" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Error Report Quantity (ERQT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="NOEM" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Non OEM part (NOEM)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="REPR" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Reported by (REPR)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MVA1" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 1 (MVA1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MVA2" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 2 (MVA2)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MVA3" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 3 (MVA3)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MVA4" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 4 (MVA4)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="FLG1" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Durability flag (FLG1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="FLG2" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Inoperable (FLG2)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CFI1" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 1 - item (CFI1)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CFI2" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 2 - item (CFI2)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CFI3" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 3 - item (CFI3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CFI4" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 4 - item (CFI4)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CFI5" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 5 - item (CFI5)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="1"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="WARR" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Warranty (WARR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="DWPO" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Drawing position (DWPO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="DOID" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Document identity (DOID)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL1" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL1)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL2" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL3" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL4" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL4)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL5" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL5)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL6" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL6)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL7" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL7)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL8" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL8)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL9" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL9)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TXL0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL0)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MES0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Meter (MES0)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MVA0" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Since new (MVA0)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SECP" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Serial number (SECP)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="UpdResponse" type="upd:UpdResponseCollection"/>
+  <xsd:complexType name="UpdResponseCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="UpdResponseItem"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:add="http://www.tmha.com.au/MOS057MI/Add" elementFormDefault="qualified" targetNamespace="http://www.tmha.com.au/MOS057MI/Add">
+  <xsd:annotation>
+    <xsd:documentation>Api: Service Error report Transaction: Add record</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="Add" type="add:AddCollection"/>
+  <xsd:complexType name="AddCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="AddItem" type="add:AddItem"/>
+    </xsd:sequence>
+    <xsd:attribute default="100" name="maxRecords" type="xsd:int" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="AddItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ReferenceOrderCategory" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reference order category (RORC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ReferenceOrderNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Reference order number (RORN)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ReferenceOrderLine" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reference order line (RORL)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="LineSuffix" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Line suffix (RORX)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ProductStructureType" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Product structure type (STRT)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Service" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Service (SUFI)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SequenceNumber" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Sequence number (SQNR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MainService" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Main service (MAIN)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Status" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Status (STAT)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="2"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ReferenceIdentityCode" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reference identity code (RIDC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="OrderNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Order number (RIDN)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="OrderLine" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Order line (RIDL)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="LineSuffixRIDX" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Line suffix (RIDX)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ItemNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Item number (ITNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ErrorCode1" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 1 (FCLA)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ErrorCode2" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 2 (FCL2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ErrorCode3" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 3 (FCL3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BreakdownDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Breakdown date (BRDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BreakDownTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Break down time (BRTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MachineReadyDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Machine ready date (MRDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MachineReadyTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Machine ready time (MRTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="EquipmentInProductionDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Equipment in production - date (EQDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="EquipmentInProductionTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Equipment in production - time (EQTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ErrorReportQuantity" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Error Report Quantity (ERQT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="NonOEMPart" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Non OEM part (NOEM)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ReportedBy" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Reported by (REPR)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MeterValue1" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 1 (MVA1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MeterValue2" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 2 (MVA2)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MeterValue3" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 3 (MVA3)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MeterValue4" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Meter value 4 (MVA4)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="DurabilityFlag" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Durability flag (FLG1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Inoperable" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Inoperable (FLG2)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="UserdefinedField1Item" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 1 - item (CFI1)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="UserdefinedField2Item" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 2 - item (CFI2)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="UserdefinedField3Item" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 3 - item (CFI3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="UserdefinedField4Item" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 4 - item (CFI4)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="UserdefinedField5Item" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>User-defined field 5 - item (CFI5)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="1"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Warranty" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Warranty (WARR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="DrawingPosition" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Drawing position (DWPO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="DocumentIdentity" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Document identity (DOID)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Text" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL1)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL2" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL3" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL3)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL4" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL4)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL5" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL5)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL6" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL6)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL7" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL7)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL8" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL8)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL9" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL9)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TextTXL0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Text (TXL0)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="60"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Meter" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Meter (MES0)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="6"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SinceNew" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Since new (MVA0)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SerialNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Serial number (SECP)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="AddResponse" type="add:AddResponseCollection"/>
+  <xsd:complexType name="AddResponseCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="AddResponseItem" type="add:AddResponseItem"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="AddResponseItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="SequenceNumber" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Sequence number (SQNR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>  <xsd:schema elementFormDefault="qualified" targetNamespace="http://lawson.com/ws/credentials"><xsd:element name="lws"><xsd:complexType><xsd:sequence><xsd:element minOccurs="0" name="company" type="xsd:integer"/><xsd:element minOccurs="0" name="division" type="xsd:string"/></xsd:sequence></xsd:complexType></xsd:element></xsd:schema></wsdl:types>
+  <wsdl:message name="AddResponse">
+    <wsdl:part element="ns2:AddResponse" name="AddResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Upd">
+    <wsdl:part element="ns1:Upd" name="Upd">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UpdResponse">
+    <wsdl:part element="ns1:UpdResponse" name="UpdResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Add">
+    <wsdl:part element="ns2:Add" name="Add">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MOS057MI">
+    <wsdl:operation name="Upd">
+      <wsdl:input message="tns:Upd" name="Upd">
+    </wsdl:input>
+      <wsdl:output message="tns:UpdResponse" name="UpdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Add">
+      <wsdl:input message="tns:Add" name="Add">
+    </wsdl:input>
+      <wsdl:output message="tns:AddResponse" name="AddResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MOS057MIServiceSoapBinding" type="tns:MOS057MI">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Upd">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="Upd">
+        <soap:body use="literal"/>
+      <header message="tns:LwsHeaderMessage" part="LwsHeader" use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/"/></wsdl:input>
+      <wsdl:output name="UpdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Add">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="Add">
+        <soap:body use="literal"/>
+      <header message="tns:LwsHeaderMessage" part="LwsHeader" use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/"/></wsdl:input>
+      <wsdl:output name="AddResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MOS057MIService">
+    <wsdl:port binding="tns:MOS057MIServiceSoapBinding" name="MOS057MIPort">
+      <soap:address location="http://erp-m3.tica.toyota-industries.com.au:21007/mws-ws/services/MOS057MI"/>
+    </wsdl:port>
+  </wsdl:service>
+<message name="LwsHeaderMessage" xmlns="http://schemas.xmlsoap.org/wsdl/"><part element="lws:lws" name="LwsHeader"/></message></wsdl:definitions>

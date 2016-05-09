@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ace.dao.AdminInfoDao;
 import com.ace.model.AdminInfo;
 import com.ace.model.PageVO;
+import com.ace.model.TeacherInfo;
 import com.ace.service.AdminInfoService;
 
 @Lazy(value=true)
@@ -59,5 +60,9 @@ public class AdminInfoServiceImpl implements AdminInfoService {
 	@Transactional
 	public void updateLoginSuccess(AdminInfo vo) throws Exception {
 		adminInfoDao.updateLoginSuccess(vo);
+	}	
+	@Transactional
+	public List<TeacherInfo> getTeacherList() throws Exception {
+		return adminInfoDao.getTeacherList();
 	}
 }

@@ -12,7 +12,15 @@
  			
 			var res = $http.post('/adminInfo/add/' + $scope.title + '/' + $routeParams.id, dataObj);			
 			res.success(function(data, status, headers, config) {
-				$location.path($routeParams.path);				
+				if($routeParams.path == undefined) {
+					alert('Successfully registered.');
+					// Add					
+					$location.path('login');
+				}
+				else {
+					// Edit
+					$location.path($routeParams.path);
+				}
 			});
 			res.error(function(data, status, headers, config) {
 				console.log( "failure message: " + JSON.stringify({data: data}));

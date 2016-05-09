@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Lazy;
 
 import com.ace.model.AdminInfo;
 import com.ace.model.PageVO;
+import com.ace.model.TeacherInfo;
 
 @Lazy(value=true)
 public interface AdminInfoDao {
@@ -28,4 +29,6 @@ public interface AdminInfoDao {
 	public void updateLoginFail(String email);
 	
 	public void updateLoginSuccess(AdminInfo vo);
+	
+	public List<TeacherInfo> getTeacherList();
 }

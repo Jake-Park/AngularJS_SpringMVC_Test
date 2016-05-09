@@ -17,12 +17,31 @@
 			</div>
     	</fieldset>
     	<fieldset class="form-group">
-    	  	<input type="button" class="btn btn-info pull-left" value="Register" ng-click="location.path('/add')" />
+    	  	<input type="button" class="btn btn-info pull-left" value="Register" ng-click="location.path('/add')" />  
           	<input type="submit" class="btn btn-primary pull-right" value="Login" />
+          	<label for="submit" class="text-muted pull-right" style="margin-right: 10px;text-valign:middle;">Please, click me! <i class='glyphicon glyphicon-hand-right'></i></label>
         </fieldset>
     </form>     
   	</div>
-    <div class='col-sm-4 visible-md visible-lg hidden-sm hidden-xs' style='margin-top:40px;'>
-      <img src='img/admin/images/blast.jpg' alt='Blasting Off'/>
-    </div>
+
+	<div ng-controller="CarouselDemoCtrl" ng-init="getTeacherList()" class='col-sm-2 visible-md visible-lg hidden-sm hidden-xs' 
+		style='margin-top:30px; margin-left:10px;'>
+	  <div style="height: 30%">
+	    <carousel interval="myInterval" no-wrap="noWrapSlides">
+	      <slide ng-repeat="slide in slides" active="slide.active">
+	        <img ng-src="{{slide.image}}" style="margin:auto; border-radius: 2px;" width="100%">
+	        <div class="carousel-caption"  style="padding-bottom:0px;">
+	          <p style="margin-bottom:0px;">{{slide.text}}</p>
+	        </div>
+	      </slide>
+	    </carousel>
+	  </div>  
+	
+	</div>
+
+    <div class='col-sm-3 visible-md visible-lg hidden-sm hidden-xs' style='margin-top:40px; padding:0;'>
+	<h3>Available Teachers <span class="label label-default">New</span></h3>	
+    </div>  
+
+    
 

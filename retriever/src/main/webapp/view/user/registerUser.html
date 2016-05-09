@@ -1,0 +1,62 @@
+ 
+
+<div class="content ">
+	<div ng-controller="AddController" class="col-sm-6">
+		<h1 class="text-muted">{{title}}</h1>
+			<form name="userForm" ng-class="{'loginBody' : !Auth.isMobile()}" ng-submit="add()" >
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.email.$invalid && !userForm.email.$pristine }">
+				<legend class="scheduler-border"></legend>
+			  		<!-- <td style="border-top-left-radius: 4px;border-top-right-radius: 4px;"> -->
+			  		<label class="control-label col-sm-4 text-muted" for="email">Email</label>
+					<div class="col-sm-8">
+						<input type="email" class="form-control" name="email" title="Email" ng-model="email" required ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/">
+					</div>
+			  	</fieldset>
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.password.$invalid && !userForm.password.$pristine }" required>
+			  	<label class="control-label col-sm-4" for="password">Password</label>
+			    <div class="col-sm-8">
+			    	<input type="password" class="form-control" name="password" ng-model="password" ng-minlength="4" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required>
+			    </div>
+			  </fieldset>
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.confirmPassword.$error.noMatch && !userForm.name.$pristine }">
+			  	<label class="control-label col-sm-4" for="confirmPassword">Confirm password</label>
+			    <div class="col-sm-8">
+			    	<input type="password" class="form-control" name="confirmPassword" ng-model="confirmPassword" required><!--  valid-password-c  -->
+			    </div>
+			  </fieldset>
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.name.$invalid && !userForm.name.$pristine }">
+			  	<label class="control-label col-sm-4" for="name">Name</label>
+			    <div class="col-sm-8">
+			    <input type="text" class="form-control" name="name" ng-model="name" required>
+			    </div>
+			  </fieldset>
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.company.$invalid && !userForm.company.$pristine }">
+			  	<label class="control-label col-sm-4" for="company">Company</label>
+			    <div class="col-sm-8">
+			    <input type="text" class="form-control" name="company" ng-model="company" required>
+			    </div>
+			  </fieldset>	  
+			  <fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error': userForm.phoneNumber.$invalid && !userForm.phoneNumber.$pristine }">
+			  	<label class="control-label col-sm-4" for="phoneNumber">Phone Number (optional)</label>
+			    <div class="col-sm-8">
+			    <input type="text" class="form-control" name="phoneNumber" ng-model="phoneNumber">
+			    </div>
+			  </fieldset>
+			  <fieldset class="form-group">
+			  	<div class="col-sm-8">
+			  	<input type="button" class="btn btn-info pull-left" value="Cancel" ng-click="location.path('/login')" />
+			  	<input type="submit" class="btn btn-primary pull-right" value="{{title}}" style="float:right; margin-bottom:3px; margin-top:5px;" />		  	
+			  	</div>
+			  </fieldset>
+			</form>
+	</div>
+</div>
+<script>
+$( document ).ready(function() {
+	$("form[name='userForm'] tr").addClass( "form-group" );
+	$("form[name='userForm'] tr:not(:last)").addClass( "has-success has-feedback form-inline" );
+	$("form[name='userForm'] td:even:not(:last)").css( "background-color", "#428BCA" );
+});
+
+</script>
+<script src="/js/include.js"></script>

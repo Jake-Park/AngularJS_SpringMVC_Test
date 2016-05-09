@@ -1,0 +1,263 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmha.com.au/MOS050MI" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://www.tmha.com.au/MOS050MI/RptReceipt" xmlns:lws="http://lawson.com/ws/credentials" name="MOS050MIService" targetNamespace="http://www.tmha.com.au/MOS050MI">
+  <wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:rptreceipt="http://www.tmha.com.au/MOS050MI/RptReceipt" elementFormDefault="qualified" targetNamespace="http://www.tmha.com.au/MOS050MI/RptReceipt">
+  <xsd:annotation>
+    <xsd:documentation>Api: Maintenance order receipt interface Transaction: Report receipt</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="RptReceipt" type="rptreceipt:RptReceiptCollection"/>
+  <xsd:complexType name="RptReceiptCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="RptReceiptItem" type="rptreceipt:RptReceiptItem"/>
+    </xsd:sequence>
+    <xsd:attribute default="100" name="maxRecords" type="xsd:int" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="RptReceiptItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CONO" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Company (CONO)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="FACI" nillable="false">
+        <xsd:annotation>
+          <xsd:documentation>Facility (FACI)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="PRNO" nillable="false">
+        <xsd:annotation>
+          <xsd:documentation>Product number (PRNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="MWNO" nillable="false">
+        <xsd:annotation>
+          <xsd:documentation>Maintenance order number (MWNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="WOSQ" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reporting number (WOSQ)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RPDT" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Reporting date (RPDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RTM1" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reporting time (RTM1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TRDT" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Transaction date (not used) (TRDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TRTM" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Transaction time (not used) (TRTM)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PRDT" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Priority date (PRDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="POCY" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Normal potency (POCY)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="RPQA" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Reported quantity in alternative unit (RPQA)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MAUN" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Manufacturing U/M (MAUN)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="STAS" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Status - balance ID (STAS)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="1"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="REND" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Manual completion flag (REND)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TWLO" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>To warehouse (TWLO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="WHSL" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Location (WHSL)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BANO" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Lot number (BANO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CAMU" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Container (CAMU)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BREM" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Remark (BREM)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BREF" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Lot reference 1 (BREF)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="BRE2" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Lot reference 2 (BRE2)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TRPR" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Inventory accounting price (TRPR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TRPC" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Inventory accounting price quantity (TRPC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CHID" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Changed by (CHID)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="MOSC" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Scrap (MOSC)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="FWSL" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>From location (FWSL)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="RptReceiptResponse" type="rptreceipt:RptReceiptResponseCollection"/>
+  <xsd:complexType name="RptReceiptResponseCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="RptReceiptResponseItem"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>  <xsd:schema elementFormDefault="qualified" targetNamespace="http://lawson.com/ws/credentials"><xsd:element name="lws"><xsd:complexType><xsd:sequence><xsd:element minOccurs="0" name="company" type="xsd:integer"/><xsd:element minOccurs="0" name="division" type="xsd:string"/></xsd:sequence></xsd:complexType></xsd:element></xsd:schema></wsdl:types>
+  <wsdl:message name="RptReceipt">
+    <wsdl:part element="ns1:RptReceipt" name="RptReceipt">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RptReceiptResponse">
+    <wsdl:part element="ns1:RptReceiptResponse" name="RptReceiptResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MOS050MI">
+    <wsdl:operation name="RptReceipt">
+      <wsdl:input message="tns:RptReceipt" name="RptReceipt">
+    </wsdl:input>
+      <wsdl:output message="tns:RptReceiptResponse" name="RptReceiptResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MOS050MIServiceSoapBinding" type="tns:MOS050MI">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RptReceipt">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="RptReceipt">
+        <soap:body use="literal"/>
+      <header message="tns:LwsHeaderMessage" part="LwsHeader" use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/"/></wsdl:input>
+      <wsdl:output name="RptReceiptResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MOS050MIService">
+    <wsdl:port binding="tns:MOS050MIServiceSoapBinding" name="MOS050MIPort">
+      <soap:address location="http://erp-m3.tica.toyota-industries.com.au:21007/mws-ws/services/MOS050MI"/>
+    </wsdl:port>
+  </wsdl:service>
+<message name="LwsHeaderMessage" xmlns="http://schemas.xmlsoap.org/wsdl/"><part element="lws:lws" name="LwsHeader"/></message></wsdl:definitions>

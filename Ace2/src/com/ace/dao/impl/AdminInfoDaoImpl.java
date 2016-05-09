@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.ace.dao.AdminInfoDao;
 import com.ace.model.AdminInfo;
 import com.ace.model.PageVO;
+import com.ace.model.TeacherInfo;
 
 @Repository("adminInfoDao")
 public class AdminInfoDaoImpl implements AdminInfoDao {
@@ -127,5 +128,18 @@ public class AdminInfoDaoImpl implements AdminInfoDao {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public List<TeacherInfo> getTeacherList() {
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		String hql = "FROM TeacherInfo";
+        Query query = session.createQuery(hql);
+        List<TeacherInfo> results = query.list();
 
+		for(TeacherInfo p : results) {			
+			System.out.println("TeacherInfo List : " + p.getName());
+		}
+        
+		return results;
+	}
 }

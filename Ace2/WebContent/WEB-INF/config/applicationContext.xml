@@ -14,6 +14,7 @@
 	
 	<!-- <context:property-placeholder location="classpath:prop.properties" /> -->
 	<context:component-scan base-package="com.ace" />
+	<context:component-scan base-package="com.kossie" />
 	<mvc:resources location="/css/" mapping="/css/**"/>
 	<mvc:resources location="/img/" mapping="/img/**"/>
 	<mvc:resources location="/js/" mapping="/js/**"/>
@@ -34,8 +35,21 @@
 		<property name="prefix" value="/view" />
 		<property name="suffix" value=".jsp" />
 	</bean> -->
+	
+	<bean class= "org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="defaultViews">
+			<list>
+				<ref bean="jsonView"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="jsonView"	class= "org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+		<property name="prettyPrint" value="true"/>
+	</bean>	
+	
 		
-	<!-- mybatis -->
+	<!--  -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -45,13 +59,6 @@
         <property name="password" value="sd1377" />
     </bean>
     
-    <!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
-<!--     <bean id="sqlSessionFactory" class="com.ace.utils.RefreshableSqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="configLocation" value="classpath:config/mybatis-config.xml" />
-        <property name="interval" value="5000" />
-        <property name="mapperLocations" value="classpath:mapper/*.xml" />
-    </bean> -->
     
     <!-- Hibernate 4 SessionFactory Bean definition -->
     <bean id="hibernate4AnnotatedSessionFactory"
@@ -62,6 +69,7 @@
                 <value>com.ace.model.AdminInfo</value>
                 <value>com.ace.model.BookInfo</value>
                 <value>com.ace.model.TeacherInfo</value>
+                <value>com.kossie.otp.model.OtpUser</value>
             </list>
         </property> 
         <property name="hibernateProperties">
@@ -85,23 +93,7 @@
     
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
-<!--     <bean id="sqlSession"  class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
-        <constructor-arg index="0" ref="sqlSessionFactory" />
-        <constructor-arg index="1" value="BATCH" />   
-    </bean> -->
-     
-    <!-- For Pagination Tag -->
-<!--     <bean id="imageRenderer" class="com.ace.utils.ImgPaginationRenderer"/>
-	<bean id="textRenderer" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationRenderer"/>
-    <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
-        <property name="rendererType">
-            <map>
-                <entry key="image" value-ref="imageRenderer"/> 
-                <entry key="text" value-ref="textRenderer"/>
-            </map>
-        </property>
-    </bean> -->
-	<!-- /For Pagination Tag -->    
+
 	
 <!-- 	<bean id= "messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
    		<property name="basename" value="message/messages"/> 
@@ -120,10 +112,15 @@
         <property name="supportedMediaTypes" value="application/json"/>
     </bean>
     
+    <bean id="stringHttpConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+        <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+    </bean>    
+    
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 	    <property name="messageConverters">
 	        <list>
 	            <ref bean="jsonConverter"/>
+	            <ref bean="stringHttpConverter"/>
 	        </list>
 	    </property>
 	</bean>    

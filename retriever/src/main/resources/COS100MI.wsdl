@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmha.com.au/COS100MI" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns3="http://schemas.xmlsoap.org/soap/http" xmlns:ns2="http://www.tmha.com.au/COS100MI/GetMCOHead" xmlns:ns1="http://www.tmha.com.au/COS100MI/LstMCOLines" xmlns:lws="http://lawson.com/ws/credentials" name="COS100MIService" targetNamespace="http://www.tmha.com.au/COS100MI">
+  <wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:lstmcolines="http://www.tmha.com.au/COS100MI/LstMCOLines" elementFormDefault="qualified" targetNamespace="http://www.tmha.com.au/COS100MI/LstMCOLines">
+  <xsd:annotation>
+    <xsd:documentation>Api: Maintenance customer order interface Transaction: List MCO Line Information</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="LstMCOLines" type="lstmcolines:LstMCOLinesCollection"/>
+  <xsd:complexType name="LstMCOLinesCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="LstMCOLinesItem" type="lstmcolines:LstMCOLinesItem"/>
+    </xsd:sequence>
+    <xsd:attribute default="100" name="maxRecords" type="xsd:int" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="LstMCOLinesItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Company" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Company (CONO)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerOrderNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer order number (ORNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="LstMCOLinesResponse" type="lstmcolines:LstMCOLinesResponseCollection"/>
+  <xsd:complexType name="LstMCOLinesResponseCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="LstMCOLinesResponseItem" type="lstmcolines:LstMCOLinesResponseItem"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="LstMCOLinesResponseItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualDeliveryDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Actual delivery date (AACD)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualReceiptDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Actual receipt date (AADT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PlannedReceiptDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Planned receipt date (AAP1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualReceiptTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Actual receipt time (AAT1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualDeliveryTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Actual delivery time (ADTM)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TransactionNumber" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Transaction number (ALI1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PlannedDeliveryDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Planned delivery date (APD1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PlannedDeliveryTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Planned delivery time (APTA)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PlannedReceiptTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Planned receipt time (APTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Name" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Name (ITDS)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="30"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ItemNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Item number (ITNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ErrorCode1" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Error code 1 (FCLA)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="5"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualStartDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Actual start date (RSDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualStartTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Actual start time (RSTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Service" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Service (SUFI)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="20"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Payer" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Payer (PYNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Supplier" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Supplier (SUNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="OriginalQuantity" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Original quantity (AOQT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="OrderLineNumber" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Order line number (PONR)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="TransactionQuantityBasicUM" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Transaction quantity - basic U/M (TRQT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:getmcohead="http://www.tmha.com.au/COS100MI/GetMCOHead" elementFormDefault="qualified" targetNamespace="http://www.tmha.com.au/COS100MI/GetMCOHead">
+  <xsd:annotation>
+    <xsd:documentation>Api: Maintenance customer order interface Transaction: Get MCO Header Information</xsd:documentation>
+  </xsd:annotation>
+  <xsd:element name="GetMCOHead" type="getmcohead:GetMCOHeadCollection"/>
+  <xsd:complexType name="GetMCOHeadCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="GetMCOHeadItem" type="getmcohead:GetMCOHeadItem"/>
+    </xsd:sequence>
+    <xsd:attribute default="100" name="maxRecords" type="xsd:int" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="GetMCOHeadItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Company" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Company (CONO)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerOrderNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer order number (ORNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="GetMCOHeadResponse" type="getmcohead:GetMCOHeadResponseCollection"/>
+  <xsd:complexType name="GetMCOHeadResponseCollection">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" name="GetMCOHeadResponseItem" type="getmcohead:GetMCOHeadResponseItem"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="GetMCOHeadResponseItem">
+    <xsd:sequence>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Customer" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer (CUNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Facility" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Facility (FACI)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Name" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Name (ITDS)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="30"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="OrderDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Order date (ORDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Priority" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Priority (OPRI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Product" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Product (PRNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="Responsible" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Responsible (RESP)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualStartDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Actual start date (RSDT)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualStartTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Actual start time (RSTI)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PaymentTerms" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Payment terms (TEPY)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="3"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PlannedDeliveryDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Planned delivery date (APD1)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="PlannedDeliveryTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Planned delivery time (APTA)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualDeliveryDate" nillable="true" type="xsd:date">
+        <xsd:annotation>
+          <xsd:documentation>Actual delivery date (AACD)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="ActualDeliveryTime" nillable="true" type="xsd:decimal">
+        <xsd:annotation>
+          <xsd:documentation>Actual delivery time (ADTM)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="1" minOccurs="0" name="CustomerOrderNumber" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>Customer order number (ORNO)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="10"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>  <xsd:schema elementFormDefault="qualified" targetNamespace="http://lawson.com/ws/credentials"><xsd:element name="lws"><xsd:complexType><xsd:sequence><xsd:element minOccurs="0" name="company" type="xsd:integer"/><xsd:element minOccurs="0" name="division" type="xsd:string"/></xsd:sequence></xsd:complexType></xsd:element></xsd:schema></wsdl:types>
+  <wsdl:message name="GetMCOHeadResponse">
+    <wsdl:part element="ns2:GetMCOHeadResponse" name="GetMCOHeadResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="LstMCOLinesResponse">
+    <wsdl:part element="ns1:LstMCOLinesResponse" name="LstMCOLinesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetMCOHead">
+    <wsdl:part element="ns2:GetMCOHead" name="GetMCOHead">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="LstMCOLines">
+    <wsdl:part element="ns1:LstMCOLines" name="LstMCOLines">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="COS100MI">
+    <wsdl:operation name="LstMCOLines">
+      <wsdl:input message="tns:LstMCOLines" name="LstMCOLines">
+    </wsdl:input>
+      <wsdl:output message="tns:LstMCOLinesResponse" name="LstMCOLinesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMCOHead">
+      <wsdl:input message="tns:GetMCOHead" name="GetMCOHead">
+    </wsdl:input>
+      <wsdl:output message="tns:GetMCOHeadResponse" name="GetMCOHeadResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="COS100MIServiceSoapBinding" type="tns:COS100MI">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="LstMCOLines">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="LstMCOLines">
+        <soap:body use="literal"/>
+      <header message="tns:LwsHeaderMessage" part="LwsHeader" use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/"/></wsdl:input>
+      <wsdl:output name="LstMCOLinesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMCOHead">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="GetMCOHead">
+        <soap:body use="literal"/>
+      <header message="tns:LwsHeaderMessage" part="LwsHeader" use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/"/></wsdl:input>
+      <wsdl:output name="GetMCOHeadResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="COS100MIService">
+    <wsdl:port binding="tns:COS100MIServiceSoapBinding" name="COS100MIPort">
+      <soap:address location="http://erp-m3.tica.toyota-industries.com.au:21007/mws-ws/services/COS100MI"/>
+    </wsdl:port>
+  </wsdl:service>
+<message name="LwsHeaderMessage" xmlns="http://schemas.xmlsoap.org/wsdl/"><part element="lws:lws" name="LwsHeader"/></message></wsdl:definitions>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ace.model.AdminInfo;
 import com.ace.model.PageVO;
+import com.ace.model.TeacherInfo;
 
 public interface AdminInfoService {
 	public AdminInfo selectAdminInfoByEmail(AdminInfo vo) throws Exception;
@@ -27,4 +28,5 @@ public interface AdminInfoService {
 	
 	public void updateLoginSuccess(AdminInfo vo) throws Exception;
 	
+	public List<TeacherInfo> getTeacherList() throws Exception;
 }

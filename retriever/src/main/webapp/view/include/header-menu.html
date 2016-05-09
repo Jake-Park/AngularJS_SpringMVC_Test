@@ -1,0 +1,36 @@
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+	     
+	    <div class="navbar-header">
+	      <button ng-show="Auth.isLoggedIn()" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a href="#retry" class="navbar-brand">C3 Gateway</a>
+	    </div>
+	    
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+ 	    <div ng-show="Auth.isLoggedIn()">
+<!--	   	<ul ng-show="Auth.isLoggedIn()" class="nav navbar-nav"> && Auth.isMobile()
+	   		<li ng-class="{ 'active': location.path() === '/list' || location.path().indexOf('edit') > 0 }"><a href="#list">List</a></li>
+	   	</ul> -->
+	      <ul class='nav navbar-nav navbar-right collapse navbar-collapse'>
+	        <li ng-class="{ 'active': location.path() === '/dashboard' }"><a href="#dashboard">Dashboard</a></li>	        
+	      	<li ng-class="{ 'active': location.path() === '/retry' }"><a href="#retry">Messages</a></li>
+	      	<li ng-class="{ 'active': location.path().indexOf('/log') >= 0 }"><a href="#log">Events</a></li>
+	      	<li ng-class="{ 'active': location.path() === '/document' }"><a href="#document">Document</a></li>
+	        <li>	        
+	          <a href="about.html" data-target='#' data-toggle="dropdown">{{Auth.getUser().email}} <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#edit/{{Auth.getUser().id}}/dashboard">Edit Profile</a></li>
+	            <li class="divider"></li>
+	            <li><a href="#logout/{{Auth.getUser().id}}">LogOut</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	    </div>
+
+      </div>
+    </nav>

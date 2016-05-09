@@ -1,0 +1,132 @@
+
+
+
+        <div ng-controller="RetryController" ng-init="getList(1)" class="content col-md-12 col-md-12 main">
+          <h1 class="page-header">Messages</h1>
+          
+          <div class="row">
+           <div class="input-group" id="adv-search">
+                <input type="text" name="keyword" ng-model="keyword" class="form-control" placeholder="Search keyword" /> 
+                <div class="input-group-btn">
+                    <div class="btn-group" role="group">
+                        <div class="dropdown dropdown-lg">
+                            <button type="button" class="btn btn-default" onClick="javascript:$('.dropdown-menu.dropdown-menu-right').toggle();"
+                            	aria-expanded="false"><span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <form name="frm" ng-submit="getList(1);" class="form-horizontal" role="form">
+                                  <div class="form-group">
+                                    <label for="contain">Log Id</label>
+                                    <input class="form-control" name="logId" type="text" ng-model="logId" />
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="filter">Category</label>
+                                    <select name="category" class="form-control" ng-model="category">
+                                        <option value="" selected>All</option>
+                                        <option value="createJob">createJob</option>
+                                        <option value="exportJobs">exportJobs</option>
+                                    </select>
+                                  </div>                                  
+                                  <div class="form-group">
+                                    <label for="contain">Work Order Number</label>
+                                    <input class="form-control" name="workOrderNum" type="text" ng-model="workOrderNum" />
+                                  </div>
+                                  
+								<div class="form-group">                                  
+										<label for="contain">Date</label>
+								      <div class="col-md-6" style="padding-right:5px;">
+								        <p class="input-group">
+								          <input type="text" class="form-control" uib-datepicker-popup="MM-dd-yyyy" ng-model="startDate" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="start" ng-readonly="true" />
+								          <span class="input-group-btn">
+								            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+								          </span>
+								        </p>
+								      </div>
+								
+								      <div class="col-md-6" style="padding-left:5px;">
+								        <p class="input-group">
+								          <input type="text" class="form-control" uib-datepicker-popup="MM-dd-yyyy" ng-model="endDate" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="end" ng-readonly="true" />
+								          <span class="input-group-btn">
+								            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+								          </span>
+								        </p>
+								      </div>
+								</div>      
+      
+      
+                               	<div class="form-group">
+                                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="getList(1);"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+            </div> 
+          </div>
+                      
+          <div class="table-responsive" style="border:2px;border-color:#dbdbdb;">
+ 
+	          
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th width="5%">#</th>                  
+                  <th width="20%">Log Id</th>
+                  <th width="10%">Category</th>
+                  <th width="10%">WO Number</th>
+                  <th width="15%">Date</th>
+                  <th width="5%">Process</th>
+                  <th width="5%">State</th>
+                  <th width="15%">Error</th>
+                  <th width="15%">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="list in lists">
+                  <td>{{((currentPage - 1) * 10) + $index+1}}</td>
+                  <td><a ng-href="#logDetail/{{list.logId}}">{{list.logId}}</a></td>
+                  <td>{{list.key2}}</td>
+                  <td>{{list.key1}}</td>
+                  <td>{{list.modifiedDate}}</td>
+                  <td>{{list.subProcessText}}</td>
+                  <td class="{{list.stateClass}}"><b>{{list.state}}</b></td>                  
+                  <td class="text-danger">{{list.error}}</td>
+                  <td>
+                    <div ng-if="list.subProcess !== '' && list.error !== 'NULL' && list.state !== 'Finished'" style="display:inline;">
+                  		<button type="button" class="btn btn-default btn-xs" ng-click="retry($event, list.logId, list.subProcess, list.key1)">Retry</button>
+                  	</div>
+                    <div ng-if="list.state !== 'Finished'" style="display:inline;">
+                  		<button type="button" class="btn btn-default btn-xs" ng-click="finish(list.key2, list.logId)">Finish</button>
+                  	</div>                  	
+				  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+        
+<div id="progress_bar" class="col-sm-6" ng-show="showBar" style="position:absolute;">
+	<uib-progressbar class="progress-striped active" max="400" value="400" type="danger"><i><b>Processing...</b></i></uib-progressbar>
+</div>
+      
+			
+    		<div class="text-center">
+				<uib-pagination 
+					boundary-links="true" 
+					total-items="totalItems" 
+					ng-model="currentPage" 
+					class="pagination-sm"
+					ng-change="getList(currentPage)" 
+					previous-text="&lsaquo;" 
+					next-text="&rsaquo;" 
+					first-text="&laquo;" 
+					last-text="&raquo;"
+					max-size="10">
+				</uib-pagination>
+			</div>	
+        </div>
+        
+     
+        
+

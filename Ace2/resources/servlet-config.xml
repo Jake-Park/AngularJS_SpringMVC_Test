@@ -30,5 +30,12 @@
     </bean>	
     <bean id="dashboardService" class="com.ace.service.impl.DashboardServiceImpl">
         <property name="dashboardDao" ref="dashboardDao"></property>
+    </bean>
+    
+    <bean id="otpDao" class="com.kossie.otp.dao.impl.OtpDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="otpService" class="com.kossie.otp.service.impl.OtpServiceImpl">
+        <property name="otpDao" ref="otpDao"></property>
     </bean>	
 </beans>

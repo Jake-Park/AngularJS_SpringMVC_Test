@@ -1,0 +1,52 @@
+
+	<div class='content col-md-6 col-sm-offset-1' ng-class="{'loginBody' : !Auth.isMobile()}" ng-show="!Auth.isLoggedIn()">
+	<h1 class="text-muted">login</h1>
+    <form name="loginForm" ng-controller="LoginController" ng-submit="loginForm.$valid && login()" novalidate>
+    	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
+    		<legend class="scheduler-border"></legend>
+    		<label for="email" class="control-label col-md-4 text-muted">Id</label>
+    		<div class="col-md-8 pull-left">
+				<input ng-model="id" type="text" name="id" class="form-control" title="Id" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required />
+			</div>
+			<!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span> -->
+    	</fieldset>
+    	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+    		<label for="password" class="control-label col-md-4 text-muted">Password</label>
+    		<div class="col-md-8 pull-left">
+				<input ng-model="password" type="password" name="password" class="form-control" title="password" ng-minlength="4" required>
+			</div>
+    	</fieldset>
+    	<fieldset class="form-group">
+    	  	<input type="button" class="btn btn-success pull-left" value="Register" ng-click="location.path('/add')" />
+    	  	    <!-- Single button -->
+<!-- 		    <div class="btn-group" uib-dropdown is-open="status.isopen">
+		      <button id="single-button" type="button" class="btn btn-success" uib-dropdown-toggle ng-disabled="disabled">
+		        Target System <span class="caret"></span>
+		      </button>
+		      <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+		        <li role="menuitem"><a href="javascript:void(0);">Retriever</a></li>
+		        <li role="menuitem"><a href="#">Another action</a></li>
+		        <li role="menuitem"><a href="#">Something else here</a></li>
+		        <li class="divider"></li>
+		        <li role="menuitem"><a href="#">Separated link</a></li>
+		      </ul>
+		    </div> -->
+          	<input type="submit" class="btn btn-primary pull-right" value="Login" />
+        </fieldset>
+    </form>     
+  	</div>
+  	
+
+
+
+
+<script>
+//Adjust footer height
+$(function(){		
+ 	  $('.row.well').css({ height: $(window).innerHeight() - 232 });
+	  $('.footer').css({ height: 150 });
+	  $(window).resize(function(){
+	    $('.row.well').css({ height: $(window).innerHeight() - 232});
+	  }); 
+	});
+</script>

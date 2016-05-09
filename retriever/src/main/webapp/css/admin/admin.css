@@ -1,0 +1,178 @@
+@charset "utf-8";
+
+/********** admin **********/ 
+body {
+	/*background-color:whitesmoke;*/
+}
+
+.neighborhood-guides {
+    background-color: #efefef;
+    border-bottom : 1px solid #dbdbdb;
+}
+
+.neighborhood-guides .container {
+  position: relative;
+}
+
+.form-group .form-control {
+ 	margin-left : 0px;
+ 	width : 100%;
+ 	margin-bottom : 0px;
+}
+
+form[name="userForm"] label {
+	 margin-left:10px;
+	 width: 100%;
+	 /*color:#fff; 
+	 background-color:#428BCA;
+	 margin-right:5px;	*/
+}
+
+.content {
+	background-color:white;
+}
+
+.loginBody {
+	margin-top:30px; 
+	border-radius: 2px; 
+	border: 1px; 
+	border-color:#dbdbdb; 
+	border-style:solid;
+	background-color:white;
+}
+
+.quote {
+  background-color: #444;
+  color: #e1e1e1;
+  margin: 2em 0;
+}
+.quote blockquote {
+  border: none;
+  margin: 0;
+}
+.quote footer {
+  color: #c1c1c1;
+}
+
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */  
+  color: #efefef;
+  background-color: #333;
+}
+
+html.touch footer {
+    height: auto;
+}
+
+html.no-touch footer {
+    height: 200px;
+}
+
+.footer a {
+  color: #9af7fe;
+}
+
+.footer .glyphicon {
+  font-size: 14px;
+}
+
+/* Modal Setup */
+.modal-backdrop
+{
+    opacity:0.0 !important;
+}
+
+.modal.fade.in {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+#myModal .modal-dialog
+{
+  width: 70%;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .layer_width {width: 95%;}
+}
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    .layer_width {width: 40%;}
+}
+
+.fieldset {
+	border: 0px solid #C0C0C0;
+}
+
+.vcenter {
+    
+    vertical-align: middle !important;
+    float: none;
+}
+
+/* Start of search box css */
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+#adv-search .form-group {
+	margin-bottom : 0px;
+}
+
+@media only screen and (min-width: 768px) {
+    #adv-search {
+        width: 330px;
+        margin: 0 auto;
+        float : right;
+        margin-right: 15px;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 330px;
+    }
+}
+/* End of search box css */
+
+.mg-t10 {
+	margin-top: 10px;
+}
+
+.mg-t60 {
+	margin-top: 60px;
+}
+
+/* Set */
+.form-group .col-md-6 {
+	padding-right: 0px;
+	padding-left: 0px;
+}
