@@ -1,0 +1,47 @@
+  
+	<div class='content col-sm-5 col-sm-offset-1' ng-class="{'loginBody' : !Auth.isMobile()}" ng-show="!Auth.isLoggedIn()">
+	<h1 class="text-muted">login</h1>
+    <form name="loginForm" ng-controller="LoginController" ng-submit="loginForm.$valid && login()" novalidate>
+    	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
+    		<legend class="scheduler-border"></legend>
+    		<label for="email" class="control-label col-sm-4 text-muted">Email address</label>
+    		<div class="col-sm-8 pull-left">
+				<input ng-model="email" type="email" name="email" class="form-control" title="Email" ng-init="email='asdf@asdf.com'" required />
+			</div>
+			<!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span> -->
+    	</fieldset>
+    	<fieldset class="form-group has-success has-feedback" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.email.$pristine }">
+    		<label for="password" class="control-label col-sm-4 text-muted">Password</label>
+    		<div class="col-sm-8 pull-left">
+				<input ng-model="password" type="password" name="password" class="form-control" title="password" ng-minlength="4" ng-init="password='asdf'" required>
+			</div>
+    	</fieldset>
+    	<fieldset class="form-group">
+    	  	<input type="button" class="btn btn-info pull-left" value="Register" ng-click="location.path('/add')" />  
+          	<input type="submit" class="btn btn-primary pull-right" value="Login" />
+          	<label for="submit" class="text-muted pull-right" style="margin-right: 10px;text-valign:middle;">Please, click me! <i class='glyphicon glyphicon-hand-right'></i></label>
+        </fieldset>
+    </form>     
+  	</div>
+
+	<div ng-controller="CarouselDemoCtrl" ng-init="getTeacherList()" class='col-sm-2 visible-md visible-lg hidden-sm hidden-xs' 
+		style='margin-top:30px; margin-left:10px;'>
+	  <div style="height: 30%">
+	    <carousel interval="myInterval" no-wrap="noWrapSlides">
+	      <slide ng-repeat="slide in slides" active="slide.active">
+	        <img ng-src="{{slide.image}}" style="margin:auto; border-radius: 2px;" width="100%">
+	        <div class="carousel-caption"  style="padding-bottom:0px;">
+	          <p style="margin-bottom:0px;">{{slide.text}}</p>
+	        </div>
+	      </slide>
+	    </carousel>
+	  </div>  
+	
+	</div>
+
+    <div class='col-sm-3 visible-md visible-lg hidden-sm hidden-xs' style='margin-top:40px; padding:0;'>
+	<h3>Available Teachers <span class="label label-default">New</span></h3>	
+    </div>  
+
+    
+

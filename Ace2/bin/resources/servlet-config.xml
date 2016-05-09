@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	
+    <bean id="adminInfoDao" class="com.ace.dao.impl.AdminInfoDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="adminInfoService" class="com.ace.service.impl.AdminInfoServiceImpl">
+        <property name="adminInfoDao" ref="adminInfoDao"></property>
+    </bean>
+    
+    <bean id="bookDao" class="com.ace.dao.impl.BookDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="bookService" class="com.ace.service.impl.BookServiceImpl">
+        <property name="bookDao" ref="bookDao"></property>
+    </bean>
+    
+    <bean id="adminCommon" class="com.ace.utils.AdminCommon">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	    
+
+    <bean id="dashboardDao" class="com.ace.dao.impl.DashboardDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="dashboardService" class="com.ace.service.impl.DashboardServiceImpl">
+        <property name="dashboardDao" ref="dashboardDao"></property>
+    </bean>
+    
+    <bean id="otpDao" class="com.kossie.otp.dao.impl.OtpDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>	
+    <bean id="otpService" class="com.kossie.otp.service.impl.OtpServiceImpl">
+        <property name="otpDao" ref="otpDao"></property>
+    </bean>	
+</beans>

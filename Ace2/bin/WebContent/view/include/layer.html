@@ -1,0 +1,29 @@
+    <div id="layer"></div>
+    
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title" style="display:inline;">Available Teacher</h3>
+			<span style="cursor: pointer; margin-top:10px;" class="glyphicon glyphicon-remove pull-right" ng-click="cancel();"></span>
+        </div>
+		<div class="alert alert-warning alert-dismissible" role="alert" ng-show="isBooked() && $scope.selectedDate != null">
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  			Book has been <strong>success!</strong>.
+		</div>
+        <div class="modal-body">
+                    <!--<a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>-->
+					<div ng-repeat="item in items" class="row" style="border-bottom: 1px solid #E5E5E5;"> 
+		        		<div class="col-sm-4 col-xs-4">
+							<img ng-src="{{item.imageUrl}}" style="margin-top: 10px;"/><br> 
+		        			<input type="button" class="btn btn-info pull-center" value="Book" ng-show="!isBooked()" ng-click="addBook(item.id)" style="margin:5px;" />							
+						</div> 
+			        	<div class="col-sm-8 col-xs-8">
+							<h3>{{item.name}}</h3>
+							<p class="center">{{item.aboutme}}</p>
+		        		</div>
+		        	</div>
+        </div>
+        <!--<div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>-->
+    </script>     	

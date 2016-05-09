@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ace.model.AdminInfo;
 import com.ace.model.PageVO;
-import com.ace.model.TeacherInfo;
 import com.ace.service.AdminInfoService;
 import com.ace.utils.AdminCommon;
 import com.ace.utils.StringUtil;
@@ -207,13 +206,4 @@ public class AdminInfoController {
        	
     	return retBool;
 	}    	
-    
-	/**
-	 * get Teacher List
-	 */	
-  	@RequestMapping(value="/getTeacherList", method = RequestMethod.GET)
-	public @ResponseBody List<TeacherInfo> getTeacherList() throws Exception
-	{        	 
-	 	return adminInfoService.getTeacherList(); 
-	}         
 }
