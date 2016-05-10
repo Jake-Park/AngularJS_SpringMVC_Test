@@ -6,7 +6,7 @@
 	- Responsive web application
 * retriever : C3 Gateway (In-House EDI message broker)
 	- Tossing SOAP webservice message from M3 to client module or vice versa using JAXB stub client.
-       	- Checking the status of end-point servers by ping.
+	- Checking the status of end-point servers by ping.
         - Save SOAP webservice messages into MYSQL database using Hibernate.
         - Logging with AspectJ.
         - Admin Module : monitoring messages and retrying if failed.
