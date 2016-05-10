@@ -1,6 +1,7 @@
 # Jake's Project for portfolio
 
-* retriever : C3 Gateway (In-House EDI message broker)
+* retriever : C3 Gateway (In-House EDI message broker) 
+	- URL : http://54.153.206.60:8080
 	- Tossing SOAP webservice message from M3 to client module or vice versa using JAXB stub client.
 	- Checking the status of end-point servers by ping.
 	- Save SOAP webservice messages into MYSQL database using Hibernate.
