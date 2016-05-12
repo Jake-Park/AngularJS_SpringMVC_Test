@@ -8,7 +8,7 @@
 	- Admin Module : monitoring messages and retrying if failed.
 	- Admin site URL : http://54.153.206.60:8080
 	- Generating document from xml file using XWPF apache POI library.
-! Source code package : com.integrationwizards.*
+@ Source code package : com.integrationwizards.*
 
 
 # Environment
